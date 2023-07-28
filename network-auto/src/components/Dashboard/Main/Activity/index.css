@@ -1,0 +1,16 @@
+.activityComponent{
+    width: 100%;
+}
+
+.activityComponentHeader{
+    padding: 45px;
+    width: 100%;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+.activityComponentTitle{  
+    color: #404B5A;
+    margin: 0%;
+}

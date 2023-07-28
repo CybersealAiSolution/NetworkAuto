@@ -1,0 +1,38 @@
+.headerComponent{
+    height: 100%;
+    display: flex;
+    align-items:center ;
+    justify-content: space-between;
+}
+
+.organizationName{
+    margin-left: 25px;
+    color: #6E7A8A;
+}
+
+.CurrentUserContainer{
+    height: 100%;
+
+    margin-right: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #404B5A;
+}
+
+.currentUserProfile{
+    background-color:#404B5A;
+    height: 50px;
+    width: 50px;
+    margin: 10px;
+
+    border-radius: 50%;
+}
+
+.currentUserDetail{
+    
+    max-width:200px;
+    overflow: hidden;
+    font-weight: 500;
+}

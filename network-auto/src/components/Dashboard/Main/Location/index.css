@@ -1,0 +1,15 @@
+.locationComponent{
+    width: 100%;
+}
+
+.locationComponentHeader{
+    padding: 45px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.locationComponentTitle{  
+    color: #404B5A;
+    margin: 0%;
+}

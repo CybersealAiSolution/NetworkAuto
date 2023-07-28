@@ -1,0 +1,15 @@
+.resourceAccountComponent{
+    width: 100%;
+}
+
+.resourceAccountComponentHeader{
+    padding: 45px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.resourceAccountComponentTitle{  
+    color: #404B5A;
+    margin: 0%;
+}

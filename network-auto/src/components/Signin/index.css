@@ -1,0 +1,54 @@
+.mainDiv {
+  display: flex;
+  justify-content: space-between;
+  background-color: #f0f0f0;
+}
+
+.subDiv1,
+.subDiv2 {
+  flex-basis: 50%;
+  padding: 10px;
+  padding-left: 7%;
+  padding-top: 10%;
+  height: 100vh;
+  /* border: 1px solid #ccc; */
+  box-sizing: border-box;
+}
+
+.siginbtn {
+  border: 1px solid blue;
+  color: blue;
+  background-color: transparent;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  display: flex;
+  align-items: center;
+}
+
+.siginbtn:hover {
+  background-color: rgba(12, 73, 255, 0.945);
+  color: white;
+  border-color: transparent;
+}
+
+h1 {
+  color: #3c3939fc;
+  font-size: 42px;
+  margin: 20px 0;
+}
+
+.signinText {
+  margin-left: 15px;
+}
+
+.msimg {
+  display: flex;
+  align-items: center;
+}
+.softelimg{
+  margin-left: 8%;
+}

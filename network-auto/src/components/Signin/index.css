@@ -35,10 +35,11 @@
   border-color: transparent;
 }
 
-h1 {
+.projectName {
   color: #3c3939fc;
-  font-size: 42px;
+  font-size: 45px;
   margin: 20px 0;
+  font-weight: bold; /* Make the text bold */
 }
 
 .signinText {

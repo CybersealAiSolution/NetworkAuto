@@ -5,7 +5,7 @@ const Signin = () => (
   <>
     <div className="mainDiv">
       <div className="subDiv1">
-        <h1>Network Automation System</h1>
+        <p className="projectName">Network Automation System</p>
         <button className="siginbtn">
           <div>
             <img

@@ -18,13 +18,14 @@ const TableComponent = () => {
             const response = await axios.get('http://localhost:5000/tenants/Users/64be22c21a41003a4179df42');
             setData(response.data);
             
-        } catch (error) {
-            setError(error);
+        } catch (err) {
+            setError(err);
+            console.log('error',error);
         }
     };
     
     fetchData();
-    }, []);
+    }, [error]);
 
 
     if(data){
@@ -49,7 +50,7 @@ const TableComponent = () => {
         
 
 
-        var row = 0;
+        let row = 0;
 
         data.user_list.forEach(user => {
 
@@ -70,6 +71,7 @@ const TableComponent = () => {
                 
             row++;
    
+            console.log(row);
         });
     }
 

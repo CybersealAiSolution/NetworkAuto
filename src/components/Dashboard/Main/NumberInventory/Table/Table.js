@@ -89,7 +89,7 @@ const TableComponent = () => {
 
             <div className="tableHeader">
                 <div className="tableSearchContainer">
-                    <input className="tableSearch"  placeHolder="Search for Admins" type="text"></input>
+                    <input className="tableSearch"  placeholder="Search for Admins" type="text"></input>
                                        
                 </div>
             </div>

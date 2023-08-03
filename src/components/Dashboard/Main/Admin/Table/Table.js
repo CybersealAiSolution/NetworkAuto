@@ -14,18 +14,20 @@ const TableComponent = () => {
     useEffect(() => {
         // Function to fetch data using Axios
         const fetchData = async () => {
-        try {
-            const response = await axios.get('http://localhost:5000/tenants/Users/64be22c21a41003a4179df42');
+          try {
+            // const response = await axios.get('http://localhost:8000/tenants/Users/64be22c21a41003a4179df42');
+            const response = await axios.get('');
             setData(response.data);
-            
-        } catch (err) {
+          } catch (err) {
             setError(err);
-            console.log('error',error);
-        }
-    };
+            console.log('error', error);
+          }
+        };
     
-    fetchData();
-    }, [error]);
+        fetchData();
+        // eslint-disable-next-line
+      }, []);
+    
 
 
     if(data){
@@ -81,7 +83,7 @@ const TableComponent = () => {
 
             <div className="tableHeader">
                 <div className="tableSearchContainer" >
-                    <input className="tableSearch"  placeHolder="Search for Admins" type="text"></input>
+                    <input className="tableSearch"  placeholder="Search for Admins" type="text"></input>
                                        
                 </div>
             </div>

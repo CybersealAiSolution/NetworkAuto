@@ -7,12 +7,29 @@
 
 }
 
+.addbtn {
+    margin: 20px;
+  background-color: transparent; /* Set background color to transparent */
+  color: blue; /* Set the text color to blue */
+  border: none; /* Remove border */
+  padding: 8px 12px; /* Adjust padding as needed */
+  font-size: 16px; /* Adjust font size as needed */
+  cursor: pointer;
+  outline: none;
+  text-decoration: none; /* Remove underline from the link */
+  }
+  
+  
+  
+  
+  
+
 .tableHeader{
     height:70px;
 
     display:flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
 }
 
 .tableSearch{
@@ -27,69 +44,77 @@
     margin-right: 20px;
 }
 
-.tableWrapper{
+
+
+
+.table-container {
     width: 100%;
-    overflow:scroll ;
-}
-.tableWrapper::-webkit-scrollbar {
-    width: 0px;
+    overflow-x: auto;
+    overflow-y: auto; 
+    max-height: 500px;
   }
-
-
-.tablesContent{
-    display: flex;
-    overflow: hidden;
+  
+  .table {
     width: 100%;
-    min-width:fit-content;
-}
-
-
-
-.colHeader{
+    border-collapse: collapse;
+  }
+  
+  .table th{
     height: 50px;
-    padding-left: 10px;
+    
+    padding-left: 15px;
     background-color: #F8F9FA;
     border-top: 1px solid #aebecdbd;
     border-bottom: 1px solid #aebecdbd;
     color: #6E7A8A;
     font-weight: 500;
-
-    display: flex;
+    text-align: left;
     align-items: center;
-
-}
-
-.row{
-    height: 45px;
+    width: auto;
+    padding: 18px;
+  }
+  .table td {
+    /* border: 1px solid #ccc; */
+    padding: 18px;
+    border-bottom: 1px solid #ccc;
+    white-space: nowrap; 
+    margin: 100px;
+    font-weight: 400;
+  }
+  
+  .table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  
+  .table tr {
+    height: 50px;
     padding-left: 10px;
     color: #404B5A;
-    border-bottom: 1px solid #aebecdbd;
     font-weight: 500;
+  }
+  
+  .table tr:hover {
+    background-color: #ddd;
+  }
+  
 
-    display: flex;
-    align-items: center;
-    
-}
-
-
-
-/* changes  */
-
-#AdmintableCol0{
-    min-width:370px;
-    width:50%;
-}
-#AdmintableCol1{
-    min-width:190px;
-    width: 30%;
-}
-#AdmintableCol2{
-    min-width:205px;
-    width: 30%;
-}
-
-
-
-
-
-
+  /* width */
+::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888; 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }

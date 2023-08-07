@@ -1,0 +1,62 @@
+.adminComponent{
+    /* width: 100%; */
+    /* height: 100vh; */
+}
+
+.adminComponentHeader{
+    padding: 45px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.adminComponentTitle{  
+    color: #404B5A;
+    margin: 0%;
+}
+
+.tableBox{
+    display: flex;
+    justify-content: center;
+}
+.formBox{
+    padding-left: 50px;
+    padding-bottom:30px;
+    
+}
+
+/* Style the container of the select element */
+.select-container {
+    position: relative;
+  }
+  
+  /* Style the select element */
+  select {
+    width: 60%;
+    padding: 8px;
+    font-size: 16px;
+    color: #333;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    border-radius: 4px;
+    outline: none;
+  }
+  
+  /* Style the arrow icon for the select element (optional) */
+  select::-ms-expand {
+    display: none; /* Hide the arrow icon on IE */
+  }
+  
+  select::after {
+    content: '\f107'; /* Unicode character for a down arrow () */
+    font-family: 'FontAwesome'; /* Use a font with arrow icon (e.g., FontAwesome) */
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    pointer-events: none; /* Prevent the arrow from being clickable */
+  }
+  
+  .savebtn{
+    margin-top: 20px;
+  }

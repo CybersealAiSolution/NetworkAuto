@@ -8,6 +8,7 @@ import CallQueue from './CallQueue/CallQueue';
 import AutoAttendent from './AutoAttendent/AutoAttendent';
 import Admin from './Admin/Admin';
 import { Route, Routes } from 'react-router-dom';
+import AddAddress from '../../AddAddress/AddAddress';
 
 const Main = () => {
     return (
@@ -17,6 +18,7 @@ const Main = () => {
         
             <Routes> 
              <Route path=''exact element={<Admin/>}/>
+             <Route path='add-address'exact element={<AddAddress/>}/>
              <Route path='activity' exact element={<Activity/>} /> 
              <Route path='dids' exact element={<NumberInventory/>} /> 
              <Route path='users' exact element={<UserManagement/>} /> 

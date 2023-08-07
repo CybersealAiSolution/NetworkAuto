@@ -19,18 +19,9 @@ const Sidebar = () => {
                     </div>
                     <hr></hr>
                     <div className="navigationSegment">
-                        <Link className={`navigationButton ${currentpath==="/dashboard/dids" ? "open":""}`} to="/dashboard/dids"> <div className="navigationButtonLogoContainer"></div> Number Inventory </Link>
-                        <Link className={`navigationButton ${currentpath==="/dashboard/users" ? "open":""}`} to="/dashboard/users"> <div className="navigationButtonLogoContainer"></div> User Management </Link>
                         <Link className={`navigationButton ${currentpath==="/dashboard/location" ? "open":""}`} to="/dashboard/location"> <div className="navigationButtonLogoContainer"></div> Locations </Link>
                     </div>
-                    <hr></hr>
-                    
 
-                    <div className="navigationSegment">
-                        <Link className={`navigationButton ${currentpath==="/dashboard/resourceaccount" ? "open":""}`} to="/dashboard/resourceaccount"> <div className="navigationButtonLogoContainer"></div> Resource Accounts </Link>
-                        <Link className={`navigationButton ${currentpath==="/dashboard/callqueue" ? "open":""}`} to="/dashboard/callqueue"> <div className="navigationButtonLogoContainer"></div> Call Queue </Link>
-                        <Link className={`navigationButton ${currentpath==="/dashboard/autoattendent" ? "open":""}`} to="/dashboard/autoattendent"> <div className="navigationButtonLogoContainer"></div> Auto Attendent </Link>
-                    </div>
                 </div>
        
         </div>

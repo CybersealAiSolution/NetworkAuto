@@ -14,6 +14,7 @@ const CreateDefaultTenant = () => {
 const csrftoken = getCookie('csrftoken');
   // Set the CSRF token in the request headers
   axios.defaults.headers.post["X-CSRFToken"] = csrftoken;
+  
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [country, setcountry] = useState(false);
@@ -21,7 +22,7 @@ const csrftoken = getCookie('csrftoken');
   const [street, setstreet] = useState(false);
 
   const instance = axios.create({
-    baseURL: "http://localhost:8000",
+    baseURL: "http://localhost:5000",
     withCredentials: true, // This ensures cookies (sessions) are sent with every request
   });
 

@@ -41,7 +41,16 @@
     border-radius: 4px;
     outline: none;
   }
-  
+  .description{
+    width: 60%;
+    padding: 8px;
+    font-size: 16px;
+    color: #333;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    border-radius: 4px;
+    outline: none;
+  }
   /* Style the arrow icon for the select element (optional) */
   select::-ms-expand {
     display: none; /* Hide the arrow icon on IE */

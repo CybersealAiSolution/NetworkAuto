@@ -9,10 +9,10 @@ const Admin = () => {
         <div className="adminComponent">
             <div className="adminComponentHeader">
                 <h1 className="adminComponentTitle">Admins</h1>
-                <Botton/>
+                {/* <Botton/> */}
             </div>
             <div className='tableBox'>
-                <TableComponent/>
+                {/* <TableComponent/> */}
             </div>
         </div>
     )

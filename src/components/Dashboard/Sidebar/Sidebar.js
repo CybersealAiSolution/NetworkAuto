@@ -20,6 +20,7 @@ const Sidebar = () => {
                     <hr></hr>
                     <div className="navigationSegment">
                         <Link className={`navigationButton ${currentpath==="/dashboard/location" ? "open":""}`} to="/dashboard/location"> <div className="navigationButtonLogoContainer"></div> Locations </Link>
+                        <Link className={`navigationButton ${currentpath==="/dashboard/devices" ? "open":""}`} to="/dashboard/devices"> <div className="navigationButtonLogoContainer"></div> Devices </Link>
                     </div>
 
                 </div>

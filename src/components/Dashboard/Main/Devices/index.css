@@ -1,0 +1,21 @@
+.adminComponent{
+    /* width: 100%; */
+    /* height: 100vh; */
+}
+
+.adminComponentHeader{
+    padding: 45px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.adminComponentTitle{  
+    color: #404B5A;
+    margin: 0%;
+}
+
+.tableBox{
+    display: flex;
+    justify-content: center;
+}

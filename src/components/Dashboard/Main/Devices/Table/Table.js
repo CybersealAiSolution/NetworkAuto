@@ -1,185 +1,82 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "./index.css";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
+import "./index.css";  // Assuming you want to use the same CSS
 
-const TableComponent = () => {
-  const [error, setError] = useState(null);
-  const [data, setData] = useState([
-    {
-      description: "Optometrist",
-      country: "Nicaragua",
-      address:
-        "3581 Monica Pike, Port Sharonborough, WI 85970 3581 Monica Pike,3581 Monica Pike, Port Sharonborough, WI 85 Port Sharonborough, WI 85",
-    },
-    {
-      description: "Research scientist (physical sciences)",
-      country: "Germany",
-      address: "Unit 3183 Box 7251, DPO AP 02211",
-    },
-    {
-      description: "Public house manager",
-      country: "Ireland",
-      address: "16644 Tony Ports, East Crystalport, WI 35180",
-    },
-    {
-      description: "Database administrator",
-      country: "Bolivia",
-      address: "472 Kristina Cove Suite 121, Christineside, RI 92461",
-    },
-    {
-      description: "Quarry manager",
-      country: "Antigua and Barbuda",
-      address: "4086 Robin Road, Lake Richard, CO 92602",
-    },
-    {
-      description: "Professor Emeritus",
-      country: "Denmark",
-      address: "57510 Sullivan Flat, Kellymouth, RI 44330",
-    },
-    {
-      description: "Clinical embryologist",
-      country: "San Marino",
-      address: "239 Larsen Inlet Suite 125, New Carolynstad, OR 02314",
-    },
-    {
-      description: "Information officer",
-      country: "Korea",
-      address: "246 Frank Mountain, Mckenzieport, MS 83408",
-    },
-    {
-      description: "Civil engineer, contracting",
-      country: "Iraq",
-      address: "242 Clark Forks Apt. 057, North Craigville, DE 27266",
-    },
-    {
-      description: "Commissioning editor",
-      country: "Mayotte",
-      address: "PSC 2038, Box 0408, APO AE 55357",
-    },
-    {
-      description: "Optometrist",
-      country: "Nicaragua",
-      address:
-        "3581 Monica Pike, Port Sharonborough, WI 85970 3581 Monica Pike,3581 Monica Pike, Port Sharonborough, WI 85 Port Sharonborough, WI 85",
-    },
-    {
-      description: "Research scientist (physical sciences)",
-      country: "Germany",
-      address: "Unit 3183 Box 7251, DPO AP 02211",
-    },
-    {
-      description: "Public house manager",
-      country: "Ireland",
-      address: "16644 Tony Ports, East Crystalport, WI 35180",
-    },
-    {
-      description: "Database administrator",
-      country: "Bolivia",
-      address: "472 Kristina Cove Suite 121, Christineside, RI 92461",
-    },
-    {
-      description: "Quarry manager",
-      country: "Antigua and Barbuda",
-      address: "4086 Robin Road, Lake Richard, CO 92602",
-    },
-    {
-      description: "Professor Emeritus",
-      country: "Denmark",
-      address: "57510 Sullivan Flat, Kellymouth, RI 44330",
-    },
-    {
-      description: "Clinical embryologist",
-      country: "San Marino",
-      address: "239 Larsen Inlet Suite 125, New Carolynstad, OR 02314",
-    },
-    {
-      description: "Information officer",
-      country: "Korea",
-      address: "246 Frank Mountain, Mckenzieport, MS 83408",
-    },
-    {
-      description: "Civil engineer, contracting",
-      country: "Iraq",
-      address: "242 Clark Forks Apt. 057, North Craigville, DE 27266",
-    },
-    {
-      description: "Commissioning editor",
-      country: "Mayotte",
-      address: "PSC 2038, Box 0408, APO AE 55357",
-    },
-  ]);
+const DeviceTableComponent = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [data, setData] = useState([]);
 
   const getCookie = (name) => {
-    const cookieValue = document.cookie.match(
-      "(^|;)\\s*" + name + "\\s*=\\s*([^;]+)"
-    );
-    return cookieValue ? cookieValue.pop() : "";
-  };
-  const csrftoken = getCookie("csrftoken");
-  // Set the CSRF token in the request headers
-  axios.defaults.headers.post["X-CSRFToken"] = csrftoken;
+    const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+    return cookieValue ? cookieValue.pop() : '';
+  }
 
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  }
+
+
+  const filteredData = data.filter(item => {
+    return (
+      item.short_description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.model_id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.ip_address.includes(searchQuery) ||
+      item.mac_address.includes(searchQuery) ||
+      item.location.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  });
+
+
+
+  
   const instance = axios.create({
     baseURL: "http://localhost:5000",
-    withCredentials: true, // This ensures cookies (sessions) are sent with every request
+    withCredentials: true,
+    headers: {
+      "Content-Type": "application/json",
+      'X-CSRFToken': getCookie('csrftoken'),
+    }
   });
 
   useEffect(() => {
-    const getEmergencyAddress = async () => {
+    const getDevices = async () => {
       try {
-        const response = await instance.get("/getDevices", {
-          headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": getCookie("csrftoken"),
-          },
-        });
-
-        console.log("s", response.data);
+        const response = await instance.get("/devices/");
         if (response.data.error) {
           alert(response.data.error);
           return;
-        } else {
-          // navigate("/");
-          console.log("first");
         }
+        setData(response.data);
       } catch (error) {
-        // Handle any errors that may occur during the API call
-        console.error("Error sending data:", error);
+        console.error("Error fetching devices:", error);
       }
-    };
-    getEmergencyAddress();
-  });
+    }
+    getDevices();
+  }, []);
 
-  const TableColumn = () =>
-    data.map((item) => (
-      <tr key={item.id}>
-        <td>
-          <input className="rowCheckbox" type="checkbox"></input>
-        </td>
-        <td>{item.description}</td>
-        <td>{item.country}</td>
-        <td>{item.address}</td>
+  const DeviceTableColumn = () => 
+    data?.map((item, index) => (
+      <tr key={index}>
+        <td><input className="rowCheckbox" type="checkbox"></input></td>
+        <td>{item.short_description}</td>
+        <td>{item.model_id}</td>
+        <td>{item.ip_address}</td>
+        <td>{item.mac_address}</td>
+        <td>{item.location}</td>
       </tr>
     ));
-
-  const addForm = () => {};
 
   return (
     <div className="tableComponent">
       <div className="tableHeader">
-        {/* <div className="tableSearchContainer"> */}
-        {/* <Link className="addbtn" to="/dashboard/add-address">+ Add</Link> */}
-        {/* <div onClick={addForm} className="addbtn">
-            + Add 
-        </div> */}
-        {/* </div> */}
         <div className="tableSearchContainer">
-          <input
-            className="tableSearch"
-            placeholder="Search for Admins"
+        <input 
+            className="tableSearch" 
+            placeholder="Search for Devices" 
             type="text"
+            value={searchQuery}
+            onChange={handleSearchChange}
           />
         </div>
       </div>
@@ -187,16 +84,16 @@ const TableComponent = () => {
         <table className="table">
           <thead>
             <tr>
-              <th>
-                <input className="headerCheckbox" type="checkbox"></input>
-              </th>
-              <th>Description</th>
-              <th>Country</th>
-              <th>Address</th>
+              <th><input className="headerCheckbox" type="checkbox"></input></th>
+              <th>Short Description</th>
+              <th>Model ID</th>
+              <th>IP Address</th>
+              <th>MAC Address</th>
+              <th>Location</th>
             </tr>
           </thead>
           <tbody>
-            <TableColumn />
+            <DeviceTableColumn />
           </tbody>
         </table>
       </div>
@@ -204,4 +101,4 @@ const TableComponent = () => {
   );
 };
 
-export default TableComponent;
+export default DeviceTableComponent;

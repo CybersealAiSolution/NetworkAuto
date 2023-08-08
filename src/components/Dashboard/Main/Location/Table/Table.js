@@ -19,7 +19,8 @@ const TableComponent = () => {
     baseURL: "http://localhost:5000",
     withCredentials: true, // This ensures cookies (sessions) are sent with every request
   });
-//   const route = Ro
+
+  
   useEffect(()=>{
     const getEmergencyAddress = async () => {
       try {

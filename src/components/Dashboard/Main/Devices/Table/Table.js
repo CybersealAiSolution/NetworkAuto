@@ -21,9 +21,11 @@ const DeviceTableComponent = () => {
     return (
       item.short_description.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.model_id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.ip_address.includes(searchQuery) ||
-      item.mac_address.includes(searchQuery) ||
-      item.location.toLowerCase().includes(searchQuery.toLowerCase())
+      item.ip_address.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.BSSID.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.ChassisID.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.ms_teams_status.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.location.toLowerCase().includes(searchQuery.toLowerCase()) 
     );
   });
 
@@ -62,7 +64,9 @@ const DeviceTableComponent = () => {
         <td>{item.short_description}</td>
         <td>{item.model_id}</td>
         <td>{item.ip_address}</td>
-        <td>{item.mac_address}</td>
+        <td>{item.BSSID}</td>
+        <td>{item.ChassisID}</td>
+        <td>{item.msTeamsStatus}</td>
         <td>{item.location}</td>
       </tr>
     ));
@@ -85,11 +89,14 @@ const DeviceTableComponent = () => {
           <thead>
             <tr>
               <th><input className="headerCheckbox" type="checkbox"></input></th>
-              <th>Short Description</th>
+              <th>Description</th>
               <th>Model ID</th>
               <th>IP Address</th>
-              <th>MAC Address</th>
+              <th>BSSID</th>
+              <th>ChassisID</th>
+              <th>MsTeams Status</th>
               <th>Location</th>
+
             </tr>
           </thead>
           <tbody>

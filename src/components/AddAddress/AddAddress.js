@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./index.css";
+import axios from "axios";
 import BingMapComponent from "../BingMap/BingMap";
 // import { Link } from "react-router-dom";
 // import TableComponent from "../Dashboard/Main/Admin/Table/Table";
@@ -7,6 +8,13 @@ import BingMapComponent from "../BingMap/BingMap";
 const AddAddress = () => {
   // State variables to store form values
   const [description, setDescription] = useState("");
+  const [houseNumber, sethouseNumber] = useState("");
+  const [streetName, setstreetName] = useState("");
+  const [city, setcity] = useState("");
+  const [StateorProvince, setStateorProvince] = useState("");
+  const [postalCode, setpostalCode] = useState("");
+  const [latitude, setlatitude] = useState("");
+  const [Longitude, setLongitude] = useState("");
   const [option, setOption] = useState("United States");
 
   // Handler for the text field change
@@ -20,13 +28,54 @@ const AddAddress = () => {
     console.log(option)
   };
 
-  // Handler for form submission
-  const handleSubmit = (e) => {
+
+
+  const instance = axios.create({
+    baseURL: "http://localhost:5000",
+    withCredentials: true, // This ensures cookies (sessions) are sent with every request
+  });
+  const getCookie = (name) => {
+    const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+    return cookieValue ? cookieValue.pop() : '';
+  }
+
+
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    // Do something with the form data here (e.g., send it to a server)
     console.log("description:", description);
     console.log("Option:", option);
+
+    const data = {
+       'description': description,
+       'houseNumber': houseNumber,
+       'streetName' :streetName,
+       'city': city,
+       'StateorProvince': StateorProvince,
+       'postalCode':postalCode,
+       'latitude':latitude,
+       'Longitude':Longitude,
+       'CountryOrRegion':option
+
+    };
+    try {
+      const response = await instance.post("/addLisAddress", data, {
+        headers: {
+          "Content-Type": "application/json",
+          'X-CSRFToken': getCookie('csrftoken'),
+        },
+      });
+
+      
+      console.log(response.data);
+      if (response.data.error) {
+        console.log(response.data.error);
+        return;
+      }
+    } catch (error) {
+      console.error("Error sending data:", error);
+    }
   };
+
   return (
     <div className="adminComponent">
       <div className="adminComponentHeader">

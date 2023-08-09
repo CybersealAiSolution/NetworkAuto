@@ -1,16 +1,51 @@
-import React from 'react'
 import './index.css';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const Header = () => {
+    const [data, setData] = useState([]);
+
+
+    const getCookie = (name) => {
+        const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+        return cookieValue ? cookieValue.pop() : '';
+    }
+
+    const instance = axios.create({
+        baseURL: "http://localhost:5000",
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+          'X-CSRFToken': getCookie('csrftoken'),
+        }
+      });
+    
+      useEffect(() => {
+        const getAppInfo = async () => {
+          try {
+            const response = await instance.get("/getAppInfo");
+            if (response.data.error) {
+              alert(response.data.error);
+              return;
+            }
+            setData(response.data.data);
+          } catch (error) {
+            console.error("Error fetching devices:", error);
+          }
+        }
+        getAppInfo();
+      }, []);
+
+
     return (
         <div className="headerComponent">
 
-            <div className="organizationName"> <h3><b>Organization Name</b></h3></div>
+            <div className="organizationName"> <h3><b>{data.tenantName}</b></h3></div>
             <div className="CurrentUserContainer">
                 <div className="currentUserProfile"></div>
                 <div className="currentUserDetail">
-                    User name
-                    <div>useremail@cybersealau.com</div>
+                    {data.userDisplayName}
+                    <div className='useremailinfo'>{data.user}</div>
                 </div> 
             </div>
        

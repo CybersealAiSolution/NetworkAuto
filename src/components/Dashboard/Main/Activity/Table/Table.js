@@ -8,7 +8,13 @@ const TableComponent = () => {
   const [error, setError] = useState(null);
   const [data, setData] = useState([
     {
-      description: "Synced with service Now",
+      description: "Synced with serviceNow",
+      admin: "CSA_Global@MODERNCOMMS450672.onmicrosoft.com",
+      eventType: "Full Access",
+      timing: "Full Access",
+    },
+    {
+      description: "Synced with Juniper Mist",
       admin: "CSA_Global@MODERNCOMMS450672.onmicrosoft.com",
       eventType: "Full Access",
       timing: "Full Access",
@@ -72,7 +78,6 @@ const TableComponent = () => {
   return (
     <div className="tableComponent">
       <div className="tableHeader">
-        <Link className="addbtn" to="/dashboard/add-address">+ Add</Link>
         <div className="tableSearchContainer">
           <input
             className="tableSearch"

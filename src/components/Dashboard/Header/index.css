@@ -31,8 +31,24 @@
 }
 
 .currentUserDetail{
-    
+    position: relative;
     max-width:200px;
     overflow: hidden;
     font-weight: 500;
+}
+.logout-option {
+    display: none;
+    position: absolute;
+    top: 0%; /* This will place the logout-option just below the user-container */
+    right: 0%; /* Aligns the logout-option to the right side of the user-container */
+    /* Add other styles as required */
+}
+
+/* Display the logout-option when user-container is hovered */
+.currentUserDetail:hover .logout-option {
+    display: block;
+}
+
+.currentUserDetail:hover {
+    cursor: pointer;
 }

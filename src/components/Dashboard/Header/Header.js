@@ -11,6 +11,7 @@ const Header = () => {
                 <div className="currentUserDetail">
                     User name
                     <div>useremail@cybersealau.com</div>
+                    <button className="logout-option">Logout</button>
                 </div> 
             </div>
        

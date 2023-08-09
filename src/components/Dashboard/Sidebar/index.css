@@ -50,11 +50,20 @@
     background-color: #E1E7EC;
   }
 
-.navigationButtonLogoContainer {
-    background-color: #404B5A;
+ .navigationButtonLogoContainer {
+    
     width: 30px ;
     height: 30px;
-    margin-left: 8px;
-    margin-right: 8px;
+    margin: 12px 5px 5px 6px;
 
+} 
+.textalter{
+    color: var(--grey-800, #404B5A);
+
+/* Normal 18/24 */
+font-family: Libre Franklin;
+font-size: 18px;
+font-style: normal;
+font-weight: 500;
+line-height: 24px; /* 133.333% */
 }

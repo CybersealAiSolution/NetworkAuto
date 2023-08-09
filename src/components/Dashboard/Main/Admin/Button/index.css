@@ -1,5 +1,132 @@
 .Button{
     background-color: #212934;
     color:#F8F9FA;
-    padding: 10px
+    padding: 10px;
+    border-radius: 6px;
+}
+span.cross:hover{
+    cursor: pointer;
+}
+.sidebaradmin{
+    border-radius: 24px 0px 0px 24px;
+}
+.adminform{
+    display: flex;
+flex-direction: column;
+align-items: flex-start;
+gap: 36px;
+}
+.selectradio{
+    color: var(--grey-800, #404B5A);
+
+/* Normal 18/24 */
+font-family: Libre Franklin;
+font-size: 18px;
+font-style: normal;
+font-weight: 500;
+line-height: 24px; /* 133.333% */
+}
+
+
+.addadmintag{
+    display: flex;
+justify-content: space-between;
+align-items: center;
+align-self: stretch;
+}
+
+.selectradiotag{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.radiotag{
+    display: flex;
+flex-direction: column;
+align-items: flex-start;
+gap: 6px;
+}
+.form-check{
+    display: flex;
+padding: 6px 0px;
+align-items: center;
+gap: 12px;
+}
+.form-check-input{
+    width: 24px;
+height: 24px;
+}
+.form-check-label{
+    color: var(--grey-700, #6E7A8A);
+
+/* Normal 18/24 */
+font-family: Libre Franklin;
+font-size: 18px;
+font-style: normal;
+font-weight: 500;
+line-height: 24px; /* 133.333% */
+}
+.delegations{
+    display: flex;
+flex-direction: column;
+align-items: flex-start;
+gap: 6px;
+}
+
+.fame{
+    color: var(--grey-800, #404B5A);
+
+/* Normal 18/24 */
+font-family: Libre Franklin;
+font-size: 18px;
+font-style: normal;
+font-weight: 500;
+line-height: 24px; /* 133.333% */
+}
+.form-select{
+    display: flex;
+width: 360px;
+padding: 12px 24px 12px 18px;
+justify-content: space-between;
+align-items: center;
+    border-radius: 12px;
+border: 1px solid var(--grey-800, #404B5A);
+background: var(--grey-100, #F8F9FA);
+
+}
+.adminname{
+    display: flex;
+flex-direction: column;
+align-items: flex-start;
+gap: 6px;
+}
+
+.foot{
+    display: flex;
+    justify-content: flex-end;
+}
+.footy{
+    margin: 10px 5px;
+}
+.footy1{
+    background-color: #fff;
+    color: black;
+    display: flex;
+padding: 12px 18px;
+justify-content: center;
+align-items: center;
+gap: 6px;
+border-radius: 6px;
+border: 1px solid var(--grey-900, #212934);
+}
+.footy2{
+    display: flex;
+padding: 12px 18px;
+justify-content: center;
+align-items: center;
+gap: 6px;
+border-radius: 6px;
+background: var(--grey-900, #212934);
 }

@@ -10,8 +10,14 @@
 }
 
 .adminComponentTitle{  
-    color: #404B5A;
+    
     margin: 0%;
+    color: var(--grey-800, #404B5A);
+font-family: Libre Franklin;
+font-size: 36px;
+font-style: normal;
+font-weight: 700;
+line-height: 48px; /* 133.333% */
 }
 
 .tableBox{

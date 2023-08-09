@@ -4,7 +4,7 @@ import {Link, useLocation} from "react-router-dom"
 
 const Sidebar = () => {
     const currentpath = useLocation().pathname;
-    console.log(currentpath)
+    
     return (
         <div className="sidebarComponent">
 

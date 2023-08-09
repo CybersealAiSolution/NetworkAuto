@@ -12,7 +12,7 @@ const Admin = () => {
                 {/* <Botton/> */}
             </div>
             <div className='tableBox'>
-                {/* <TableComponent/> */}
+                <TableComponent/>
             </div>
         </div>
     )

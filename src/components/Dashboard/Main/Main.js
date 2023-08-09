@@ -19,7 +19,7 @@ const Main = () => {
              <Route path='activity' exact element={<Activity/>} /> 
              <Route path='location' exact element={<Location/>} /> 
              <Route path='devices' exact element={<Devices/>} /> 
-             <Route path='location/address/*' exact element={<AddressDetailView/>} /> 
+             <Route path='location/address/:id' exact element={<AddressDetailView/>} /> 
             </Routes>
          
         

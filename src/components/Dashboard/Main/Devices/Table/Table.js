@@ -56,7 +56,7 @@ const DeviceTableComponent = () => {
   }, []);
 
   const DeviceTableColumn = () => 
-    data?.map((item, index) => (
+      filteredData?.map((item, index) => (
       <tr key={index}>
         <td><input className="rowCheckbox" type="checkbox"></input></td>
         <td>{item.short_description}</td>

@@ -8,9 +8,10 @@ const AddressDetailView = () => {
   const [description, setDescription] = useState("");
   const [option, setOption] = useState("United States");
   const [data, setData] = useState({});
-  const p = useParams();
-  //   console.log('id',p['*']);
-  const addressId = p["*"];
+  const {id}= useParams();
+  console.log(id)
+
+
 
   const getCookie = (name) => {
     const cookieValue = document.cookie.match(
@@ -19,19 +20,21 @@ const AddressDetailView = () => {
     return cookieValue ? cookieValue.pop() : "";
   };
   const csrftoken = getCookie("csrftoken");
-  // Set the CSRF token in the request headers
   axios.defaults.headers.post["X-CSRFToken"] = csrftoken;
 
   const instance = axios.create({
     baseURL: "http://localhost:5000",
-    withCredentials: true, // This ensures cookies (sessions) are sent with every request
+    withCredentials: true, 
   });
-  //   const route = Ro
+
+
+
+
   useEffect(() => {
     const getEmergencyAddress = async () => {
       try {
         const response = await instance.get(
-          `/getAddressDetailView/${addressId}`,
+          `/getlocationsdetail/${id}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -40,9 +43,8 @@ const AddressDetailView = () => {
           }
         );
 
-        const addressObject = JSON.parse(response.data.data)[0];
+        const addressObject = response.data;
         setData(addressObject);
-        // console.log("addressObject", JSON.parse(addressObject.data)[0]);
         console.log("addressListx", addressObject);
         if (response.data.error) {
           alert(response.data.error);
@@ -58,6 +60,8 @@ const AddressDetailView = () => {
     };
     getEmergencyAddress();
   }, []);
+
+
   // Handler for the text field change
   const handleDescriptionChange = (e) => {
     setDescription(e.target.value);
@@ -76,42 +80,45 @@ const AddressDetailView = () => {
     console.log("description:", description);
     console.log("Option:", option);
   };
+
+
+
   return (
     <div className="adminComponent">
-      <div className="adminComponentHeader">
-        <h1 className="adminComponentTitle">{data.description}</h1>
+     <div className="adminComponentHeader">
+        <h1 className="adminComponentTitle">{data.emergency_locations? data.emergency_locations.description :""}</h1>
       </div>
       <div className="contain">
         <div className="one">
           <div className="onefirst">
-            {data.fulladdress}
+            {data.emergency_locations? data.emergency_locations.fulladdress :""}
             <br />
             <br />
-            Location ID: {data.locationId}
+            <b>Location ID:</b> {data.emergency_locations? data.emergency_locations.locationId :""}
             <br />
             <br />
-            Organization name: Contoso
+            <b>Organization name: </b>  Contoso
           </div>
           <div className="onesec">
-            <p style={{ margin: "26px 0" }}>Places 0</p>
-            <p style={{ margin: "26px 0" }}>Voice users 1</p>
-            <p style={{ margin: "26px 0" }}>Phone numbers 1</p>
+            <p style={{ margin: "26px 0" }}><b>Places : </b> 0</p>
+            <p style={{ margin: "26px 0" }}><b>Voice users : </b> 1</p>
+            <p style={{ margin: "26px 0" }}><b>Phone numbers : </b> 1</p>
           </div>
         </div>
         <div className="two">
           <div className="twofirst">
-            <p style={{ textAlign: "center" }}>Location network summary</p>
+            <p style={{ textAlign: "center" }}><b>Location network summary</b></p>
             <hr style={{ margin: "20px" }} />
             <div style={{ textAlign: "left", marginLeft: "50px" }}>
-              <p style={{ margin: "26px 0" }}>Subnets 1</p>
-              <p style={{ margin: "26px 0" }}>Wi-Fi access points 1</p>
-              <p style={{ margin: "26px 0" }}>Switches 1</p>
-              <p style={{ margin: "26px 0" }}>Ports 1</p>
+              <p style={{ margin: "26px 0" }}><b>Subnets</b> {data.subnet? data.subnet.length :"0"}</p>
+              <p style={{ margin: "26px 0" }}><b>Wi-Fi access points</b> {data.accessPoints? data.accessPoints.length :"0"}</p>
+              <p style={{ margin: "26px 0" }}><b>Switches</b> {data.switches? data.switches.length :"0"}</p>
+              <p style={{ margin: "26px 0" }}><b>Ports</b> 1</p>
             </div>
           </div>
         </div>
       </div>
-      <Tabs/>
+      <Tabs/> 
     </div>
   );
 };

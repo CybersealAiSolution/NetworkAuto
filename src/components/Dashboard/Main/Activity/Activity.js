@@ -1,5 +1,6 @@
 import React from 'react'
 import './index.css'
+import TableComponent from './Table/Table'
 
 const Activity = () => {
     return (
@@ -9,7 +10,9 @@ const Activity = () => {
         </div>
 
 
-        
+        <div className='tableBox'>
+                <TableComponent/>
+        </div>
 
 
         

@@ -51,7 +51,8 @@
     width: 100%;
     overflow-x: auto;
     overflow-y: auto; 
-    max-height: 500px;
+    /* max-height: 500px; */
+    height: inherit;
   }
   
   .table {

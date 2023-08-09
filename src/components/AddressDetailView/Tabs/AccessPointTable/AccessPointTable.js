@@ -10,7 +10,9 @@ const AccessPointTable = () => {
   const sidebarRef = useRef(null);
   const [data, setData] = useState([]);
   const {id}= useParams();
-  
+  const bbsidRef = useRef(null);
+  const descriptionRef = useRef(null);
+
   useEffect(() => {
     const getAccessPointData= async ()=>{
       const response = await instance.get(`/getlocationsdetail/accessPoints/${id}`)
@@ -36,32 +38,64 @@ const AccessPointTable = () => {
       </tr>
     ));
 
-    const addForm=()=>{
+    const handleSubmit = async (event) => {
+      event.preventDefault();
+  
+      const bbsid = bbsidRef.current.value;
+      const description = descriptionRef.current.value;
+  
+      const requestData = {
+        bbsid,
+        description
+      };
+  
+      try {
+        const response = await instance.post(`/addAccessPoints/${id}`, requestData, {
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        });
+  
+        // Handle the response as needed
+      console.log("s", response.data);
+      if (response?.data.error) {
+        alert(response.data.error);
+        return;
+      } else {
+        console.log("first");
+      }
+    } catch (error) {
+      // Handle any errors that may occur during the API call
+      console.error("Error sending data:", error);
     }
+    console.log(requestData);
+    setSidebarOpen(!isSidebarOpen)
+    };
+
 
   return (
     <div>
       <div className="tableHeader">
         {/* <Link className="addbtn" to="/dashboard/add-address">+ Add</Link> */}
-        <div onClick={() => setSidebarOpen(!isSidebarOpen)} className="addbtn">+ add</div>
+        <div onClick={() => setSidebarOpen(!isSidebarOpen)} className="addbtn">+ Add</div>
         {isSidebarOpen && 
               <>
                 <div className="overlay"></div>
                 <div className="sidebar2" ref={sidebarRef}>
                     <div className="closeSidebar2" onClick={() => setSidebarOpen(!isSidebarOpen)} >X</div>
-                    <h2>Add Admin</h2>
-                    <form className="addUserForm">
+                    <h2>Add Access Points</h2>
+                    <form className="addUserForm" onSubmit={handleSubmit}>
                       <div>
                       <div className="adminEmailFormDivision adminFormElement">
-                        <label for="adminEmail">Email</label>
-                        <input type="text" name="adminEmail" className="adminEmail" ></input>
+                        <label for="bbsid">BSSID</label>
+                        <input type="text" name="bbsid" className="bbsid" placeholder="xx-xx-xx-xx-xx-xx or xx-xx-xx-xx-xx-x*" ref={bbsidRef} ></input>
                       </div>
                       <div className="AccessLevelFormDivision adminFormElement">
-                        <label for="accessLevel">Access level</label>
-                        <input type="text" name="accessLevel" className="accessLevel" ></input>
+                        <label for="Description">Description</label>
+                        <input type="text" name="Description" className="Description" ref={descriptionRef} placeholder="Add a description so you know why it was created"></input>
                       </div>
                       </div>
-                      <input type="submit" className="addAdminFormSubmit"></input>
+                      <input type="submit" className="addAdminFormSubmit" value="Submit"></input>
                     </form>
                 </div>
               </>

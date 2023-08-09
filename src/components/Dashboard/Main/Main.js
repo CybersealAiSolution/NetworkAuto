@@ -1,6 +1,7 @@
 import React from 'react'
 import Activity from './Activity/Activity';
 import Location from './Location/Location';
+import Snmp from './Admin copy/Admin';
 import Admin from './Admin/Admin';
 import { Route, Routes } from 'react-router-dom';
 import AddAddress from '../../AddAddress/AddAddress';
@@ -22,6 +23,7 @@ const Main = () => {
              <Route path='location' exact element={<Location/>} /> 
              <Route path='deviceinventory' exact element={<Devices/>} /> 
              <Route path='discovereddevice' exact element={<DiscoveredDevices/>} /> 
+             <Route path='SNMP' exact element={<Snmp/>} /> 
              <Route path='location/address/:id' exact element={<AddressDetailView/>} /> 
              <Route path='location/address/:id' exact element={<AddressDetailView/>} /> 
             </Routes>

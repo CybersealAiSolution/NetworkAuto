@@ -104,6 +104,9 @@ const Sidebar = () => {
                             <Link className={`navigationButton ${currentpath==="/dashboard/discovereddevice" ? "open":""}`} to="/dashboard/discovereddevice"> <div className="navigationButtonLogoContainer">
                         
                             </div> Discovered Devices </Link>
+                            <Link className={`navigationButton ${currentpath==="/dashboard/snmp" ? "open":""}`} to="/dashboard/snmp"> <div className="navigationButtonLogoContainer">
+                        
+                            </div>SNMP </Link>
                     </div>
 
                 </div>

@@ -98,7 +98,12 @@ const Sidebar = () => {
                                 </g>
                             </svg>
                             </div> Locations </Link>
-                        <Link className={`navigationButton ${currentpath==="/dashboard/devices" ? "open":""}`} to="/dashboard/devices"> <div className="navigationButtonLogoContainer"></div> Devices </Link>
+                            <Link className={`navigationButton ${currentpath==="/dashboard/deviceinventory" ? "open":""}`} to="/dashboard/deviceinventory"> <div className="navigationButtonLogoContainer">
+                            
+                            </div> Devices Inventory </Link>
+                            <Link className={`navigationButton ${currentpath==="/dashboard/discovereddevice" ? "open":""}`} to="/dashboard/discovereddevice"> <div className="navigationButtonLogoContainer">
+                        
+                            </div> Discovered Devices </Link>
                     </div>
 
                 </div>

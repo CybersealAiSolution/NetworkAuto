@@ -8,6 +8,7 @@ const TableComponent = () => {
   // const [error, setError] = useState(null);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const sidebarRef = useRef(null);
+  const [newAdminEmail,setNewAdminEmail] = useState("");
   const [data, setData] = useState([
     {
       Admin: "CSA_Global@MODERNCOMMS450672.onmicrosoft.com",
@@ -64,11 +65,10 @@ const TableComponent = () => {
   },[]);
 
 
-//   const handleClickOutside = event => {
-//     if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
-//         setSidebarOpen(false);
-//     }
-// };
+  const submitForm = event => {
+    // event.prevent
+
+};
 
  
   const TableColumn = () =>
@@ -92,9 +92,22 @@ const TableComponent = () => {
                 <div className="sidebar2" ref={sidebarRef}>
                     <div className="closeSidebar2" onClick={() => setSidebarOpen(!isSidebarOpen)} >X</div>
                     <h2>Add Admin</h2>
-                    <form className="">
-                      
-                      
+                    <form className="addUserForm">
+                      <div>
+                      <div className="adminEmailFormDivision adminFormElement">
+                        <label for="adminEmail">Email</label>
+                        <input type="text" name="adminEmail" className="adminEmail" ></input>
+                      </div>
+                      <div className="AccessLevelFormDivision adminFormElement">
+                        <label for="accessLevel">Access level</label>
+                        <select type="text" name="accessLevel" className="accessLevel" >
+                          <option id="FullAccess" value="FullAccess">Full Access</option>
+                          <option id="ReadOnly" value="ReadOnly">Read Only</option>
+                          <option id="ReadAndWrite" value="ReadAndWrite">Read And Write</option>
+                        </select>
+                      </div>
+                      </div>
+                      <input type="submit" className="addAdminFormSubmit" onClick={()=>{submitForm()}}></input>
                     </form>
                 </div>
               </>

@@ -41,7 +41,14 @@ const Header = () => {
         <div className="headerComponent">
 
             <div className="organizationName"> <h3><b>{data.tenantName}</b></h3></div>
+            
             <div className="CurrentUserContainer">
+                <div>
+                    <div className="loading-container">
+                        <img src="https://i.gifer.com/ZKZg.gif" alt="loading" className="loading-gif"/>
+                    </div>
+                    <div className='syncingLogotext'>SYNC</div>
+                </div>
                 <div className="currentUserProfile"></div>
                 <div className="currentUserDetail">
                     {data.userDisplayName}

@@ -19,13 +19,13 @@ const DeviceTableComponent = () => {
 
   const filteredData = data.filter(item => {
     return (
+      item.msTeamsStatus.toLowerCase() === "not synced" && (
       item.short_description.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.model_id.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.ip_address.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.BSSID.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.ChassisID.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.msTeamsStatus.toLowerCase().includes("not synced") ||
-      item.location.toLowerCase().includes(searchQuery.toLowerCase()) 
+      item.location.toLowerCase().includes(searchQuery.toLowerCase()) )
     );
   });
 
@@ -66,7 +66,6 @@ const DeviceTableComponent = () => {
         <td>{item.ip_address}</td>
         <td>{item.BSSID}</td>
         <td>{item.ChassisID}</td>
-        <td>{item.msTeamsStatus}</td>
         <td>{item.location}</td>
       </tr>
     ));
@@ -94,7 +93,6 @@ const DeviceTableComponent = () => {
               <th>IP Address</th>
               <th>BSSID</th>
               <th>ChassisID</th>
-              <th>MsTeams Status</th>
               <th>Location</th>
 
             </tr>

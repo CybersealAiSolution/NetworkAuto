@@ -40,3 +40,22 @@
 .useremailinfo{
     font-size: smaller
 }
+
+.loading-container {
+    position: relative;
+    right: 40px;
+  }
+  
+  .loading-gif {
+    position: absolute;
+    height: 30px;
+  }
+
+  .syncingLogotext{
+        background-color: rgb(29, 143, 1);
+        padding: 5px;
+        color: black;
+        border: 1px solid black;
+        border-radius: 5px;
+        
+  }

@@ -4,7 +4,6 @@ import Dashboard from './components/Dashboard/Dashboard';
 import Signin from './components/Signin/Signin';
 import Callback from './components/Callback';
 import CreateDefaultTenant from './components/CreateDefaultTanent/CreateDefaultTenant';
-import AddAddress from './components/AddAddress/AddAddress';
 
 function App() {
   return (

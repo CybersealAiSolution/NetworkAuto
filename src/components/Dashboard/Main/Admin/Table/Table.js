@@ -2,10 +2,10 @@ import React from "react";
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import "./index.css";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 const TableComponent = () => {
-  const [error, setError] = useState(null);
+  // const [error, setError] = useState(null);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const sidebarRef = useRef(null);
   const [data, setData] = useState([

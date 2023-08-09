@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./index.css";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import Tabs from "./Tabs/Tabs";
+import {instance} from "../../Fetch"
 
 const AddressDetailView = () => {
   const [description, setDescription] = useState("");
@@ -10,23 +10,6 @@ const AddressDetailView = () => {
   const [data, setData] = useState({});
   const {id}= useParams();
   console.log(id)
-
-
-
-  const getCookie = (name) => {
-    const cookieValue = document.cookie.match(
-      "(^|;)\\s*" + name + "\\s*=\\s*([^;]+)"
-    );
-    return cookieValue ? cookieValue.pop() : "";
-  };
-  const csrftoken = getCookie("csrftoken");
-  axios.defaults.headers.post["X-CSRFToken"] = csrftoken;
-
-  const instance = axios.create({
-    baseURL: "http://localhost:5000",
-    withCredentials: true, 
-  });
-
 
 
 
@@ -38,7 +21,6 @@ const AddressDetailView = () => {
           {
             headers: {
               "Content-Type": "application/json",
-              "X-CSRFToken": getCookie("csrftoken"),
             },
           }
         );
@@ -118,7 +100,7 @@ const AddressDetailView = () => {
           </div>
         </div>
       </div>
-      <Tabs/> 
+      <Tabs /> 
     </div>
   );
 };

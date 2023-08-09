@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./index.css";
 import axios from "axios";
-import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 
 const CreateDefaultTenant = () => {

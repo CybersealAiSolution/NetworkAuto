@@ -40,9 +40,39 @@
   padding: 20px;
   overflow-y: auto;
   z-index: 1000;  /* Ensure it's above other items */
+  display: flex;
+  flex-direction: column;
+}
+
+.closeSidebar2{
+    align-self: flex-end;
+    padding: 15px;
+    cursor: pointer;
+}
+
+.addUserForm{
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height:100%
+}
+
+.addAdminFormSubmit{
+  height: 40px;
+}
+
+.adminFormElement{
+  margin-top:15px;
+  margin-bottom:15px
 }
   
-  
+.adminEmail{
+  height: 40px;;
+}
+.accessLevel{
+  height: 40px;;
+}
 
 .tableHeader{
     height:70px;

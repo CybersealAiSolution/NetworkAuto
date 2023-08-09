@@ -1,11 +1,13 @@
 import React from "react";
-import { useState,useEffect } from "react";
+import { useState,useEffect,useRef} from "react";
 import "./index.css";
 import { useParams } from "react-router-dom";
 import {instance} from "../../../../Fetch"
 
 const AccessPointTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const sidebarRef = useRef(null);
   const [data, setData] = useState([]);
   const {id}= useParams();
   
@@ -41,7 +43,29 @@ const AccessPointTable = () => {
     <div>
       <div className="tableHeader">
         {/* <Link className="addbtn" to="/dashboard/add-address">+ Add</Link> */}
-        <span className="addbtn">+ Add</span>
+        <div onClick={() => setSidebarOpen(!isSidebarOpen)} className="addbtn">+ add</div>
+        {isSidebarOpen && 
+              <>
+                <div className="overlay"></div>
+                <div className="sidebar2" ref={sidebarRef}>
+                    <div className="closeSidebar2" onClick={() => setSidebarOpen(!isSidebarOpen)} >X</div>
+                    <h2>Add Admin</h2>
+                    <form className="addUserForm">
+                      <div>
+                      <div className="adminEmailFormDivision adminFormElement">
+                        <label for="adminEmail">Email</label>
+                        <input type="text" name="adminEmail" className="adminEmail" ></input>
+                      </div>
+                      <div className="AccessLevelFormDivision adminFormElement">
+                        <label for="accessLevel">Access level</label>
+                        <input type="text" name="accessLevel" className="accessLevel" ></input>
+                      </div>
+                      </div>
+                      <input type="submit" className="addAdminFormSubmit"></input>
+                    </form>
+                </div>
+              </>
+            }
         <div className="tableSearchContainer">
         <input 
             className="tableSearch" 

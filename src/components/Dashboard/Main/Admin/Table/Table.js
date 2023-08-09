@@ -90,7 +90,12 @@ const TableComponent = () => {
               <>
                 <div className="overlay"></div>
                 <div className="sidebar2" ref={sidebarRef}>
+                    <div className="closeSidebar2" onClick={() => setSidebarOpen(!isSidebarOpen)} >X</div>
                     <h2>Add Admin</h2>
+                    <form className="">
+                      
+                      
+                    </form>
                 </div>
               </>
             }

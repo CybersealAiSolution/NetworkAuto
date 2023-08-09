@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import "./index.css";
 
-const BingMapComponent = () => {
+const BingMapComponent = (props) => {
   const mapRef = useRef(null);
 
   useEffect(() => {
@@ -28,6 +28,13 @@ const BingMapComponent = () => {
             function (place) {
               map.entities.clear();
               const pushpin = new window.Microsoft.Maps.Pushpin(place.location);
+              console.log(place);
+              props.setpostalCode(place.address.postalCode);
+              props.setcity(place.address.locality);
+              props.setstreetName(place.address.addressLine);
+              props.setStateorProvince(place.address.adminDistrict);
+              props.setlatitude(place.Location.latitude);
+              props.setlongitude(place.Location.longitude);
               console.log("pushpin", pushpin);
               map.entities.push(pushpin);
               map.setView({ bounds: place.bestView });

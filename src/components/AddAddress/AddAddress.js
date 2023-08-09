@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import "./index.css";
 import axios from "axios";
 import BingMapComponent from "../BingMap/BingMap";
-// import { Link } from "react-router-dom";
-// import TableComponent from "../Dashboard/Main/Admin/Table/Table";
 
 const AddAddress = () => {
   // State variables to store form values
@@ -45,7 +43,7 @@ const AddAddress = () => {
     console.log("description:", description);
     console.log("Option:", option);
 
-    
+
 
     const data = {
        'description': description,
@@ -85,7 +83,7 @@ const AddAddress = () => {
       </div>
       <div className="formBox">
         <form onSubmit={handleSubmit}>
-          <div>
+          <div className="fieldFirst">
             <label htmlFor="option">Description</label>
             <input type="text" value={description} onChange={handleDescriptionChange} className="description" name="description" />
           </div>
@@ -102,7 +100,9 @@ const AddAddress = () => {
                 <option value="United Kingdom">United Kingdom</option> */}
             </select>
           </div>
-          <BingMapComponent />
+          <BingMapComponent sethouseNumber={sethouseNumber} setstreetName={setstreetName} setcity={setcity} setStateorProvince={setStateorProvince} setpostalCode={setpostalCode} setlatitude={setlatitude} setLongitude={setLongitude} />
+
+
           <div style={{ display: "flex" }}>
             <button
               className="savebtn"
@@ -113,7 +113,7 @@ const AddAddress = () => {
               Submit
             </button>
             <button
-              className="savebtn"
+              className="cancelbtn"
               style={{ backgroundColor: "grey" }}
               onClick={() => window.history.back()}
             >

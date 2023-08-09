@@ -9,47 +9,27 @@
 
 .addbtn {
     margin: 20px;
-  background-color: transparent; /* Set background color to transparent */
-  color: blue; /* Set the text color to blue */
-  border: none; /* Remove border */
-  padding: 8px 12px; /* Adjust padding as needed */
-  font-size: 16px; /* Adjust font size as needed */
+  background-color: transparent; 
+  color: blue; 
+  border: none;
+  padding: 8px 12px; 
+  font-size: 16px; 
   cursor: pointer;
   outline: none;
-  text-decoration: none; /* Remove underline from the link */
+  text-decoration: none; 
   }
   
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.3); /* Black background with 30% opacity */
-    z-index: 1000;  /* Ensure it's below the sidebar but above other content */
-}
   
-.sidebar2 {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 25%;  /* or any desired width */
-  height: 100vh;
-  background-color: rgba(255,255,255); /* Slightly transparent white */
-  box-shadow: -5px 0px 5px rgba(0, 0, 0, 0.2);
-  padding: 20px;
-  overflow-y: auto;
-  z-index: 1000;  /* Ensure it's above other items */
-}
+  
   
   
 
 .tableHeader{
-    height:70px;
+    /* height:70px; */
 
     display:flex;
     align-items: center;
-    justify-content: space-between;
+    /* justify-content: space-between; */
 }
 
 .tableSearch{
@@ -60,7 +40,7 @@
     background-color: #F8F9FA;
     outline: 0px;
     padding: 15px;
-    margin-left: 20px;
+    /* margin-left: 20px; */
     margin-right: 20px;
 }
 
@@ -71,7 +51,7 @@
     width: 100%;
     overflow-x: auto;
     overflow-y: auto; 
-    max-height: 500px;
+    max-height: 300px;
   }
   
   .table {

@@ -19,28 +19,8 @@
   text-decoration: none; /* Remove underline from the link */
   }
   
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.3); /* Black background with 30% opacity */
-    z-index: 1000;  /* Ensure it's below the sidebar but above other content */
-}
   
-.sidebar2 {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 25%;  /* or any desired width */
-  height: 100vh;
-  background-color: rgba(255,255,255); /* Slightly transparent white */
-  box-shadow: -5px 0px 5px rgba(0, 0, 0, 0.2);
-  padding: 20px;
-  overflow-y: auto;
-  z-index: 1000;  /* Ensure it's above other items */
-}
+  
   
   
 

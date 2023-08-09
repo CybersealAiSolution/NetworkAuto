@@ -13,6 +13,7 @@
 .headerAndMaincontainer{
     height: 100%;
     width: 80%;
+    
 }
 
 .header{
@@ -24,4 +25,5 @@
     height: 91%;
     width: 100%;
     background-color: #E1E7EC;
+    overflow-y: scroll;
 }

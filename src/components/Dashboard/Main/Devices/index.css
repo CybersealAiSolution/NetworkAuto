@@ -1,16 +1,16 @@
-.didComponent{
-    width: 100%;
+.adminComponent{
+    /* width: 100%; */
+    /* height: 100vh; */
 }
 
-.didComponentHeader{
+.adminComponentHeader{
     padding: 45px;
     width: 100%;
-
     display: flex;
     justify-content: space-between;
 }
 
-.didComponentTitle{  
+.adminComponentTitle{  
     color: #404B5A;
     margin: 0%;
 }

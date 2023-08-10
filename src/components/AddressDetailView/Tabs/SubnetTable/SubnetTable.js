@@ -90,11 +90,11 @@ const SubnetTable = () => {
                       <div>
                       <div className="adminEmailFormDivision adminFormElement">
                         <label for="subnet">Subnet</label>
-                        <input type="text" name="subnet" className="subnet" placeholder="x.x.x.x or x.x.x.x.x.x.x.x" ref={subnetRef} ></input>
+                        <input type="text" name="subnet" className="subnet" placeholder="x.x.x.x or x.x.x.x.x.x.x.x" ref={subnetRef} required></input>
                       </div>
                       <div className="AccessLevelFormDivision adminFormElement">
                         <label for="Description">Description</label>
-                        <input type="text" name="Description" className="Description" ref={descriptionRef} placeholder="Add a description so you know why it was created"></input>
+                        <input type="text" name="Description" className="Description" ref={descriptionRef} placeholder="Add a description so you know why it was created" required></input>
                       </div>
                       </div>
                       <input type="submit" className="addAdminFormSubmit" value="Submit"></input>

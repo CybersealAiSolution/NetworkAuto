@@ -88,11 +88,11 @@ const AccessPointTable = () => {
                       <div>
                       <div className="adminEmailFormDivision adminFormElement">
                         <label for="bbsid">BSSID</label>
-                        <input type="text" name="bbsid" className="bbsid" placeholder="xx-xx-xx-xx-xx-xx or xx-xx-xx-xx-xx-x*" ref={bbsidRef} ></input>
+                        <input type="text" name="bbsid" className="bbsid" placeholder="xx-xx-xx-xx-xx-xx or xx-xx-xx-xx-xx-x*" ref={bbsidRef} required></input>
                       </div>
                       <div className="AccessLevelFormDivision adminFormElement">
                         <label for="Description">Description</label>
-                        <input type="text" name="Description" className="Description" ref={descriptionRef} placeholder="Add a description so you know why it was created"></input>
+                        <input type="text" name="Description" className="Description" ref={descriptionRef} placeholder="Add a description so you know why it was created" required></input>
                       </div>
                       </div>
                       <input type="submit" className="addAdminFormSubmit" value="Submit"></input>

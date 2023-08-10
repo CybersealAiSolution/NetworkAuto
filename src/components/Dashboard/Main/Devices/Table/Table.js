@@ -1,18 +1,17 @@
 import { useState, useEffect, useRef } from "react";
 import "./index.css";
-import { useParams } from "react-router-dom";
 import { instance } from "../../../../../Fetch";
 
 const DeviceTableComponent = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [data, setData] = useState([]);
-  const [unsyncDevice, setUnsyncDevice] = useState([]);
   const [addresses, setAddresses] = useState([]);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const sidebarRef = useRef(null);
-  const [description, setDescription] = useState("");
-  const [ip_address, setIp_address] = useState("");
+  const [deviceType, setDeviceType] = useState("");
   const [locationId, setLocationId] = useState("");
+
+  const [checkedRow, setCheckedRow] = useState([])
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -45,18 +44,7 @@ const DeviceTableComponent = () => {
         console.error("Error fetching devices:", error);
       }
     };
-    const getUnsyncedDevices = async () => {
-      try {
-        const response = await instance.get("/getAllUnsyncedDevices");
-        if (response.data.error) {
-          alert(response.data.error);
-          return;
-        }
-        setUnsyncDevice(response.data ? response.data : []);
-      } catch (error) {
-        console.error("Error fetching devices:", error);
-      }
-    };
+
     const getAddresses = async () => {
       try {
         const response = await instance.get("/getEmergencyAddresses");
@@ -71,18 +59,79 @@ const DeviceTableComponent = () => {
     };
 
     getDevices();
-    getUnsyncedDevices();
     getAddresses();
     // eslint-disable-next-line
   }, []);
 
+
+  const selected_devices =() => {
+    var devices = []
+    checkedRow.forEach(element =>{
+      let deviceId = element.split("&")[1];
+      const match = data?data.filter((item) => {
+        return (
+          item.id.toLowerCase().includes(deviceId.toLowerCase()) 
+        );
+      }):[]
+      devices.push(match[0])
+    })
+    return devices 
+  } 
+
+
+  const selected_device_list=()=>{
+    
+      return selected_devices().map((item) => {
+        return(
+        <div key={item.id} className="selected_Discovereddevice_list_items">
+          {item.short_description}
+        </div>
+        )});
+  }
+  
+
+
+  const handleCheckboxChange = (event) => {
+
+    var { id, checked } = event.target;
+    if (checked) {
+      setCheckedRow(prevState => [...prevState, id]);
+      event.target.checked= true
+  } else {
+      setCheckedRow(prevState => prevState.filter(boxId => boxId !== id));
+      event.target.checked= false
+  }
+};
+
+
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+  
+    const deviceValue = selected_devices().map((item) => {
+      if(deviceType==='Subnet'){
+          return( item.ip_address )
+      }
+      else if(deviceType==='Switch'){
+        return( item.ChassisID)
+      }
+      else if(deviceType==='Access Points'){
+        return( item.BSSID )
+      }
+      else{
+        return ""
+      }
+    })
+
     const payload = {
       locationId: locationId,
-      ipAddress: ip_address,
-      description: description,
+      deviceType: deviceType,
+      description: selected_devices().map((item) => {
+        return( item.short_description )}),
+      deviceValue: deviceValue
     };
+
 
     try {
       const response = await instance.post(`/add_unsynced_device`, payload, {
@@ -92,13 +141,10 @@ const DeviceTableComponent = () => {
       });
 
       // Handle the response as needed
-      console.log("result", response.data);
       if (response?.data.error) {
         alert(response.data.error);
         return;
-      } else {
-        console.log("first");
-      }
+      } 
     } catch (error) {
       // Handle any errors that may occur during the API call
       console.error("Error sending data:", error);
@@ -111,7 +157,7 @@ const DeviceTableComponent = () => {
     filteredData?.map((item, index) => (
       <tr key={index}>
         <td>
-          <input className="rowCheckbox" type="checkbox"></input>
+          <input className="rowCheckbox" type="checkbox" checked={checkedRow.includes(`deviceinventory&${item.id}`)} id={`deviceinventory&${item.id}`} onChange={handleCheckboxChange}></input>
         </td>
         <td>{item.short_description}</td>
         <td>{item.model_id}</td>
@@ -143,69 +189,65 @@ const DeviceTableComponent = () => {
               >
                 X
               </div>
-              <h2>Add Device</h2>
+              <h2>Assign Device</h2>
               <form className="addUserForm" onSubmit={handleSubmit}>
                 <div>
-                  <label for="accessLevel">Choose Address</label>
-                  <select
-                    type="text"
-                    name="locationId"
-                    className="accessLevel"
-                    value={locationId}
-                    onChange={(e) => setLocationId(e.target.value)}
-                    required
-                  >
-                    <option value="" disabled>
-                      Select an address
-                    </option>
-                    {addresses.map((i) => {
-                      return (
-                        <option value={i.locationId}>{i.fulladdress}</option>
-                      );
-                    })}
-                  </select>
-                  <label for="accessLevel">Choose Device</label>
-                  <select
-                    type="text"
-                    name="ip_address"
-                    className="accessLevel"
-                    value={ip_address}
-                    onChange={(e) => {
-                      setIp_address(e.target.value);
-                      const existingDesc = unsyncDevice.find(
-                        (i) => i.ip_address === e.target.value
-                      );
-                      if (existingDesc) {
-                        setDescription(existingDesc["short_description"]);
-                      } else {
-                        setDescription(""); // Set description to an empty string if no matching device found
-                      }
-                    }}
-                    required
-                  >
-                    <option value="" disabled>
-                      Select a Device
-                    </option>
-                    {unsyncDevice.map((i) => {
-                      return (
-                        <option id="FullAccess" value={i.ip_address}>
-                          {i.ip_address}
-                        </option>
-                      );
-                    })}
-                  </select>
-                  <div className="AccessLevelFormDivision adminFormElement">
-                    <label for="Description">Description</label>
-                    <input
-                      type="text"
-                      name="Description"
-                      value={description}
-                      onChange={(e) => setDescription(e.target.value)}
-                      className="Description"
-                      placeholder="Add a description so you know why it was created"
-                      required
-                    ></input>
+                  <div className="selected_Discovereddevice formElement">
+                    <label className="selected_Discovereddevice_lable"> Selected Device </label>
+                    <div className="selected_Discovereddevice_list">
+                      {selected_device_list()}
+                    </div>
                   </div>
+ 
+
+                  <div className="formElement">
+                    <label htmlFor="accessLevel">Choose Address</label>
+                    <select
+                      type="text"
+                      name="locationId"
+                      className="accessLevel"
+                      value={locationId}
+                      onChange={(e) => setLocationId(e.target.value)}
+                      required
+                    >
+                      <option value="" disable>
+                        Select an address
+                      </option>
+                      {addresses.map((i) => {
+                        return (
+                          <option key={i.locationId} value={i.locationId}>{i.description}</option>
+                        );
+                      })}
+                    </select>
+                  </div>
+                  
+
+                  <div className="formElement">
+                    <label>Select the Type</label>
+                    <select
+                      type="text"
+                      name="deviceType"
+                      className="deviceType"
+                      value={deviceType}
+                      onChange={(e) => setDeviceType(e.target.value)}
+                      required
+                    >
+                      <option value="" disable>
+                        Select an address
+                      </option>
+                      <option value="Subnet" >
+                        Subnet
+                      </option>
+                      <option value="Switch" >
+                        Switch
+                      </option>
+                      <option value="Access Points" >
+                        Access Points
+                      </option>
+
+                    </select>
+                    </div>
+
                 </div>
                 <input
                   type="submit"

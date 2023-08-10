@@ -98,7 +98,35 @@
   .table tr:hover {
     background-color: #ddd;
   }
+
   
+  
+  .selected_Discovereddevice_list{
+    overflow: scroll;
+    max-height: 190px;
+
+  }
+
+  .selected_Discovereddevice_list::-webkit-scrollbar {
+    display: none;
+}
+
+  
+  .selected_Discovereddevice_list_items{
+    display: inline-block;
+    background-color: blue;
+    margin:5px;
+    padding: 4px;
+    border-radius: 15px;
+    color:white
+  }
+
+
+  .formElement{
+    margin-top:20px;
+    margin-bottom:20px;
+
+  }
 
   /* width */
 ::-webkit-scrollbar {

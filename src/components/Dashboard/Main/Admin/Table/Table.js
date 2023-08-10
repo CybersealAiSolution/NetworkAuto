@@ -8,12 +8,12 @@ const TableComponent = () => {
   // const [error, setError] = useState(null);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [adminEmail, setAdminEmail] = useState("");
-const [accessLevel, setAccessLevel] = useState("FullAccess");
-
+  const [accessLevel, setAccessLevel] = useState("FullAccess");
+  const [randomValue, setRandomValue] = useState(Math.random());
   const sidebarRef = useRef(null);
   const [data, setData] = useState([]);
-  useEffect(() => {
 
+  useEffect(() => {
     const getAllAdmins = async () => {
       try {
         const response = await instance.get("/getalladmins");
@@ -33,17 +33,21 @@ const [accessLevel, setAccessLevel] = useState("FullAccess");
       }
     };
     getAllAdmins();
-  }, []);
+  }, [randomValue]);
 
   const submitForm = async (event) => {
     event.preventDefault();
     console.log("Admin Email:", adminEmail);
-  console.log("Access Level:", accessLevel);
-  const payload = {
-    'userName':adminEmail,
-    'roles':accessLevel
-  }
-  const response = await instance.post("/addAdmin",payload);
+    console.log("Access Level:", accessLevel);
+    const payload = {
+      userName: adminEmail,
+      roles: accessLevel,
+    };
+    const response = await instance.post("/addAdmin", payload);
+    console.log("bbbbbbb", response.status);
+    if (response.status === 201) {
+      setRandomValue(Math.random());
+    }
   };
 
   const TableColumn = () =>

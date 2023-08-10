@@ -118,7 +118,11 @@ const DeviceTableComponent = () => {
         <td>{item.ip_address}</td>
         <td>{item.BSSID}</td>
         <td>{item.ChassisID}</td>
-        <td>{item.msTeamsStatus}</td>
+        <td
+        style={{
+          color: item.msTeamsStatus === 'Synced' ? 'green' : 'red',
+        }}
+      >{item.msTeamsStatus}</td>
         <td>{item.location}</td>
       </tr>
     ));

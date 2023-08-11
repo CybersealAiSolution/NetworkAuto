@@ -47,7 +47,7 @@ const BingMapComponent = (props) => {
     };
 
     document.head.appendChild(script);
-  }, []);
+  },[]);
 
   return (
     <>

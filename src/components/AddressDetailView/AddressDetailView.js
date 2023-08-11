@@ -5,13 +5,8 @@ import Tabs from "./Tabs/Tabs";
 import {instance} from "../../Fetch"
 
 const AddressDetailView = () => {
-  const [description, setDescription] = useState("");
-  const [option, setOption] = useState("United States");
   const [data, setData] = useState({});
   const {id}= useParams();
-  console.log(id)
-
-
 
   useEffect(() => {
     const getEmergencyAddress = async () => {
@@ -27,7 +22,6 @@ const AddressDetailView = () => {
 
         const addressObject = response.data;
         setData(addressObject);
-        console.log("addressListx", addressObject);
         if (response.data.error) {
           alert(response.data.error);
           return;
@@ -41,27 +35,15 @@ const AddressDetailView = () => {
       }
     };
     getEmergencyAddress();
-  }, []);
+  },[]);
 
 
   // Handler for the text field change
-  const handleDescriptionChange = (e) => {
-    setDescription(e.target.value);
-  };
+
 
   // Handler for the select option change
-  const handleOptionChange = (e) => {
-    setOption(e.target.value);
-    console.log(option);
-  };
 
   // Handler for form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Do something with the form data here (e.g., send it to a server)
-    console.log("description:", description);
-    console.log("Option:", option);
-  };
 
 
 

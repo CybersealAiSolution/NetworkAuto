@@ -1,12 +1,12 @@
 import React from "react";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import "./index.css";
 import { Link } from "react-router-dom";
 
 const TableComponent = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [error, setError] = useState(null);
+  // const [error, setError] = useState(null);
   const [data, setData] = useState([]);
   const getCookie = (name) => {
     const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
@@ -68,9 +68,8 @@ const TableComponent = () => {
       </tr>
     ));
 
-    const addForm=()=>{
-    }
 
+    
   return (
     <div className="tableComponent">
       <div className="tableHeader">

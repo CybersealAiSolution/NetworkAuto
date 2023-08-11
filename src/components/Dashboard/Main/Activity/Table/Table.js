@@ -1,11 +1,10 @@
 import React from "react";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import "./index.css";
-import { Link } from "react-router-dom";
 
 const TableComponent = () => {
-  const [error, setError] = useState(null);
+  // const [error, setError] = useState(null);s
   const [data, setData] = useState([
     {
       description: "Synced with serviceNow",
@@ -35,30 +34,29 @@ const TableComponent = () => {
 
   useEffect(()=>{
     const getEmergencyAddress = async () => {
-      try {
-        const response = await instance.get("/getEmergencyAddresses", {
-          headers: {
-            "Content-Type": "application/json",
-            'X-CSRFToken': getCookie('csrftoken'),
-          },
-        });
-    
+      // try {
+      //   const response = await instance.get("/getEmergencyAddresses", {
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //       'X-CSRFToken': getCookie('csrftoken'),
+      //     },
+      //   });
         
-        console.log("s", response.data);
+      //   console.log("s", response.data);
 
-        if (response.data.error) {
-          alert(response.data.error);
-          return;
-        } else {
-          // navigate("/");
-          console.log("first");
-        }
-      } catch (error) {
-        // Handle any errors that may occur during the API call
-        console.error("Error sending data:", error);
+      //   if (response.data.error) {
+      //     alert(response.data.error);
+      //     return;
+      //   } else {
+      //     // navigate("/");
+      //     console.log("first");
+      //   }
+      // } catch (error) {
+      //   // Handle any errors that may occur during the API call
+      //   console.error("Error sending data:", error);
+      // }
       }
-      }
-    getEmergencyAddress();
+    // getEmergencyAddress();
   }
     );
 

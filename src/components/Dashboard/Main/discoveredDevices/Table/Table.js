@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import "./index.css";  // Assuming you want to use the same CSS
 
 const DeviceTableComponent = () => {
@@ -57,7 +56,7 @@ const DeviceTableComponent = () => {
       }
     }
     getDevices();
-  }, []);
+  },[]);
 
   const DeviceTableColumn = () => 
       filteredData?.map((item, index) => (

@@ -34,7 +34,7 @@ const Header = () => {
           }
         }
         getAppInfo();
-      }, []);
+      },[]);
 
 
     return (

@@ -1,5 +1,4 @@
 import React from 'react'
-import Botton from './Button/Button'
 import TableComponent from './Table/Table'
 import './index.css'
 

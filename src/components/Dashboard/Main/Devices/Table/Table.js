@@ -17,20 +17,6 @@ const DeviceTableComponent = () => {
     setSearchQuery(e.target.value);
   };
 
-  // const filteredData = data.filter((item) => {
-  //   return (
-  //     item.short_description
-  //       .toLowerCase()
-  //       .includes(searchQuery.toLowerCase()) ||
-  //     item.model_id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-  //     item.ip_address.toLowerCase().includes(searchQuery.toLowerCase()) ||
-  //     item.BSSID.toLowerCase().includes(searchQuery.toLowerCase()) ||
-  //     item.ChassisID.toLowerCase().includes(searchQuery.toLowerCase()) ||
-  //     item.msTeamsStatus.toLowerCase().includes("not synced") ||
-  //     item.location.toLowerCase().includes(searchQuery.toLowerCase())
-  //   );
-  // });
-
   const filteredData = data.filter(item => {
     return (
       item.msTeamsStatus.toLowerCase() === "not synced" && (

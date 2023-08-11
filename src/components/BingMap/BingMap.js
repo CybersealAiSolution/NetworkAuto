@@ -29,12 +29,12 @@ const BingMapComponent = (props) => {
               map.entities.clear();
               const pushpin = new window.Microsoft.Maps.Pushpin(place.location);
               console.log(place);
-              props.setpostalCode(place.address.postalCode);
-              props.setcity(place.address.locality);
-              props.setstreetName(place.address.addressLine);
-              props.setStateorProvince(place.address.adminDistrict);
-              props.setlatitude(place.Location.latitude);
-              props.setlongitude(place.Location.longitude);
+              props.setpostalCode(place.address.postalCode ? place.address.postalCode : '');
+              props.setcity(place.address.locality ? place.address.locality : '');
+              props.setstreetName(place.address.addressLine ? place.address.addressLine : '');
+              props.setStateorProvince(place.address.adminDistrict ? place.address.adminDistrict : '');
+              props.setlatitude(place.location.latitude ? place.location.latitude : 0);
+              props.setlongitude(place.location.longitude ? place.location.longitude : 0);
               console.log("pushpin", pushpin);
               map.entities.push(pushpin);
               map.setView({ bounds: place.bestView });

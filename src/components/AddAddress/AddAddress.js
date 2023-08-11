@@ -100,7 +100,7 @@ const AddAddress = () => {
                 <option value="United Kingdom">United Kingdom</option> */}
             </select>
           </div>
-          <BingMapComponent sethouseNumber={sethouseNumber} setstreetName={setstreetName} setcity={setcity} setStateorProvince={setStateorProvince} setpostalCode={setpostalCode} setlatitude={setlatitude} setLongitude={setLongitude} />
+          <BingMapComponent sethouseNumber={sethouseNumber} setstreetName={setstreetName} setcity={setcity} setStateorProvince={setStateorProvince} setpostalCode={setpostalCode} setlatitude={setlatitude} setlongitude={setLongitude} />
 
 
           <div style={{ display: "flex" }}>

@@ -20,7 +20,7 @@ const SubnetTable = () => {
       setData(response.data.subnet?response.data.subnet:[]);
     };
     getSubnetData();
-  })
+  },[])
   
 
   const filteredEmergencyAddresses = data.filter(item =>

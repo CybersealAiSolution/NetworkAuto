@@ -17,17 +17,29 @@ const DeviceTableComponent = () => {
     setSearchQuery(e.target.value);
   };
 
-  const filteredData = data.filter((item) => {
+  // const filteredData = data.filter((item) => {
+  //   return (
+  //     item.short_description
+  //       .toLowerCase()
+  //       .includes(searchQuery.toLowerCase()) ||
+  //     item.model_id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //     item.ip_address.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //     item.BSSID.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //     item.ChassisID.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //     item.msTeamsStatus.toLowerCase().includes("not synced") ||
+  //     item.location.toLowerCase().includes(searchQuery.toLowerCase())
+  //   );
+  // });
+
+  const filteredData = data.filter(item => {
     return (
-      item.short_description
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase()) ||
+      item.msTeamsStatus.toLowerCase() === "not synced" && (
+      item.short_description.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.model_id.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.ip_address.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.BSSID.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.ChassisID.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.msTeamsStatus.toLowerCase().includes("not synced") ||
-      item.location.toLowerCase().includes(searchQuery.toLowerCase())
+      item.location.toLowerCase().includes(searchQuery.toLowerCase()) )
     );
   });
 
@@ -134,7 +146,7 @@ const DeviceTableComponent = () => {
 
 
     try {
-      const response = await instance.post(`/add_unsynced_device`, payload, {
+      const response = await instance.post(`/addbulkdevice`, payload, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -164,11 +176,6 @@ const DeviceTableComponent = () => {
         <td>{item.ip_address}</td>
         <td>{item.BSSID}</td>
         <td>{item.ChassisID}</td>
-        <td
-        style={{
-          color: item.msTeamsStatus === 'Synced' ? 'green' : 'red',
-        }}
-      >{item.msTeamsStatus}</td>
         <td>{item.location}</td>
       </tr>
     ));
@@ -177,7 +184,7 @@ const DeviceTableComponent = () => {
     <div className="tableComponent">
       <div className="tableHeader">
         <div onClick={() => setSidebarOpen(!isSidebarOpen)} className="addbtn">
-          + Unsynced Data
+          + Register Device
         </div>
         {isSidebarOpen && (
           <>
@@ -280,7 +287,6 @@ const DeviceTableComponent = () => {
               <th>IP Address</th>
               <th>BSSID</th>
               <th>ChassisID</th>
-              <th>MsTeams Status</th>
               <th>Location</th>
             </tr>
           </thead>

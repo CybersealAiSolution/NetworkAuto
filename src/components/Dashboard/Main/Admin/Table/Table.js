@@ -47,6 +47,7 @@ const TableComponent = () => {
     console.log("bbbbbbb", response.status);
     if (response.status === 201) {
       setRandomValue(Math.random());
+      setSidebarOpen(!isSidebarOpen);
     }
   };
 

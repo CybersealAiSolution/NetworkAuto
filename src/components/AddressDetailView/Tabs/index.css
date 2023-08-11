@@ -35,4 +35,5 @@
   background-color: rgb(255, 255, 255);
   border-radius: 25px;
   height: 75%;
+  overflow-y: auto;
 }

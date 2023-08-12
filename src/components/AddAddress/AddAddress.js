@@ -89,7 +89,8 @@ const AddAddress = () => {
       <div className="adminComponentHeader">
         <h1 className="adminComponentTitle">Add Address</h1>
       </div>
-      <div className="formBox">
+      <div className="mapContainer">
+      <div id="formBox">
         <form onSubmit={handleSubmit}>
           <div className="fieldFirst">
             <label htmlFor="option">Description</label>
@@ -98,13 +99,14 @@ const AddAddress = () => {
               value={description}
               onChange={handleDescriptionChange}
               className="description"
+              id="description"
               name="description"
             />
           </div>
           <div style={{ marginTop: "10px" }}>
             <label htmlFor="option">Country or Region</label>
             <select
-              id="option"
+              id="options"
               onChange={handleOptionChange}
               required
               value={option}
@@ -143,6 +145,7 @@ const AddAddress = () => {
             {/* <Link className="savebtn" style={{ backgroundColor: "grey" }} to="/dashboard">Cancel</Link> */}
           </div>
         </form>
+      </div>
       </div>
     </div>
   );

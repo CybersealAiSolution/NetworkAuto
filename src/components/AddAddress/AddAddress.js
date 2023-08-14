@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import "./index.css";
 import axios from "axios";
 import BingMapComponent from "../BingMap/BingMap";
+import { useNavigate } from 'react-router-dom';
 
 const AddAddress = () => {
+  const navigate = useNavigate();
   // State variables to store form values
   const [description, setDescription] = useState("");
   // const [houseNumber, sethouseNumber] = useState("444");
@@ -141,7 +143,7 @@ const AddAddress = () => {
             <button
               className="cancelbtn"
               style={{ backgroundColor: "grey" }}
-              onClick={() => window.history.back()}
+              onClick={() => navigate('/dashboard/location')}
             >
               Cancel
             </button>

@@ -6,7 +6,7 @@ import BingMapComponent from "../BingMap/BingMap";
 const AddAddress = () => {
   // State variables to store form values
   const [description, setDescription] = useState("");
-  const [houseNumber, sethouseNumber] = useState("444");
+  // const [houseNumber, sethouseNumber] = useState("444");
   const [streetName, setstreetName] = useState("");
   const [city, setcity] = useState("");
   const [StateorProvince, setStateorProvince] = useState("");
@@ -75,6 +75,9 @@ const AddAddress = () => {
       });
 
       console.log(response.data);
+      if(response.status===200){
+        window.history.back()
+      }
       if (response.data.error) {
         console.log(response.data.error);
         return;
@@ -89,7 +92,8 @@ const AddAddress = () => {
       <div className="adminComponentHeader">
         <h1 className="adminComponentTitle">Add Address</h1>
       </div>
-      <div className="formBox">
+      <div className="mapContainer">
+      <div id="formBox">
         <form onSubmit={handleSubmit}>
           <div className="fieldFirst">
             <label htmlFor="option">Description</label>
@@ -98,13 +102,14 @@ const AddAddress = () => {
               value={description}
               onChange={handleDescriptionChange}
               className="description"
+              id="description"
               name="description"
             />
           </div>
           <div style={{ marginTop: "10px" }}>
             <label htmlFor="option">Country or Region</label>
             <select
-              id="option"
+              id="options"
               onChange={handleOptionChange}
               required
               value={option}
@@ -143,6 +148,7 @@ const AddAddress = () => {
             {/* <Link className="savebtn" style={{ backgroundColor: "grey" }} to="/dashboard">Cancel</Link> */}
           </div>
         </form>
+      </div>
       </div>
     </div>
   );

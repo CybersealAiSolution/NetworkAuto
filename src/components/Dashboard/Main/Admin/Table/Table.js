@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect, useState, useRef } from "react";
 import "./index.css";
 import { instance } from "../../../../../Fetch";
+import { toast } from 'react-toastify';
 // import { Link } from "react-router-dom";
 
 const TableComponent = () => {
@@ -46,6 +47,7 @@ const TableComponent = () => {
     const response = await instance.post("/addAdmin", payload);
     console.log("bbbbbbb", response.status);
     if (response.status === 201) {
+      toast.success('Admin Successfully added!!!');
       setRandomValue(Math.random());
       setSidebarOpen(!isSidebarOpen);
     }
@@ -67,7 +69,7 @@ const TableComponent = () => {
       <div className="tableHeader">
         {/* <Link className="addbtn" to="/dashboard/add-address">+ Add</Link> */}
         <div onClick={() => setSidebarOpen(!isSidebarOpen)} className="addbtn">
-          + add
+          + Add
         </div>
         {isSidebarOpen && (
           <>

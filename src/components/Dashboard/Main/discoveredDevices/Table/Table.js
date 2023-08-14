@@ -34,7 +34,7 @@ const DeviceTableComponent = () => {
 
   
   const instance = axios.create({
-    baseURL: "http://172.173.201.251:5000",
+    baseURL: "http://localhost:5000",
     withCredentials: true,
     headers: {
       "Content-Type": "application/json",

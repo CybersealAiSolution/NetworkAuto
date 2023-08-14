@@ -11,6 +11,6 @@ const csrftoken = getCookie("csrftoken");
 axios.defaults.headers.post["X-CSRFToken"] = csrftoken;
 
 export const instance = axios.create({
-  baseURL: "http://172.173.201.251:5000",
+  baseURL: "http://localhost:5000",
   withCredentials: true, // This ensures cookies (sessions) are sent with every request
 });

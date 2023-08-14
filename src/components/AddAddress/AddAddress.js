@@ -6,7 +6,7 @@ import BingMapComponent from "../BingMap/BingMap";
 const AddAddress = () => {
   // State variables to store form values
   const [description, setDescription] = useState("");
-  const [houseNumber, sethouseNumber] = useState("444");
+  // const [houseNumber, sethouseNumber] = useState("444");
   const [streetName, setstreetName] = useState("");
   const [city, setcity] = useState("");
   const [StateorProvince, setStateorProvince] = useState("");
@@ -75,6 +75,9 @@ const AddAddress = () => {
       });
 
       console.log(response.data);
+      if(response.status===200){
+        window.history.back()
+      }
       if (response.data.error) {
         console.log(response.data.error);
         return;

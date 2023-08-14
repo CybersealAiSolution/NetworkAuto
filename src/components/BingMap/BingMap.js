@@ -57,7 +57,7 @@ const BingMapComponent = (props) => {
           type="text"
           id="searchBox"
           style={{
-            width: "58.2%",
+            width: "98.2%",
             padding: "8px",
             fontSize: "16px",
             color: "#333",
@@ -81,7 +81,7 @@ const BingMapComponent = (props) => {
           <div
             id="myMap"
             ref={mapRef}
-            style={{ width: "60%", height: "400px" }}
+            style={{ width: "100%", height: "400px" }}
           ></div>
         </div>
       </div>

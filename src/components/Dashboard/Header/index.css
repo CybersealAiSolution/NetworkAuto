@@ -49,6 +49,7 @@
   .loading-gif {
     position: absolute;
     height: 30px;
+    margin-top: 2px;
   }
 
   .syncingLogotext{

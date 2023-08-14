@@ -3,6 +3,7 @@ import "./index.css";
 import axios from "axios";
 import BingMapComponent from "../BingMap/BingMap";
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const AddAddress = () => {
   const navigate = useNavigate();
@@ -78,6 +79,7 @@ const AddAddress = () => {
 
       console.log(response.data);
       if(response.status===200){
+        toast.success('Address Successfully added!!!');
         window.history.back()
       }
       if (response.data.error) {

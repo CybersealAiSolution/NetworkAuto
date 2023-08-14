@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import "./index.css";
 import { instance } from "../../../../../Fetch";
+import { GrDocumentCsv } from 'react-icons/gr';
+import { toast } from 'react-toastify';
+// GrDocumentCsv
 
 const DeviceTableComponent = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -142,7 +145,9 @@ const DeviceTableComponent = () => {
       if (response?.data.error) {
         alert(response.data.error);
         return;
-      } 
+      } else{
+        toast.success('Successfully added!!!');
+      }
     } catch (error) {
       // Handle any errors that may occur during the API call
       console.error("Error sending data:", error);
@@ -251,6 +256,10 @@ const DeviceTableComponent = () => {
             </div>
           </>
         )}
+        <div style={{display:"flex",justifyContent:'center'}}>
+        <GrDocumentCsv style={{ fontSize: '25px',marginTop:'5px'}} onClick={()=>console.log('icon')} />
+
+        
         <div className="tableSearchContainer">
           <input
             className="tableSearch"
@@ -259,6 +268,7 @@ const DeviceTableComponent = () => {
             value={searchQuery}
             onChange={handleSearchChange}
           />
+        </div>
         </div>
       </div>
       <div className="table-container">

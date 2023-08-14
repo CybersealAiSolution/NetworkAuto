@@ -11,7 +11,7 @@ function CallBack(props) {
     const fullURL = window.location.href;
     const urlObj = new URL(fullURL);
     // Change the hostname
-    urlObj.hostname = "172.173.201.251";
+    urlObj.hostname = "localhost";
     urlObj.port = "5000";
 
     const updatedUrl = urlObj.toString();

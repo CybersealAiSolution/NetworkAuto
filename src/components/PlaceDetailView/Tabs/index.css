@@ -1,0 +1,39 @@
+.tabs-container {
+  margin: 5%;
+  background-color: #e1e7ec;
+  border-radius: 25px;
+  height: 491px;
+  margin-top: -3.2%;
+}
+
+.tabs-navbar {
+  padding: 3%;
+  display: flex;
+  justify-content: space-around;
+  background-color: rgb(255, 255, 255);
+  border-radius: 25px;
+}
+
+.navitem {
+  background-color: #e1e7ec;
+  width: 20%;
+  height: 40px;
+  border-radius: 25px;
+  display: flex;
+  align-items: center; 
+  justify-content: center; 
+  transition: background-color 0.3s;
+  cursor: pointer;
+}
+
+.navitem:hover {
+  background-color: #c4ccd4; 
+}
+
+.tab-content {
+  margin-top: 2%;
+  background-color: rgb(255, 255, 255);
+  border-radius: 25px;
+  height: 75%;
+  overflow-y: auto;
+}

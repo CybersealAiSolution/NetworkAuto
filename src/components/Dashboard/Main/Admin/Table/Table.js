@@ -47,7 +47,7 @@ const TableComponent = () => {
     const response = await instance.post("/addAdmin", payload);
     console.log("bbbbbbb", response.status);
     if (response.status === 201) {
-      toast.success('Admin Successfully added!!!');
+      toast.success('Request Accepted, Please wait few minutes!!');
       setRandomValue(Math.random());
       setSidebarOpen(!isSidebarOpen);
     }

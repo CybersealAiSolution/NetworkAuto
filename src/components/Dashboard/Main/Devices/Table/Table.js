@@ -140,6 +140,12 @@ const getPlaces = async (parentLocationID) => {
       }
     })
 
+    if(selected_devices().length===0){
+      toast.error("Please Select a device!!");
+      setSidebarOpen(false);
+      return;
+    }
+
     const payload = {
       locationId: actuallyLocationID,
       deviceType: deviceType,
@@ -161,7 +167,7 @@ const getPlaces = async (parentLocationID) => {
         alert(response.data.error);
         return;
       } else{
-        toast.success('Successfully added!!!');
+        toast.success('Request Accepted, Please wait few minutes!!');
       }
     } catch (error) {
       // Handle any errors that may occur during the API call
@@ -251,7 +257,6 @@ const getPlaces = async (parentLocationID) => {
                         setActuallyLocationID(e.target.value)
                         // setLocationId(e.target.value)
                       }}
-                      required
                     >
                       <option value="" disable>
                         Select a place

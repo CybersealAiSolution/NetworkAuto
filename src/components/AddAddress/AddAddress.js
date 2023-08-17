@@ -79,7 +79,7 @@ const AddAddress = () => {
 
       console.log(response.data);
       if(response.status===200){
-        toast.success('Address Successfully added!!!');
+        toast.success('Request Accepted, Please wait few minutes!!');
         window.history.back()
       }
       if (response.data.error) {

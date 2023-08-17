@@ -44,7 +44,7 @@ const Header = () => {
 
     const response = await instance.get("/msteams/resyncteams");
     if (response.status===201) {
-      toast.success(response.data.message);
+      toast.success('Request Accepted, Please wait few minutes!!');
     } else {
       console.log(response.data.error);
       toast.error("Internal Server Error!!");

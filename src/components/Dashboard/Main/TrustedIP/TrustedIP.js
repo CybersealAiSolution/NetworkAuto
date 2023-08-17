@@ -1,12 +1,13 @@
 import React from "react";
 import "./index.css";
+// import TableComponent from './Table/Table'
 import TableComponent from "./Table/Table";
 
-const Activity = () => {
+const TrustedIP = () => {
   return (
     <div className="activityComponent">
       <div className="activityComponentHeader">
-        <h1 className="activityComponentTitle">Activity</h1>
+        <h1 className="activityComponentTitle">Trusted IPs</h1>
       </div>
 
       <div className="tableBox">
@@ -16,4 +17,4 @@ const Activity = () => {
   );
 };
 
-export default Activity;
+export default TrustedIP;

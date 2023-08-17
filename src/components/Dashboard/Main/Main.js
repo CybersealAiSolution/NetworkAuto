@@ -9,6 +9,7 @@ import DiscoveredDevices from './discoveredDevices/Devices';
 
 import AddressDetailView from '../../AddressDetailView/AddressDetailView';
 import PlaceDetailView from '../../PlaceDetailView/PlaceDetailView';
+import TrustedIP from './TrustedIP/TrustedIP';
 
 const Main = () => {
     return (
@@ -23,6 +24,7 @@ const Main = () => {
              <Route path='location' exact element={<Location/>} /> 
              <Route path='deviceinventory' exact element={<Devices/>} /> 
              <Route path='discovereddevice' exact element={<DiscoveredDevices/>} /> 
+             <Route path='trusted-ips' exact element={<TrustedIP/>} /> 
              <Route path='location/address/:id' exact element={<AddressDetailView/>} /> 
              <Route path='location/place/:id' exact element={<PlaceDetailView/>} /> 
             </Routes>

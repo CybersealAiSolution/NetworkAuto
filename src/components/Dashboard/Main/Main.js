@@ -8,6 +8,7 @@ import Devices from './Devices/Devices';
 import DiscoveredDevices from './discoveredDevices/Devices';
 
 import AddressDetailView from '../../AddressDetailView/AddressDetailView';
+import PlaceDetailView from '../../PlaceDetailView/PlaceDetailView';
 
 const Main = () => {
     return (
@@ -23,7 +24,7 @@ const Main = () => {
              <Route path='deviceinventory' exact element={<Devices/>} /> 
              <Route path='discovereddevice' exact element={<DiscoveredDevices/>} /> 
              <Route path='location/address/:id' exact element={<AddressDetailView/>} /> 
-             <Route path='location/address/:id' exact element={<AddressDetailView/>} /> 
+             <Route path='location/place/:id' exact element={<PlaceDetailView/>} /> 
             </Routes>
          
         

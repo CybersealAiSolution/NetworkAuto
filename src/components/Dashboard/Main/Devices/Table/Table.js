@@ -9,10 +9,13 @@ const DeviceTableComponent = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [data, setData] = useState([]);
   const [addresses, setAddresses] = useState([]);
+  const [placeList, setPlaceList] = useState([]);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const sidebarRef = useRef(null);
   const [deviceType, setDeviceType] = useState("");
   const [locationId, setLocationId] = useState("");
+  const [childlocationId, setChildlocationId] = useState("");
+  const [actuallyLocationID, setActuallyLocationID] = useState("");
 
   const [checkedRow, setCheckedRow] = useState([])
 
@@ -104,7 +107,19 @@ const DeviceTableComponent = () => {
   }
 };
 
-
+const getPlaces = async (parentLocationID) => {
+  try {
+    const response = await instance.get(`/getlocationsdetail/places/${parentLocationID}`);
+    if (response.data.error) {
+      alert(response.data.error);
+      return;
+    }
+    console.log('response.data',response.data);
+    setPlaceList(response.data.places ? response.data.places : []);
+  } catch (error) {
+    console.error("Error fetching devices:", error);
+  }
+}
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -126,7 +141,7 @@ const DeviceTableComponent = () => {
     })
 
     const payload = {
-      locationId: locationId,
+      locationId: actuallyLocationID,
       deviceType: deviceType,
       description: selected_devices().map((item) => {
         return( item.short_description )}),
@@ -205,7 +220,11 @@ const DeviceTableComponent = () => {
                       name="locationId"
                       className="accessLevel"
                       value={locationId}
-                      onChange={(e) => setLocationId(e.target.value)}
+                      onChange={(e) => {
+                        setLocationId(e.target.value)
+                        setActuallyLocationID(e.target.value)
+                        getPlaces(e.target.value);
+                      }}
                       required
                     >
                       <option value="" disable>
@@ -218,6 +237,32 @@ const DeviceTableComponent = () => {
                       })}
                     </select>
                   </div>
+ 
+
+                  {placeList.length!==0 && <div className="formElement">
+                    <label htmlFor="accessLevel">Choose Place</label>
+                    <select
+                      type="text"
+                      name="childlocationId"
+                      className="accessLevel"
+                      value={childlocationId}
+                      onChange={(e) =>{
+                        setChildlocationId(e.target.value)
+                        setActuallyLocationID(e.target.value)
+                        // setLocationId(e.target.value)
+                      }}
+                      required
+                    >
+                      <option value="" disable>
+                        Select a place
+                      </option>
+                      {placeList.map((i) => {
+                        return (
+                          <option key={i.LocationId} value={i.LocationId}>{i.Description}</option>
+                        );
+                      })}
+                    </select>
+                  </div>}
                   
 
                   <div className="formElement">

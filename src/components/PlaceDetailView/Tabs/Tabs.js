@@ -3,7 +3,6 @@ import "./index.css";
 import SubnetTable from "./SubnetTable/SubnetTable";
 import AccessPointTable from "./AccessPointTable/AccessPointTable";
 import SwitchTable from "./SwitchTable/SwitchTable";
-import PlaceTable from "./PlacesTable/PlaceTable";
 
 const Tab = ({ label, activeTab, onClick }) => {
   const isActive = activeTab === label;
@@ -20,7 +19,7 @@ const Tab = ({ label, activeTab, onClick }) => {
 
 // Tabs components starts from here
 const Tabs = () => {
-  const [activeTab, setActiveTab] = useState("Places");
+  const [activeTab, setActiveTab] = useState("Subnets");
   const handleTabClick = (label) => {
     setActiveTab(label);
   };
@@ -29,7 +28,6 @@ const Tabs = () => {
     <>
       <div className="tabs-container">
         <div className="tabs-navbar">
-          <Tab label="Places" activeTab={activeTab} onClick={handleTabClick} />
           <Tab label="Subnets" activeTab={activeTab} onClick={handleTabClick} />
           <Tab
             label="Access Points"
@@ -45,7 +43,6 @@ const Tabs = () => {
 
         <div className="tab-content">
           {/* Content for Tab 1 */}
-          {activeTab === "Places" && <PlaceTable />}
           {activeTab === "Subnets" && <SubnetTable />}
           {activeTab === "Access Points" && <AccessPointTable />}
           {activeTab === "Switches" && <SwitchTable />}

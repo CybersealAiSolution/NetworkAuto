@@ -2,25 +2,24 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { instance } from "./../../../../../Fetch";
 import "./index.css";
+import ReactModal from "react-modal";
+import { MdInfo } from "react-icons/md";
 
 const TableComponent = () => {
-  // const [error, setError] = useState(null);s
   const [data, setData] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedDetails, setSelectedDetails] = useState([]);
+  const [isJson, setIsJson] = useState(false);
 
   useEffect(() => {
     const geteventlogs = async () => {
       try {
         const response = await instance.get("/eventlogs/getevents");
-
-        console.log("s", response.data);
-
         if (response.data.error) {
           alert(response.data.error);
           return;
         } else {
           setData(response.data.data ? response.data.data : []);
-          // navigate("/");
-          console.log("first");
         }
       } catch (error) {
         // Handle any errors that may occur during the API call
@@ -30,23 +29,66 @@ const TableComponent = () => {
     geteventlogs();
   }, []);
 
+  // const TableColumn = () =>
+  //   data.map((item) => (
+  //     <tr key={item.id} className={`log-level-${item.level.toLowerCase()}`}>
+  //       <td>
+  //         <input className="rowCheckbox" type="checkbox" />
+  //       </td>
+  //       <td><b>{item.level}</b></td>
+  //       <td>{item.userName}</td>
+  //       <td>
+  //         <div style={{ width: "50%x", whiteSpace: "normal" }}>
+  //           {item.description}
+  //         </div>
+  //       </td>
+  //       <td>
+  //       <div style={{ width: "50%x", whiteSpace: "normal" }}>
+  //       {item.summary}
+  //         </div></td>
+  //       <td>{item.created}</td>
+  //     </tr>
+  //   ));
+
+  const transformAndOpenModal = (details) => {
+    try {
+      const parsedDetails = JSON.parse(details.replace(/'/g, '"')); //replacing " by ' this was throwing error without this logic and parsing it in json 
+      console.log(parsedDetails);
+      setSelectedDetails(parsedDetails);
+      setIsJson(true);
+    } catch (error) {//it will be catched when details is in string format
+      setSelectedDetails(details);
+      setIsJson(false);
+    }
+    setIsModalOpen(true);
+  };
+
   const TableColumn = () =>
-    data.map((item) => (
+    data.reverse().map((item) => (
       <tr key={item.id} className={`log-level-${item.level.toLowerCase()}`}>
         <td>
           <input className="rowCheckbox" type="checkbox" />
         </td>
-        <td><b>{item.level}</b></td>
+        <td>
+          <b>{item.level}</b>
+        </td>
         <td>{item.userName}</td>
         <td>
-          <div style={{ width: "50%x", whiteSpace: "normal" }}>
+          <div style={{ width: "15rem", whiteSpace: "normal" }}>
             {item.description}
+            {item.details ? (
+              <MdInfo
+                onClick={() => transformAndOpenModal(item.details)}
+                style={{ color: "#007bff", cursor: "pointer" }}
+              />
+            ) : null}
           </div>
         </td>
         <td>
-        <div style={{ width: "50%x", whiteSpace: "normal" }}>
-        {item.summary}
-          </div></td>
+          <div style={{ width: "15rem", whiteSpace: "normal" }}>
+            {item.summary}
+          </div>
+        </td>
         <td>{item.created}</td>
       </tr>
     ));
@@ -81,6 +123,41 @@ const TableComponent = () => {
           </tbody>
         </table>
       </div>
+      <ReactModal
+        isOpen={isModalOpen}
+        onRequestClose={() => setIsModalOpen(false)}
+        contentLabel="Details Modal"
+        className="modal-content"
+        overlayClassName="modal-overlay"
+      >
+        <div className="modal-header">
+          <h3>Event Details</h3>
+          <span className="close-button" onClick={() => setIsModalOpen(false)}>
+            X
+          </span>
+        </div>
+        <div className="modal-body">
+          {isJson ? (
+            <div>
+              {selectedDetails.map((detail, index) => (
+                <div key={index}>
+                  <strong>Description:</strong> {detail.description}
+                  <br />
+                  <strong>Location ID:</strong> {detail.locationId}
+                  <br />
+                  <strong>Device Type:</strong> {detail.deviceType}
+                  <br />
+                  <strong>Device Value:</strong> {detail.deviceValue}
+                  <br />
+                  <br />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div>{selectedDetails}</div>
+          )}
+        </div>
+      </ReactModal>
     </div>
   );
 };

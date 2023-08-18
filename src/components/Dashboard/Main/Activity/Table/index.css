@@ -1,14 +1,13 @@
-.tableComponent{
-    width: 90%;
-    background-color: white;
-    margin:55px;
-    border-radius: 25px;
-    padding-bottom: 35px;
-
+.tableComponent {
+  width: 90%;
+  background-color: white;
+  margin: 55px;
+  border-radius: 25px;
+  padding-bottom: 35px;
 }
 
 .addbtn {
-    margin: 20px;
+  margin: 20px;
   background-color: transparent; /* Set background color to transparent */
   color: blue; /* Set the text color to blue */
   border: none; /* Remove border */
@@ -17,127 +16,164 @@
   cursor: pointer;
   outline: none;
   text-decoration: none; /* Remove underline from the link */
-  }
-  
-  
-  
-  
-  
-
-.tableHeader{
-    height:70px;
-
-    display:flex;
-    align-items: center;
-    justify-content: space-between;
 }
 
-.tableSearch{
-    height: 40px;
-    width:230px;
-    border-radius: 50px;
-    border:1px solid #AEBECD;
-    background-color: #F8F9FA;
-    outline: 0px;
-    padding: 15px;
-    margin-left: 20px;
-    margin-right: 20px;
+.tableHeader {
+  height: 70px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-
-
+.tableSearch {
+  height: 40px;
+  width: 230px;
+  border-radius: 50px;
+  border: 1px solid #aebecd;
+  background-color: #f8f9fa;
+  outline: 0px;
+  padding: 15px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
 
 .table-container {
-    width: 100%;
-    overflow-x: auto;
-    overflow-y: auto; 
-    max-height: 500px;
-  }
-  
-  .table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .table th{
-    height: 50px;
-    
-    padding-left: 15px;
-    background-color: #F8F9FA;
-    border-top: 1px solid #aebecdbd;
-    border-bottom: 1px solid #aebecdbd;
-    color: #6E7A8A;
-    font-weight: 500;
-    text-align: left;
-    align-items: center;
-    width: auto;
-    padding: 18px;
-  }
-  .table td {
-    /* border: 1px solid #ccc; */
-    padding: 18px;
-    border-bottom: 1px solid #ccc;
-    white-space: nowrap; 
-    margin: 100px;
-    font-weight: 400;
-  }
-  
-  .table th {
-    background-color: #f2f2f2;
-    font-weight: bold;
-  }
-  
-  .table tr {
-    height: 50px;
-    padding-left: 10px;
-    color: #404B5A;
-    font-weight: 500;
-  }
-  
-  .table tr:hover {
-    background-color: #ddd;
-  }
-  
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 500px;
+}
 
-  /* width */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  height: 50px;
+
+  padding-left: 15px;
+  background-color: #f8f9fa;
+  border-top: 1px solid #aebecdbd;
+  border-bottom: 1px solid #aebecdbd;
+  color: #6e7a8a;
+  font-weight: 500;
+  text-align: left;
+  align-items: center;
+  width: auto;
+  padding: 18px;
+}
+.table td {
+  /* border: 1px solid #ccc; */
+  padding: 18px;
+  border-bottom: 1px solid #ccc;
+  white-space: nowrap;
+  margin: 100px;
+  font-weight: 400;
+}
+
+.table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.table tr {
+  height: 50px;
+  padding-left: 10px;
+  color: #404b5a;
+  font-weight: 500;
+}
+
+.table tr:hover {
+  background-color: #ddd;
+}
+
+/* width */
 ::-webkit-scrollbar {
-    width: 5px;
-  }
-  
-  /* Track */
-  ::-webkit-scrollbar-track {
-    background: #f1f1f1; 
-  }
-   
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: #888; 
-  }
-  
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: #555; 
-  }
+  width: 5px;
+}
 
-  .log-level-success {
-    background-color: #dff0d8; /* Example color for INFO */
-  }
-  
-  .log-level-warning {
-    background-color: #fcf8e3; /* Example color for WARNING */
-  }
-  
-  .log-level-failed {
-    background-color: #f2dede; /* Example color for ERROR */
-  }
-  
-  .log-level-info {
-    background-color: #d9edf7; /* Example color for DEBUG */
-  }
-  
-  .log-level-critical {
-    background-color: #f2b5b5; /* Example color for CRITICAL */
-  }
-  .word-wrap {
-    white-space: normal;
-  }
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.log-level-success {
+  background-color: #dff0d8; /* Example color for INFO */
+}
+
+.log-level-warning {
+  background-color: #fcf8e3; /* Example color for WARNING */
+}
+
+.log-level-failed {
+  background-color: #f2dede; /* Example color for ERROR */
+}
+
+.log-level-info {
+  background-color: #d9edf7; /* Example color for DEBUG */
+}
+
+.log-level-critical {
+  background-color: #f2b5b5; /* Example color for CRITICAL */
+}
+.word-wrap {
+  white-space: normal;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  width: 70%; /* Adjust the width as needed */
+  max-height: 70%; /* Adjust the height as needed */
+  overflow: auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.close-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: #888;
+  margin-right: 20px;
+  margin-top: -20px;
+}
+
+.modal-body {
+  max-height: calc(100% - 50px); /* Adjust for close button and header */
+  overflow-y: auto;
+}

@@ -16,4 +16,4 @@ export const instance = axios.create({
 });
 
 
-export const level = localStorage.getItem("level");
+export const level = JSON.parse(localStorage.getItem("level"));

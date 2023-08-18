@@ -77,7 +77,7 @@ const TableComponent = () => {
     <div className="tableComponent">
       <div className="tableHeader">
         {/* <Link className="addbtn" to="/dashboard/add-address">+ Add</Link> */}
-        {level==="root" && (<div onClick={() => setSidebarOpen(!isSidebarOpen)} className="addbtn">
+        {level ==="root" && (<div onClick={() => setSidebarOpen(!isSidebarOpen)} className="addbtn">
           + Add
         </div>)}
         {isSidebarOpen && (

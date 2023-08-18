@@ -118,3 +118,26 @@
   ::-webkit-scrollbar-thumb:hover {
     background: #555; 
   }
+
+  .log-level-success {
+    background-color: #dff0d8; /* Example color for INFO */
+  }
+  
+  .log-level-warning {
+    background-color: #fcf8e3; /* Example color for WARNING */
+  }
+  
+  .log-level-failed {
+    background-color: #f2dede; /* Example color for ERROR */
+  }
+  
+  .log-level-info {
+    background-color: #d9edf7; /* Example color for DEBUG */
+  }
+  
+  .log-level-critical {
+    background-color: #f2b5b5; /* Example color for CRITICAL */
+  }
+  .word-wrap {
+    white-space: normal;
+  }

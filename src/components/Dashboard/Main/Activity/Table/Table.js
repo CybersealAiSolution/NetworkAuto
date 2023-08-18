@@ -1,77 +1,55 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { instance } from "./../../../../../Fetch";
 import "./index.css";
 
 const TableComponent = () => {
   // const [error, setError] = useState(null);s
-  const [data, setData] = useState([
-    {
-      description: "Synced with serviceNow",
-      admin: "CSA_Global@MODERNCOMMS450672.onmicrosoft.com",
-      eventType: "Full Access",
-      timing: "Full Access",
-    },
-    {
-      description: "Synced with Juniper Mist",
-      admin: "CSA_Global@MODERNCOMMS450672.onmicrosoft.com",
-      eventType: "Full Access",
-      timing: "Full Access",
-    },
-    
-  ]);
-  const getCookie = (name) => {
-    const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
-    return cookieValue ? cookieValue.pop() : '';
-  }
-  const csrftoken = getCookie('csrftoken');
-  axios.defaults.headers.post["X-CSRFToken"] = csrftoken;
+  const [data, setData] = useState([]);
 
-  const instance = axios.create({
-    baseURL: "http://localhost:5000",
-    withCredentials: true, 
-  });
+  useEffect(() => {
+    const geteventlogs = async () => {
+      try {
+        const response = await instance.get("/eventlogs/getevents");
 
-  useEffect(()=>{
-    const getEmergencyAddress = async () => {
-      // try {
-      //   const response = await instance.get("/getEmergencyAddresses", {
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //       'X-CSRFToken': getCookie('csrftoken'),
-      //     },
-      //   });
-        
-      //   console.log("s", response.data);
+        console.log("s", response.data);
 
-      //   if (response.data.error) {
-      //     alert(response.data.error);
-      //     return;
-      //   } else {
-      //     // navigate("/");
-      //     console.log("first");
-      //   }
-      // } catch (error) {
-      //   // Handle any errors that may occur during the API call
-      //   console.error("Error sending data:", error);
-      // }
+        if (response.data.error) {
+          alert(response.data.error);
+          return;
+        } else {
+          setData(response.data.data ? response.data.data : []);
+          // navigate("/");
+          console.log("first");
+        }
+      } catch (error) {
+        // Handle any errors that may occur during the API call
+        console.error("Error sending data:", error);
       }
-    // getEmergencyAddress();
-  }
-    );
+    };
+    geteventlogs();
+  }, []);
 
- 
   const TableColumn = () =>
     data.map((item) => (
-      <tr key={item.id}>
-        <td><input className="rowCheckbox" type="checkbox"></input></td>
-        <td>{item.description}</td>
-        <td>{item.admin}</td>
-        <td>{item.eventType}</td>
-        <td>{item.timing}</td>
+      <tr key={item.id} className={`log-level-${item.level.toLowerCase()}`}>
+        <td>
+          <input className="rowCheckbox" type="checkbox" />
+        </td>
+        <td><b>{item.level}</b></td>
+        <td>{item.userName}</td>
+        <td>
+          <div style={{ width: "50%x", whiteSpace: "normal" }}>
+            {item.description}
+          </div>
+        </td>
+        <td>
+        <div style={{ width: "50%x", whiteSpace: "normal" }}>
+        {item.summary}
+          </div></td>
+        <td>{item.created}</td>
       </tr>
     ));
-
 
   return (
     <div className="tableComponent">
@@ -88,11 +66,14 @@ const TableComponent = () => {
         <table className="table">
           <thead>
             <tr>
-            <th><input className="headerCheckbox" type="checkbox"></input></th>
+              <th>
+                <input className="headerCheckbox" type="checkbox"></input>
+              </th>
+              <th>Level</th>
+              <th>UserName</th>
               <th>Description</th>
-              <th>Admin</th>
-              <th>Event Type</th>
-              <th>Timing</th>
+              <th>Summary</th>
+              <th>Timestamp</th>
             </tr>
           </thead>
           <tbody>

@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState, useRef } from "react";
 import "./index.css";
-import { instance } from "../../../../../Fetch";
+import { instance , level } from "../../../../../Fetch";
 import { toast } from 'react-toastify';
 // import { Link } from "react-router-dom";
 
@@ -18,6 +18,15 @@ const TableComponent = () => {
     const getAllAdmins = async () => {
       try {
         const response = await instance.get("/getalladmins");
+        const res = await instance.get("/getCurrentUser");
+
+        localStorage.setItem("level",JSON.stringify(res.data.data.roles));
+
+        // console.log("getAllAdmins", response.data);
+        console.log('res',res.data.data)
+        console.log(localStorage.getItem("level"))
+
+
 
         // console.log("getAllAdmins", response.data);
         setData(response.data.data ? response.data.data : []);
@@ -47,7 +56,7 @@ const TableComponent = () => {
     const response = await instance.post("/addAdmin", payload);
     console.log("bbbbbbb", response.status);
     if (response.status === 201) {
-      toast.success('Request Accepted, Please wait few minutes!!');
+      toast.success('Successfully Added User');
       setRandomValue(Math.random());
       setSidebarOpen(!isSidebarOpen);
     }
@@ -63,14 +72,14 @@ const TableComponent = () => {
         <td>{item.roles[0]}</td>
       </tr>
     ));
-
+    console.log(level)
   return (
     <div className="tableComponent">
       <div className="tableHeader">
         {/* <Link className="addbtn" to="/dashboard/add-address">+ Add</Link> */}
-        <div onClick={() => setSidebarOpen(!isSidebarOpen)} className="addbtn">
+        {level==="root" && (<div onClick={() => setSidebarOpen(!isSidebarOpen)} className="addbtn">
           + Add
-        </div>
+        </div>)}
         {isSidebarOpen && (
           <>
             <div className="overlay"></div>

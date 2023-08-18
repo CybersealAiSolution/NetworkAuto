@@ -65,7 +65,7 @@ const TableComponent = () => {
           </div>
         </td>
         <td>
-          <div style={{ width: "15rem", whiteSpace: "normal" }}>
+          <div style={{ width: "27rem", whiteSpace: "normal" }}>
             {item.summary}
           </div>
         </td>

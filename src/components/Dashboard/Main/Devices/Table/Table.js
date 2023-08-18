@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import "./index.css";
-import { instance } from "../../../../../Fetch";
+import { instance ,level } from "../../../../../Fetch";
 import { GrDocumentCsv } from 'react-icons/gr';
 import { toast } from 'react-toastify';
 // GrDocumentCsv
@@ -195,9 +195,9 @@ const getPlaces = async (parentLocationID) => {
   return (
     <div className="tableComponent">
       <div className="tableHeader">
-        <div onClick={() => setSidebarOpen(!isSidebarOpen)} className="addbtn">
+        {(level==="root" || level==="ReadAndWrite") ? (<div onClick={() => setSidebarOpen(!isSidebarOpen)} className="addbtn">
           + Register Device
-        </div>
+        </div>):(<div></div>)}
         {isSidebarOpen && (
           <>
             <div className="overlay"></div>

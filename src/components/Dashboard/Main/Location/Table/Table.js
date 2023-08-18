@@ -3,23 +3,12 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import "./index.css";
 import { Link } from "react-router-dom";
+import { instance ,level} from "../../../../../Fetch";
 
 const TableComponent = () => {
   const [searchTerm, setSearchTerm] = useState("");
   // const [error, setError] = useState(null);
   const [data, setData] = useState([]);
-  const getCookie = (name) => {
-    const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
-    return cookieValue ? cookieValue.pop() : '';
-  }
-  const csrftoken = getCookie('csrftoken');
-  // Set the CSRF token in the request headers
-  axios.defaults.headers.post["X-CSRFToken"] = csrftoken;
-
-  const instance = axios.create({
-    baseURL: "http://localhost:5000",
-    withCredentials: true, // This ensures cookies (sessions) are sent with every request
-  });
 
 
   const filteredEmergencyAddresses = data.filter(item =>
@@ -34,12 +23,7 @@ const TableComponent = () => {
   useEffect(()=>{
     const getEmergencyAddress = async () => {
       try {
-        const response = await instance.get("/getEmergencyAddresses", {
-          headers: {
-            "Content-Type": "application/json",
-            'X-CSRFToken': getCookie('csrftoken'),
-          },
-        });
+        const response = await instance.get("/getEmergencyAddresses");
     
         const addressList=response.data.data;
         setData(addressList);
@@ -73,7 +57,8 @@ const TableComponent = () => {
   return (
     <div className="tableComponent">
       <div className="tableHeader">
-        <Link className="addbtn" to="/dashboard/add-address">+ Add</Link>
+      {(level==="root" || level==="ReadAndWrite") && (<Link className="addbtn" to="/dashboard/add-address">+ Add</Link>)}
+        
         <div className="tableSearchContainer">
         <input 
             className="tableSearch" 

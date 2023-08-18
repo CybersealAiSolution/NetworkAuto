@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect, useState, useRef } from "react";
 // import axios from "axios";
 import "./index.css";
-import { instance } from "./../../../../../Fetch";
+import { instance ,level } from "./../../../../../Fetch";
 import { toast } from "react-toastify";
 
 const TableComponent = () => {
@@ -93,9 +93,9 @@ const TableComponent = () => {
   return (
     <div className="tableComponent">
       <div className="tableHeader">
-        <div onClick={() => setSidebarOpen(!isSidebarOpen)} className="addbtn">
+        {(level==="root" || level==="ReadAndWrite") && (<div onClick={() => setSidebarOpen(!isSidebarOpen)} className="addbtn">
           + Add
-        </div>
+        </div>)}
         {isSidebarOpen && (
           <>
             <div className="overlay"></div>

@@ -14,3 +14,6 @@ export const instance = axios.create({
   baseURL: "http://localhost:5000",
   withCredentials: true, // This ensures cookies (sessions) are sent with every request
 });
+
+
+export const level = localStorage.getItem("level");

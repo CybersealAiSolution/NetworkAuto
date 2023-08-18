@@ -1,8 +1,8 @@
 import React from "react";
 import { useEffect, useState, useRef } from "react";
 import "./index.css";
-import { instance , level } from "../../../../../Fetch";
-import { toast } from 'react-toastify';
+import { instance, level } from "../../../../../Fetch";
+import { toast } from "react-toastify";
 // import { Link } from "react-router-dom";
 
 const TableComponent = () => {
@@ -10,7 +10,10 @@ const TableComponent = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [adminEmail, setAdminEmail] = useState("");
   const [accessLevel, setAccessLevel] = useState("FullAccess");
+  // const [delegation, setDelegation] = useState([]);
+  const [locationId, setLocationId] = useState([]);
   const [randomValue, setRandomValue] = useState(Math.random());
+  const [addresses, setAddresses] = useState([]);
   const sidebarRef = useRef(null);
   const [data, setData] = useState([]);
 
@@ -20,13 +23,11 @@ const TableComponent = () => {
         const response = await instance.get("/getalladmins");
         const res = await instance.get("/getCurrentUser");
 
-        localStorage.setItem("level",JSON.stringify(res.data.data.roles));
+        localStorage.setItem("level", JSON.stringify(res.data.data.roles));
 
         // console.log("getAllAdmins", response.data);
-        console.log('res',res.data.data)
-        console.log(localStorage.getItem("level"))
-
-
+        console.log("res", res.data.data);
+        console.log(localStorage.getItem("level"));
 
         // console.log("getAllAdmins", response.data);
         setData(response.data.data ? response.data.data : []);
@@ -42,6 +43,20 @@ const TableComponent = () => {
         console.error("Error sending data:", error);
       }
     };
+    const getAddresses = async () => {
+      try {
+        const response = await instance.get("/getEmergencyAddresses");
+        if (response.data.error) {
+          alert(response.data.error);
+          return;
+        }
+        setAddresses(response.data.data ? response.data.data : []);
+      } catch (error) {
+        console.error("Error fetching devices:", error);
+      }
+    };
+
+    getAddresses();
     getAllAdmins();
   }, [randomValue]);
 
@@ -49,6 +64,7 @@ const TableComponent = () => {
     event.preventDefault();
     console.log("Admin Email:", adminEmail);
     console.log("Access Level:", accessLevel);
+    console.log("Location Id:", locationId);
     const payload = {
       userName: adminEmail,
       roles: accessLevel,
@@ -56,7 +72,7 @@ const TableComponent = () => {
     const response = await instance.post("/addAdmin", payload);
     console.log("bbbbbbb", response.status);
     if (response.status === 201) {
-      toast.success('Successfully Added User');
+      toast.success("Successfully Added User");
       setRandomValue(Math.random());
       setSidebarOpen(!isSidebarOpen);
     }
@@ -72,14 +88,19 @@ const TableComponent = () => {
         <td>{item.roles[0]}</td>
       </tr>
     ));
-    console.log(level)
+  console.log(level);
   return (
     <div className="tableComponent">
       <div className="tableHeader">
         {/* <Link className="addbtn" to="/dashboard/add-address">+ Add</Link> */}
-        {level ==="root" && (<div onClick={() => setSidebarOpen(!isSidebarOpen)} className="addbtn">
-          + Add
-        </div>)}
+        {level === "root" && (
+          <div
+            onClick={() => setSidebarOpen(!isSidebarOpen)}
+            className="addbtn"
+          >
+            + Add
+          </div>
+        )}
         {isSidebarOpen && (
           <>
             <div className="overlay"></div>
@@ -121,6 +142,34 @@ const TableComponent = () => {
                       <option id="ReadAndWrite" value="ReadAndWrite">
                         Read And Write
                       </option>
+                    </select>
+                  </div>
+                  <div className="AccessLevelFormDivision adminFormElement">
+                    <label htmlFor="delegaton">Delegation by Location</label>
+                    <select
+                      multiple
+                      type="text"
+                      name="locationId"
+                      className="delegation"
+                      value={locationId}
+                      onChange={(e) => {
+                        const selectedValues = Array.from(
+                          e.target.selectedOptions
+                        ).map((option) => option.value);
+                        setLocationId(selectedValues);
+                      }}
+                      required
+                    >
+                      {/* <option value="" >
+                        All
+                      </option> */}
+                      {addresses.map((i) => {
+                        return (
+                          <option key={i.locationId} value={i.locationId}>
+                            {i.fulladdress}
+                          </option>
+                        );
+                      })}
                     </select>
                   </div>
                 </div>

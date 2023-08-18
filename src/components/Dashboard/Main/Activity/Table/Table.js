@@ -29,40 +29,20 @@ const TableComponent = () => {
     geteventlogs();
   }, []);
 
-  // const TableColumn = () =>
-  //   data.map((item) => (
-  //     <tr key={item.id} className={`log-level-${item.level.toLowerCase()}`}>
-  //       <td>
-  //         <input className="rowCheckbox" type="checkbox" />
-  //       </td>
-  //       <td><b>{item.level}</b></td>
-  //       <td>{item.userName}</td>
-  //       <td>
-  //         <div style={{ width: "50%x", whiteSpace: "normal" }}>
-  //           {item.description}
-  //         </div>
-  //       </td>
-  //       <td>
-  //       <div style={{ width: "50%x", whiteSpace: "normal" }}>
-  //       {item.summary}
-  //         </div></td>
-  //       <td>{item.created}</td>
-  //     </tr>
-  //   ));
-
   const transformAndOpenModal = (details) => {
     try {
-      const parsedDetails = JSON.parse(details.replace(/'/g, '"')); //replacing " by ' this was throwing error without this logic and parsing it in json 
+      const parsedDetails = JSON.parse(details.replace(/'/g, '"')); //replacing " by ' this was throwing error without this logic and parsing it in json
       console.log(parsedDetails);
       setSelectedDetails(parsedDetails);
       setIsJson(true);
-    } catch (error) {//it will be catched when details is in string format
+    } catch (error) {
+      //it will be catched when details is in string format
       setSelectedDetails(details);
       setIsJson(false);
     }
     setIsModalOpen(true);
   };
-
+  console.log("selectedDetails", selectedDetails);
   const TableColumn = () =>
     data.reverse().map((item) => (
       <tr key={item.id} className={`log-level-${item.level.toLowerCase()}`}>
@@ -154,7 +134,18 @@ const TableComponent = () => {
               ))}
             </div>
           ) : (
-            <div>{selectedDetails}</div>
+            // <div>{selectedDetails}</div>
+            <div>
+              {typeof selectedDetails === "string" ? (
+                <div>
+                  {selectedDetails.split("\n").map((line, index) => (
+                    <div key={index}>{line}</div>
+                  ))}
+                </div>
+              ) : (
+                <div>{selectedDetails}</div>
+              )}
+            </div>
           )}
         </div>
       </ReactModal>

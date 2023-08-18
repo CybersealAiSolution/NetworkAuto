@@ -11,7 +11,6 @@ const PlaceTable = () => {
     const {id}= useParams();
     const [data, setData] = useState([]);
     const placeRef = useRef(null);
-    const descriptionRef = useRef(null);
     
     useEffect(() => {
       const getPlaceData= async ()=>{

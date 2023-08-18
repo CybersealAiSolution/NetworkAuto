@@ -3,7 +3,6 @@ import { useEffect, useState, useRef } from "react";
 // import axios from "axios";
 import "./index.css";
 import { instance } from "./../../../../../Fetch";
-import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const TableComponent = () => {
@@ -12,7 +11,6 @@ const TableComponent = () => {
 
   // const [error, setError] = useState(null);s
   const [data, setData] = useState([]);
-  const { id } = useParams();
   const ipRef = useRef(null);
   const descriptionRef = useRef(null);
   const MaskBitsRef = useRef(null);

@@ -1,16 +1,20 @@
 import React from "react";
 import { useEffect, useState, useRef } from "react";
 import "./index.css";
-import { instance , level } from "../../../../../Fetch";
-import { toast } from 'react-toastify';
+import { instance, level } from "../../../../../Fetch";
+import { toast } from "react-toastify";
 // import { Link } from "react-router-dom";
+import {Multiselect} from "multiselect-react-dropdown";
 
 const TableComponent = () => {
   // const [error, setError] = useState(null);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [adminEmail, setAdminEmail] = useState("");
-  const [accessLevel, setAccessLevel] = useState("FullAccess");
+  const [accessLevel, setAccessLevel] = useState("root");
+  // const [delegation, setDelegation] = useState([]);
+  const [locationId, setLocationId] = useState([]);
   const [randomValue, setRandomValue] = useState(Math.random());
+  const [addresses, setAddresses] = useState([]);
   const sidebarRef = useRef(null);
   const [data, setData] = useState([]);
 
@@ -20,13 +24,11 @@ const TableComponent = () => {
         const response = await instance.get("/getalladmins");
         const res = await instance.get("/getCurrentUser");
 
-        localStorage.setItem("level",JSON.stringify(res.data.data.roles));
+        localStorage.setItem("level", JSON.stringify(res.data.data.roles));
 
         // console.log("getAllAdmins", response.data);
-        console.log('res',res.data.data)
-        console.log(localStorage.getItem("level"))
-
-
+        console.log("res", res.data.data);
+        console.log(localStorage.getItem("level"));
 
         // console.log("getAllAdmins", response.data);
         setData(response.data.data ? response.data.data : []);
@@ -42,6 +44,23 @@ const TableComponent = () => {
         console.error("Error sending data:", error);
       }
     };
+    const getAddresses = async () => {
+      try {
+        const response = await instance.get("/getAllEmergencyAddresses");
+        if (response.data.error) {
+          alert(response.data.error);
+          return;
+        }
+        // [...response.data.data, { id: 0, name: "All" }];
+        // console.log("getAddresses", [ { fulladdress:"All", locationId: "0" },...response.data.data]);
+        setAddresses(response.data.data ? [ { fulladdress:"All", locationId: "0" },...response.data.data] : []);
+        console.log(addresses,"addresses")
+      } catch (error) {
+        console.error("Error fetching devices:", error);
+      }
+    };
+
+    getAddresses();
     getAllAdmins();
   }, [randomValue]);
 
@@ -49,14 +68,16 @@ const TableComponent = () => {
     event.preventDefault();
     console.log("Admin Email:", adminEmail);
     console.log("Access Level:", accessLevel);
+    console.log("Location Id:", locationId);
     const payload = {
       userName: adminEmail,
       roles: accessLevel,
+      locationId :locationId
     };
     const response = await instance.post("/addAdmin", payload);
     console.log("bbbbbbb", response.status);
     if (response.status === 201) {
-      toast.success('Successfully Added User');
+      toast.success("Successfully Added User");
       setRandomValue(Math.random());
       setSidebarOpen(!isSidebarOpen);
     }
@@ -72,14 +93,19 @@ const TableComponent = () => {
         <td>{item.roles[0]}</td>
       </tr>
     ));
-    console.log(level)
+  console.log(level);
   return (
     <div className="tableComponent">
       <div className="tableHeader">
         {/* <Link className="addbtn" to="/dashboard/add-address">+ Add</Link> */}
-        {level ==="root" && (<div onClick={() => setSidebarOpen(!isSidebarOpen)} className="addbtn">
-          + Add
-        </div>)}
+        {level === "root" && (
+          <div
+            onClick={() => setSidebarOpen(!isSidebarOpen)}
+            className="addbtn"
+          >
+            + Add
+          </div>
+        )}
         {isSidebarOpen && (
           <>
             <div className="overlay"></div>
@@ -112,7 +138,7 @@ const TableComponent = () => {
                       value={accessLevel}
                       onChange={(e) => setAccessLevel(e.target.value)}
                     >
-                      <option id="FullAccess" value="admin">
+                      <option id="root" value="root">
                         Full Access
                       </option>
                       <option id="ReadOnly" value="ReadOnly">
@@ -122,6 +148,45 @@ const TableComponent = () => {
                         Read And Write
                       </option>
                     </select>
+                  </div>
+                  <div className="AccessLevelFormDivision adminFormElement">
+                    <label htmlFor="delegaton">Delegation by Location</label>
+                    {/* <select
+                      multiple
+                      type="text"
+                      name="locationId"
+                      className="delegation"
+                      value={locationId}
+                      onChange={(e) => {
+                        const selectedValues = Array.from(
+                          e.target.selectedOptions
+                        ).map((option) => option.value);
+                        setLocationId(selectedValues);
+                      }}
+                      required
+                    >
+                     <option value="" >
+                        All
+                      </option> }
+                      {addresses.map((i) => {
+                        return (
+                          <option key={i.locationId} value={i.locationId}>
+                            {i.fulladdress}
+                          </option>
+                        );
+                      })}
+                    </select> */}
+                    <Multiselect
+                      options={addresses.map((i) => ({name: i.fulladdress, id: i.locationId}))}
+                      displayValue="name"
+                      onSelect={(selectedList, selectedItem) => {
+                          setLocationId(selectedList.map(item => item.id));
+                      }}
+                      onRemove={(selectedList, selectedItem) => {
+                          setLocationId(selectedList.map(item => item.id));
+                      }}
+                      
+                    />
                   </div>
                 </div>
                 <input

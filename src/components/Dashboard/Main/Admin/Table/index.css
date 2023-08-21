@@ -33,7 +33,7 @@
   position: fixed;
   top: 0;
   right: 0;
-  width: 25%;  /* or any desired width */
+  width: 27%;  /* or any desired width */
   height: 100vh;
   background-color: rgba(255,255,255); /* Slightly transparent white */
   box-shadow: -5px 0px 5px rgba(0, 0, 0, 0.2);
@@ -70,8 +70,15 @@
 .adminEmail{
   height: 40px;;
 }
-.accessLevel{
-  height: 40px;;
+.accessLevel {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+  background-color: #fff;
+  appearance: none;  /* This will remove default browser styles */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .tableHeader{
@@ -168,3 +175,19 @@
   ::-webkit-scrollbar-thumb:hover {
     background: #555; 
   }
+
+.delegation {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+  background-color: #fff;
+  appearance: none;  /* This will remove default browser styles */
+   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); 
+} 
+
+.delegation option {
+  padding: 10px;
+} 
+

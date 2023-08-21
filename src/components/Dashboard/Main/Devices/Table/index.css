@@ -99,7 +99,9 @@
     background-color: #ddd;
   }
 
-  
+  .accessLevel{
+    height: 40px;;
+  }
   
   .selected_Discovereddevice_list{
     overflow: scroll;

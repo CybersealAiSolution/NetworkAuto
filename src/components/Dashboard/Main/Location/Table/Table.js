@@ -1,14 +1,21 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import axios from "axios";
+// import axios from "axios";
 import "./index.css";
 import { Link } from "react-router-dom";
 import { instance ,level} from "../../../../../Fetch";
+import Pagination from "../../../../Pagination/Pagination";
 
 const TableComponent = () => {
   const [searchTerm, setSearchTerm] = useState("");
   // const [error, setError] = useState(null);
   const [data, setData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
+  // const itemsPerPage = 10; // You can adjust this value as needed.
+  // const lastItemIndex = currentPage * itemsPerPage;
+  // const firstItemIndex = lastItemIndex - itemsPerPage;
+  // const currentData = data.slice(firstItemIndex, lastItemIndex);
 
 
   const filteredEmergencyAddresses = data.filter(item =>
@@ -19,14 +26,19 @@ const TableComponent = () => {
   );
 
 
+  const handlePageChange = (pageNumber) => {
+    console.log("changing....",pageNumber);
+    setCurrentPage(pageNumber);
+  };
+
 
   useEffect(()=>{
     const getEmergencyAddress = async () => {
       try {
-        const response = await instance.get("/getEmergencyAddresses");
+        const response = await instance.get(`/getEmergencyAddresses?page=${currentPage}`);
     
-        const addressList=response.data.data;
-        setData(addressList);
+        setData(response.data.data ? response.data.data : []);
+        setTotalPage(response.data.totalPages?response.data.totalPages:1);
         if (response.data.error) {
           alert(response.data.error);
           return;
@@ -39,7 +51,7 @@ const TableComponent = () => {
       }
       }
     getEmergencyAddress();
-  },[]);
+  },[currentPage]);
 
  
   const TableColumn = () =>
@@ -85,6 +97,11 @@ const TableComponent = () => {
           </tbody>
         </table>
       </div>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPage}
+        onPageChange={handlePageChange} // Pass the function reference
+      />
     </div>
   );
 };

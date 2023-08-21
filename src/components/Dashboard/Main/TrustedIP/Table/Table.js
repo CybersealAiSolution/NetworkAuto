@@ -8,6 +8,7 @@ import Pagination from "../../../../Pagination/Pagination";
 
 const TableComponent = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const sidebarRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
@@ -21,6 +22,12 @@ const TableComponent = () => {
     console.log("changing....",pageNumber);
     setCurrentPage(pageNumber);
   };
+
+  const filteredEmergencyAddresses = data.filter(item =>
+    item.IPAddress?.toLowerCase().includes(searchTerm?.toLowerCase()) || 
+    item.MaskBits?.toLowerCase().includes(searchTerm?.toLowerCase()) ||
+    item.Description?.toLowerCase().includes(searchTerm?.toLowerCase())
+  );
 
   useEffect(() => {
     const getTrustedIPs = async () => {
@@ -87,7 +94,7 @@ const TableComponent = () => {
   };
 
   const TableColumn = () =>
-    data.map((item) => (
+    filteredEmergencyAddresses?.map((item) => (
       <tr key={item.id}>
         <td>
           <input className="rowCheckbox" type="checkbox"></input>
@@ -170,6 +177,7 @@ const TableComponent = () => {
             className="tableSearch"
             placeholder="Search for IPs"
             type="text"
+            onChange={e => setSearchTerm(e.target.value)}
           />
         </div>
       </div>

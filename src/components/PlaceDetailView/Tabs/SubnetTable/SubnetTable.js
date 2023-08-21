@@ -24,9 +24,9 @@ const SubnetTable = () => {
   
 
   const filteredEmergencyAddresses = data.filter(item =>
-    item.Description.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    item.Subnet.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.locationId.toLowerCase().includes(searchTerm.toLowerCase())
+    item.Description?.toLowerCase().includes(searchTerm?.toLowerCase()) || 
+    item.Subnet?.toLowerCase().includes(searchTerm?.toLowerCase()) ||
+    item.locationId?.toLowerCase().includes(searchTerm?.toLowerCase())
   );
 
   const TableColumn = () =>

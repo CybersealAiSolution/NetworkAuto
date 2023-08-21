@@ -28,13 +28,13 @@ const DeviceTableComponent = () => {
 
   const filteredData = data.filter(item => {
     return (
-      item.msTeamsStatus.toLowerCase() === "not synced" && (
-      item.short_description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.model_id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.ip_address.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.BSSID.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.ChassisID.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.location.toLowerCase().includes(searchQuery.toLowerCase()) )
+      item.msTeamsStatus?.toLowerCase() === "not synced" && (
+      item.short_description?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+      item.model_id?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+      item.ip_address?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+      item.BSSID?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+      item.ChassisID?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+      item.location?.toLowerCase().includes(searchQuery?.toLowerCase()) )
     );
   });
 
@@ -84,7 +84,7 @@ const DeviceTableComponent = () => {
       let deviceId = element.split("&")[1];
       const match = data?data.filter((item) => {
         return (
-          item.id.toLowerCase().includes(deviceId.toLowerCase()) 
+          item.id?.toLowerCase().includes(deviceId?.toLowerCase()) 
         );
       }):[]
       devices.push(match[0])

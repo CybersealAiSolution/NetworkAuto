@@ -19,10 +19,10 @@ const TableComponent = () => {
 
 
   const filteredEmergencyAddresses = data.filter(item =>
-    item.description.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    item.Country.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.fulladdress.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.locationId.toLowerCase().includes(searchTerm.toLowerCase())
+    item.description?.toLowerCase().includes(searchTerm?.toLowerCase()) || 
+    item.Country?.toLowerCase().includes(searchTerm?.toLowerCase()) ||
+    item.fulladdress?.toLowerCase().includes(searchTerm?.toLowerCase()) ||
+    item.locationId?.toLowerCase().includes(searchTerm?.toLowerCase())
   );
 
 

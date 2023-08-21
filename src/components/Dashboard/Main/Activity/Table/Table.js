@@ -13,6 +13,13 @@ const TableComponent = () => {
   const [isJson, setIsJson] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredActivity = data.filter(item =>
+    item.description?.toLowerCase().includes(searchTerm?.toLowerCase()) || 
+    item.summary?.toLowerCase().includes(searchTerm?.toLowerCase()) ||
+    item.userName?.toLowerCase().includes(searchTerm?.toLowerCase())
+  );
 
   useEffect(() => {
     const geteventlogs = async () => {
@@ -48,8 +55,8 @@ const TableComponent = () => {
   };
   console.log("selectedDetails", selectedDetails);
   const TableColumn = () =>
-    data.reverse().map((item) => (
-      <tr key={item.id} className={`log-level-${item.level.toLowerCase()}`}>
+  filteredActivity.map((item) => (
+      <tr key={item.id} className={`log-level-${item.level?.toLowerCase()}`}>
         <td>
           <input className="rowCheckbox" type="checkbox" />
         </td>
@@ -86,11 +93,13 @@ const TableComponent = () => {
     <div className="tableComponent">
       <div className="tableHeader">
         <div className="tableSearchContainer">
-          <input
-            className="tableSearch"
-            placeholder="Search for Admins"
+        <input 
+            className="tableSearch" 
+            placeholder="Search for Admins" 
             type="text"
-          />
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+        />
         </div>
       </div>
       <div className="table-container">

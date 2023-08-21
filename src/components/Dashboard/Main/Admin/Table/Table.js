@@ -4,12 +4,13 @@ import "./index.css";
 import { instance, level } from "../../../../../Fetch";
 import { toast } from "react-toastify";
 // import { Link } from "react-router-dom";
+import {Multiselect} from "multiselect-react-dropdown";
 
 const TableComponent = () => {
   // const [error, setError] = useState(null);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [adminEmail, setAdminEmail] = useState("");
-  const [accessLevel, setAccessLevel] = useState("FullAccess");
+  const [accessLevel, setAccessLevel] = useState("root");
   // const [delegation, setDelegation] = useState([]);
   const [locationId, setLocationId] = useState([]);
   const [randomValue, setRandomValue] = useState(Math.random());
@@ -45,12 +46,15 @@ const TableComponent = () => {
     };
     const getAddresses = async () => {
       try {
-        const response = await instance.get("/getEmergencyAddresses");
+        const response = await instance.get("/getAllEmergencyAddresses");
         if (response.data.error) {
           alert(response.data.error);
           return;
         }
-        setAddresses(response.data.data ? response.data.data : []);
+        // [...response.data.data, { id: 0, name: "All" }];
+        // console.log("getAddresses", [ { fulladdress:"All", locationId: "0" },...response.data.data]);
+        setAddresses(response.data.data ? [ { fulladdress:"All", locationId: "0" },...response.data.data] : []);
+        console.log(addresses,"addresses")
       } catch (error) {
         console.error("Error fetching devices:", error);
       }
@@ -68,6 +72,7 @@ const TableComponent = () => {
     const payload = {
       userName: adminEmail,
       roles: accessLevel,
+      locationId :locationId
     };
     const response = await instance.post("/addAdmin", payload);
     console.log("bbbbbbb", response.status);
@@ -133,7 +138,7 @@ const TableComponent = () => {
                       value={accessLevel}
                       onChange={(e) => setAccessLevel(e.target.value)}
                     >
-                      <option id="FullAccess" value="admin">
+                      <option id="root" value="root">
                         Full Access
                       </option>
                       <option id="ReadOnly" value="ReadOnly">
@@ -146,7 +151,7 @@ const TableComponent = () => {
                   </div>
                   <div className="AccessLevelFormDivision adminFormElement">
                     <label htmlFor="delegaton">Delegation by Location</label>
-                    <select
+                    {/* <select
                       multiple
                       type="text"
                       name="locationId"
@@ -160,9 +165,9 @@ const TableComponent = () => {
                       }}
                       required
                     >
-                      {/* <option value="" >
+                     <option value="" >
                         All
-                      </option> */}
+                      </option> }
                       {addresses.map((i) => {
                         return (
                           <option key={i.locationId} value={i.locationId}>
@@ -170,7 +175,18 @@ const TableComponent = () => {
                           </option>
                         );
                       })}
-                    </select>
+                    </select> */}
+                    <Multiselect
+                      options={addresses.map((i) => ({name: i.fulladdress, id: i.locationId}))}
+                      displayValue="name"
+                      onSelect={(selectedList, selectedItem) => {
+                          setLocationId(selectedList.map(item => item.id));
+                      }}
+                      onRemove={(selectedList, selectedItem) => {
+                          setLocationId(selectedList.map(item => item.id));
+                      }}
+                      
+                    />
                   </div>
                 </div>
                 <input

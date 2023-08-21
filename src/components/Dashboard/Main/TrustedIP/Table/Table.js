@@ -4,21 +4,35 @@ import { useEffect, useState, useRef } from "react";
 import "./index.css";
 import { instance ,level } from "./../../../../../Fetch";
 import { toast } from "react-toastify";
+import Pagination from "../../../../Pagination/Pagination";
 
 const TableComponent = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const sidebarRef = useRef(null);
-
-  // const [error, setError] = useState(null);s
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
   const [data, setData] = useState([]);
   const ipRef = useRef(null);
   const descriptionRef = useRef(null);
   const MaskBitsRef = useRef(null);
 
+  
+  const handlePageChange = (pageNumber) => {
+    console.log("changing....",pageNumber);
+    setCurrentPage(pageNumber);
+  };
+
+  const filteredEmergencyAddresses = data.filter(item =>
+    item.IPAddress?.toLowerCase().includes(searchTerm?.toLowerCase()) || 
+    item.MaskBits?.toLowerCase().includes(searchTerm?.toLowerCase()) ||
+    item.Description?.toLowerCase().includes(searchTerm?.toLowerCase())
+  );
+
   useEffect(() => {
     const getTrustedIPs = async () => {
       try {
-        const response = await instance.get("/getTrustedIPs");
+        const response = await instance.get(`/getTrustedIPs?page=${currentPage}`);
 
         console.log("getTrustedIPs", response.data);
 
@@ -29,6 +43,7 @@ const TableComponent = () => {
           // navigate("/");
           console.log("first");
           setData(response.data.data ? response.data.data : []);
+          setTotalPage(response.data.totalPages?response.data.totalPages:1);
         }
       } catch (error) {
         // Handle any errors that may occur during the API call
@@ -36,7 +51,7 @@ const TableComponent = () => {
       }
     };
     getTrustedIPs();
-  }, []);
+  }, [currentPage]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -79,7 +94,7 @@ const TableComponent = () => {
   };
 
   const TableColumn = () =>
-    data.map((item) => (
+    filteredEmergencyAddresses?.map((item) => (
       <tr key={item.id}>
         <td>
           <input className="rowCheckbox" type="checkbox"></input>
@@ -162,6 +177,7 @@ const TableComponent = () => {
             className="tableSearch"
             placeholder="Search for IPs"
             type="text"
+            onChange={e => setSearchTerm(e.target.value)}
           />
         </div>
       </div>
@@ -182,6 +198,11 @@ const TableComponent = () => {
           </tbody>
         </table>
       </div>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPage}
+        onPageChange={handlePageChange} // Pass the function reference
+      />
     </div>
   );
 };

@@ -4,22 +4,33 @@ import { instance } from "./../../../../../Fetch";
 import "./index.css";
 import ReactModal from "react-modal";
 import { MdInfo } from "react-icons/md";
+import Pagination from "../../../../Pagination/Pagination";
 
 const TableComponent = () => {
   const [data, setData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDetails, setSelectedDetails] = useState([]);
   const [isJson, setIsJson] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredActivity = data.filter(item =>
+    item.description?.toLowerCase().includes(searchTerm?.toLowerCase()) || 
+    item.summary?.toLowerCase().includes(searchTerm?.toLowerCase()) ||
+    item.userName?.toLowerCase().includes(searchTerm?.toLowerCase())
+  );
 
   useEffect(() => {
     const geteventlogs = async () => {
       try {
-        const response = await instance.get("/eventlogs/getevents");
+        const response = await instance.get(`/eventlogs/getevents?page=${currentPage}`);
         if (response.data.error) {
           alert(response.data.error);
           return;
         } else {
           setData(response.data.data ? response.data.data : []);
+          setTotalPage(response.data.totalPages?response.data.totalPages:1);
         }
       } catch (error) {
         // Handle any errors that may occur during the API call
@@ -27,7 +38,7 @@ const TableComponent = () => {
       }
     };
     geteventlogs();
-  }, []);
+  }, [currentPage]);
 
   const transformAndOpenModal = (details) => {
     try {
@@ -44,8 +55,8 @@ const TableComponent = () => {
   };
   console.log("selectedDetails", selectedDetails);
   const TableColumn = () =>
-    data.reverse().map((item) => (
-      <tr key={item.id} className={`log-level-${item.level.toLowerCase()}`}>
+  filteredActivity.map((item) => (
+      <tr key={item.id} className={`log-level-${item.level?.toLowerCase()}`}>
         <td>
           <input className="rowCheckbox" type="checkbox" />
         </td>
@@ -73,15 +84,22 @@ const TableComponent = () => {
       </tr>
     ));
 
+    const handlePageChange = (pageNumber) => {
+      console.log("changing....",pageNumber);
+      setCurrentPage(pageNumber);
+    };
+
   return (
     <div className="tableComponent">
       <div className="tableHeader">
         <div className="tableSearchContainer">
-          <input
-            className="tableSearch"
-            placeholder="Search for Admins"
+        <input 
+            className="tableSearch" 
+            placeholder="Search for Admins" 
             type="text"
-          />
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+        />
         </div>
       </div>
       <div className="table-container">
@@ -149,6 +167,11 @@ const TableComponent = () => {
           )}
         </div>
       </ReactModal>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPage}
+        onPageChange={handlePageChange} // Pass the function reference
+      />
     </div>
   );
 };

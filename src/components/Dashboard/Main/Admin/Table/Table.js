@@ -5,6 +5,7 @@ import { instance, level } from "../../../../../Fetch";
 import { toast } from "react-toastify";
 // import { Link } from "react-router-dom";
 import {Multiselect} from "multiselect-react-dropdown";
+import Pagination from "../../../../Pagination/Pagination";
 
 const TableComponent = () => {
   // const [error, setError] = useState(null);
@@ -17,11 +18,13 @@ const TableComponent = () => {
   const [addresses, setAddresses] = useState([]);
   const sidebarRef = useRef(null);
   const [data, setData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
 
   useEffect(() => {
     const getAllAdmins = async () => {
       try {
-        const response = await instance.get("/getalladmins");
+        const response = await instance.get(`/getalladmins?page=${currentPage}`);
         const res = await instance.get("/getCurrentUser");
 
         localStorage.setItem("level", JSON.stringify(res.data.data.roles));
@@ -32,6 +35,7 @@ const TableComponent = () => {
 
         // console.log("getAllAdmins", response.data);
         setData(response.data.data ? response.data.data : []);
+        setTotalPage(response.data.totalPages?response.data.totalPages:1);
         if (response.data.error) {
           alert(response.data.error);
           return;
@@ -62,7 +66,12 @@ const TableComponent = () => {
 
     getAddresses();
     getAllAdmins();
-  }, [randomValue]);
+  }, [randomValue,currentPage]);
+
+  const handlePageChange = (pageNumber) => {
+    console.log("changing....",pageNumber);
+    setCurrentPage(pageNumber);
+  };
 
   const submitForm = async (event) => {
     event.preventDefault();
@@ -223,6 +232,11 @@ const TableComponent = () => {
           </tbody>
         </table>
       </div>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPage}
+        onPageChange={handlePageChange} // Pass the function reference
+      />
     </div>
   );
 };

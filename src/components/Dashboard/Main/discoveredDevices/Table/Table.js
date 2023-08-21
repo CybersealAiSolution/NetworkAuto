@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./index.css";  // Assuming you want to use the same CSS
+import Pagination from "../../../../Pagination/Pagination";
 
 const DeviceTableComponent = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [data, setData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
 
   const getCookie = (name) => {
     const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
@@ -15,18 +18,22 @@ const DeviceTableComponent = () => {
     setSearchQuery(e.target.value);
   }
 
+  const handlePageChange = (pageNumber) => {
+    console.log("changing....",pageNumber);
+    setCurrentPage(pageNumber);
+  };
 
   const filteredData = data.filter((item) => {
     return (
       item.short_description
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase()) ||
-      item.model_id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.ip_address.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.BSSID.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.ChassisID.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.msTeamsStatus.toLowerCase().includes("not synced") ||
-      item.location.toLowerCase().includes(searchQuery.toLowerCase())
+        ?.toLowerCase()
+        .includes(searchQuery?.toLowerCase()) ||
+      item.model_id?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+      item.ip_address?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+      item.BSSID?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+      item.ChassisID?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+      item.msTeamsStatus?.toLowerCase().includes("not synced") ||
+      item.location?.toLowerCase().includes(searchQuery?.toLowerCase())
     );
   });
 
@@ -45,18 +52,19 @@ const DeviceTableComponent = () => {
   useEffect(() => {
     const getDevices = async () => {
       try {
-        const response = await instance.get("/devices/");
+        const response = await instance.get(`/devices/?page=${currentPage}`);
         if (response.data.error) {
           alert(response.data.error);
           return;
         }
-        setData(response.data);
+        setData(response.data.data?response.data.data:[]);
+        setTotalPage(response.data.totalPages?response.data.totalPages:1);
       } catch (error) {
         console.error("Error fetching devices:", error);
       }
     }
     getDevices();
-  },[]);
+  },[currentPage]);
 
   const DeviceTableColumn = () => 
       filteredData?.map((item, index) => (
@@ -109,6 +117,11 @@ const DeviceTableComponent = () => {
           </tbody>
         </table>
       </div>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPage}
+        onPageChange={handlePageChange} // Pass the function reference
+      />
     </div>
   );
 };

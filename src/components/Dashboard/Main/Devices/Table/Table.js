@@ -3,6 +3,7 @@ import "./index.css";
 import { instance ,level } from "../../../../../Fetch";
 import { GrDocumentCsv } from 'react-icons/gr';
 import { toast } from 'react-toastify';
+import Pagination from "../../../../Pagination/Pagination";
 // GrDocumentCsv
 
 const DeviceTableComponent = () => {
@@ -16,6 +17,8 @@ const DeviceTableComponent = () => {
   const [locationId, setLocationId] = useState("");
   const [childlocationId, setChildlocationId] = useState("");
   const [actuallyLocationID, setActuallyLocationID] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
 
   const [checkedRow, setCheckedRow] = useState([])
 
@@ -25,25 +28,32 @@ const DeviceTableComponent = () => {
 
   const filteredData = data.filter(item => {
     return (
-      item.msTeamsStatus.toLowerCase() === "not synced" && (
-      item.short_description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.model_id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.ip_address.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.BSSID.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.ChassisID.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.location.toLowerCase().includes(searchQuery.toLowerCase()) )
+      item.msTeamsStatus?.toLowerCase() === "not synced" && (
+      item.short_description?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+      item.model_id?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+      item.ip_address?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+      item.BSSID?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+      item.ChassisID?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+      item.location?.toLowerCase().includes(searchQuery?.toLowerCase()) )
     );
   });
+
+  
+  const handlePageChange = (pageNumber) => {
+    console.log("changing....",pageNumber);
+    setCurrentPage(pageNumber);
+  };
 
   useEffect(() => {
     const getDevices = async () => {
       try {
-        const response = await instance.get("/devices/");
+        const response = await instance.get(`/unSyncedDevices/?page=${currentPage}`);
         if (response.data.error) {
           alert(response.data.error);
           return;
         }
-        setData(response.data ? response.data : []);
+        setData(response.data.data ? response.data.data : []);
+        setTotalPage(response.data.totalPages?response.data.totalPages:1);
       } catch (error) {
         console.error("Error fetching devices:", error);
       }
@@ -51,7 +61,7 @@ const DeviceTableComponent = () => {
 
     const getAddresses = async () => {
       try {
-        const response = await instance.get("/getEmergencyAddresses");
+        const response = await instance.get(`/getEmergencyAddresses`);
         if (response.data.error) {
           alert(response.data.error);
           return;
@@ -65,7 +75,7 @@ const DeviceTableComponent = () => {
     getDevices();
     getAddresses();
     // eslint-disable-next-line
-  }, []);
+  }, [currentPage]);
 
 
   const selected_devices =() => {
@@ -74,7 +84,7 @@ const DeviceTableComponent = () => {
       let deviceId = element.split("&")[1];
       const match = data?data.filter((item) => {
         return (
-          item.id.toLowerCase().includes(deviceId.toLowerCase()) 
+          item.id?.toLowerCase().includes(deviceId?.toLowerCase()) 
         );
       }):[]
       devices.push(match[0])
@@ -341,6 +351,11 @@ const getPlaces = async (parentLocationID) => {
           </tbody>
         </table>
       </div>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPage}
+        onPageChange={handlePageChange} // Pass the function reference
+      />
     </div>
   );
 };

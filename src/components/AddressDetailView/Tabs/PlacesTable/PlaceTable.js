@@ -22,9 +22,9 @@ const PlaceTable = () => {
     
   
     const filterPlaceAddresses = data.filter(item =>
-      item.Description.toLowerCase().includes(searchTerm.toLowerCase()) || 
-      item.Subnet.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.locationId.toLowerCase().includes(searchTerm.toLowerCase())
+      item.Description?.toLowerCase().includes(searchTerm?.toLowerCase()) || 
+      item.Subnet?.toLowerCase().includes(searchTerm?.toLowerCase()) ||
+      item.locationId?.toLowerCase().includes(searchTerm?.toLowerCase())
     );
 
     // const filterPlaceAddresses = [

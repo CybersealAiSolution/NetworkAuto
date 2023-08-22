@@ -1,27 +1,14 @@
 import "./index.css";
 import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
 import { toast } from "react-toastify";
-import {instance} from './../../../Fetch'
+import {instance} from 'Fetch'
+import {SetUserState} from 'action'
 
 const Header = () => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  // const getCookie = (name) => {
-  //   const cookieValue = document.cookie.match(
-  //     "(^|;)\\s*" + name + "\\s*=\\s*([^;]+)"
-  //   );
-  //   return cookieValue ? cookieValue.pop() : "";
-  // };
-
-  // const instance = axios.create({
-  //   baseURL: "http://localhost:5000",
-  //   withCredentials: true,
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //     "X-CSRFToken": getCookie("csrftoken"),
-  //   },
-  // });
 
   useEffect(() => {
     const getAppInfo = async () => {
@@ -92,4 +79,8 @@ const Header = () => {
   );
 };
 
-export default Header;
+const mapStateToProps=(states)=>{
+  return( {UserStates:states.UserStates} )
+}
+
+export default connect(mapStateToProps,{SetUserState})(Header)

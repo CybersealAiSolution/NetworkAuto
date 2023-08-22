@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import "./index.css";
-import { instance ,level } from "../../../../../Fetch";
-import { GrDocumentCsv } from 'react-icons/gr';
-import { toast } from 'react-toastify';
+import { instance, level } from "../../../../../Fetch";
+import { GrDocumentCsv } from "react-icons/gr";
+import { toast } from "react-toastify";
 import Pagination from "../../../../Pagination/Pagination";
+import { saveAs } from 'file-saver'; // Import the saveAs function
 // GrDocumentCsv
 
 const DeviceTableComponent = () => {
@@ -20,40 +21,43 @@ const DeviceTableComponent = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
 
-  const [checkedRow, setCheckedRow] = useState([])
+  const [checkedRow, setCheckedRow] = useState([]);
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
 
-  const filteredData = data.filter(item => {
+  const filteredData = data.filter((item) => {
     return (
-      item.msTeamsStatus?.toLowerCase() === "not synced" && (
-      item.short_description?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
-      item.model_id?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
-      item.ip_address?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
-      item.BSSID?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
-      item.ChassisID?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
-      item.location?.toLowerCase().includes(searchQuery?.toLowerCase()) )
+      item.msTeamsStatus?.toLowerCase() === "not synced" &&
+      (item.short_description
+        ?.toLowerCase()
+        .includes(searchQuery?.toLowerCase()) ||
+        item.model_id?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+        item.ip_address?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+        item.BSSID?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+        item.ChassisID?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+        item.location?.toLowerCase().includes(searchQuery?.toLowerCase()))
     );
   });
 
-  
   const handlePageChange = (pageNumber) => {
-    console.log("changing....",pageNumber);
+    console.log("changing....", pageNumber);
     setCurrentPage(pageNumber);
   };
 
   useEffect(() => {
     const getDevices = async () => {
       try {
-        const response = await instance.get(`/unSyncedDevices/?page=${currentPage}`);
+        const response = await instance.get(
+          `/unSyncedDevices/?page=${currentPage}`
+        );
         if (response.data.error) {
           alert(response.data.error);
           return;
         }
         setData(response.data.data ? response.data.data : []);
-        setTotalPage(response.data.totalPages?response.data.totalPages:1);
+        setTotalPage(response.data.totalPages ? response.data.totalPages : 1);
       } catch (error) {
         console.error("Error fetching devices:", error);
       }
@@ -77,80 +81,73 @@ const DeviceTableComponent = () => {
     // eslint-disable-next-line
   }, [currentPage]);
 
-
-  const selected_devices =() => {
-    var devices = []
-    checkedRow.forEach(element =>{
+  const selected_devices = () => {
+    var devices = [];
+    checkedRow.forEach((element) => {
       let deviceId = element.split("&")[1];
-      const match = data?data.filter((item) => {
-        return (
-          item.id?.toLowerCase().includes(deviceId?.toLowerCase()) 
-        );
-      }):[]
-      devices.push(match[0])
-    })
-    return devices 
-  } 
+      const match = data
+        ? data.filter((item) => {
+            return item.id?.toLowerCase().includes(deviceId?.toLowerCase());
+          })
+        : [];
+      devices.push(match[0]);
+    });
+    return devices;
+  };
 
-
-  const selected_device_list=()=>{
-    
-      return selected_devices().map((item) => {
-        return(
+  const selected_device_list = () => {
+    return selected_devices().map((item) => {
+      return (
         <div key={item.id} className="selected_Discovereddevice_list_items">
           {item.short_description}
         </div>
-        )});
-  }
-  
-
+      );
+    });
+  };
 
   const handleCheckboxChange = (event) => {
-
     var { id, checked } = event.target;
     if (checked) {
-      setCheckedRow(prevState => [...prevState, id]);
-      event.target.checked= true
-  } else {
-      setCheckedRow(prevState => prevState.filter(boxId => boxId !== id));
-      event.target.checked= false
-  }
-};
-
-const getPlaces = async (parentLocationID) => {
-  try {
-    const response = await instance.get(`/getlocationsdetail/places/${parentLocationID}`);
-    if (response.data.error) {
-      alert(response.data.error);
-      return;
+      setCheckedRow((prevState) => [...prevState, id]);
+      event.target.checked = true;
+    } else {
+      setCheckedRow((prevState) => prevState.filter((boxId) => boxId !== id));
+      event.target.checked = false;
     }
-    console.log('response.data',response.data);
-    setPlaceList(response.data.places ? response.data.places : []);
-  } catch (error) {
-    console.error("Error fetching devices:", error);
-  }
-}
+  };
+
+  const getPlaces = async (parentLocationID) => {
+    try {
+      const response = await instance.get(
+        `/getlocationsdetail/places/${parentLocationID}`
+      );
+      if (response.data.error) {
+        alert(response.data.error);
+        return;
+      }
+      console.log("response.data", response.data);
+      setPlaceList(response.data.places ? response.data.places : []);
+    } catch (error) {
+      console.error("Error fetching devices:", error);
+    }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-  
     const deviceValue = selected_devices().map((item) => {
-      if(deviceType==='Subnet'){
-          return( item.ip_address )
+      if (deviceType === "Subnet") {
+        return item.ip_address;
+      } else if (deviceType === "Switch") {
+        return item.ChassisID;
+      } else if (deviceType === "Access Points") {
+        return item.BSSID;
+      } else {
+        return "";
       }
-      else if(deviceType==='Switch'){
-        return( item.ChassisID)
-      }
-      else if(deviceType==='Access Points'){
-        return( item.BSSID )
-      }
-      else{
-        return ""
-      }
-    })
+    });
 
-    if(selected_devices().length===0){
+    if (selected_devices().length === 0) {
       toast.error("Please Select a device!!");
       setSidebarOpen(false);
       return;
@@ -160,10 +157,10 @@ const getPlaces = async (parentLocationID) => {
       locationId: actuallyLocationID,
       deviceType: deviceType,
       description: selected_devices().map((item) => {
-        return( item.short_description )}),
-      deviceValue: deviceValue
+        return item.short_description;
+      }),
+      deviceValue: deviceValue,
     };
-
 
     try {
       const response = await instance.post(`/addbulkdevice`, payload, {
@@ -176,8 +173,8 @@ const getPlaces = async (parentLocationID) => {
       if (response?.data.error) {
         alert(response.data.error);
         return;
-      } else{
-        toast.success('Request Accepted, Please wait few minutes!!');
+      } else {
+        toast.success("Request Accepted, Please wait few minutes!!");
       }
     } catch (error) {
       // Handle any errors that may occur during the API call
@@ -187,11 +184,39 @@ const getPlaces = async (parentLocationID) => {
     setSidebarOpen(!isSidebarOpen);
   };
 
+  const handleCSVDownload = async () => {
+    try {
+      const response = await instance.get("/getunSyncedDeviceCSV/", {
+        responseType: 'blob', // Set responseType to 'blob'
+      });
+      console.log('xxxxxxxxxxxx')
+      if (response.data.err_msg) {
+        alert(response.data.err_msg);
+        return;
+      }
+
+      // Create a Blob from the response data
+      const blob = new Blob([response.data], { type: 'text/csv' });
+
+      // Use the FileSaver library to save the Blob as a file
+      saveAs(blob, 'unsynced_devices.csv'); // Change the filename as needed
+
+    } catch (error) {
+      console.error("Error fetching devices:", error);
+    }
+  };
+
   const DeviceTableColumn = () =>
     filteredData?.map((item, index) => (
       <tr key={index}>
         <td>
-          <input className="rowCheckbox" type="checkbox" checked={checkedRow.includes(`deviceinventory&${item.id}`)} id={`deviceinventory&${item.id}`} onChange={handleCheckboxChange}></input>
+          <input
+            className="rowCheckbox"
+            type="checkbox"
+            checked={checkedRow.includes(`deviceinventory&${item.id}`)}
+            id={`deviceinventory&${item.id}`}
+            onChange={handleCheckboxChange}
+          ></input>
         </td>
         <td>{item.short_description}</td>
         <td>{item.model_id}</td>
@@ -205,9 +230,16 @@ const getPlaces = async (parentLocationID) => {
   return (
     <div className="tableComponent">
       <div className="tableHeader">
-        {(level==="root" || level==="ReadAndWrite" || level === 'admin') ? (<div onClick={() => setSidebarOpen(!isSidebarOpen)} className="addbtn">
-          + Register Device
-        </div>):(<div></div>)}
+        {level === "root" || level === "ReadAndWrite" || level === "admin" ? (
+          <div
+            onClick={() => setSidebarOpen(!isSidebarOpen)}
+            className="addbtn"
+          >
+            + Register Device
+          </div>
+        ) : (
+          <div></div>
+        )}
         {isSidebarOpen && (
           <>
             <div className="overlay"></div>
@@ -222,12 +254,14 @@ const getPlaces = async (parentLocationID) => {
               <form className="addUserForm" onSubmit={handleSubmit}>
                 <div>
                   <div className="selected_Discovereddevice formElement">
-                    <label className="selected_Discovereddevice_lable"> Selected Device </label>
+                    <label className="selected_Discovereddevice_lable">
+                      {" "}
+                      Selected Device{" "}
+                    </label>
                     <div className="selected_Discovereddevice_list">
                       {selected_device_list()}
                     </div>
                   </div>
- 
 
                   <div className="formElement">
                     <label htmlFor="accessLevel">Choose Address</label>
@@ -237,8 +271,8 @@ const getPlaces = async (parentLocationID) => {
                       className="accessLevel"
                       value={locationId}
                       onChange={(e) => {
-                        setLocationId(e.target.value)
-                        setActuallyLocationID(e.target.value)
+                        setLocationId(e.target.value);
+                        setActuallyLocationID(e.target.value);
                         getPlaces(e.target.value);
                       }}
                       required
@@ -248,37 +282,41 @@ const getPlaces = async (parentLocationID) => {
                       </option>
                       {addresses.map((i) => {
                         return (
-                          <option key={i.locationId} value={i.locationId}>{i.description}</option>
+                          <option key={i.locationId} value={i.locationId}>
+                            {i.description}
+                          </option>
                         );
                       })}
                     </select>
                   </div>
- 
 
-                  {placeList.length!==0 && <div className="formElement">
-                    <label htmlFor="accessLevel">Choose Place</label>
-                    <select
-                      type="text"
-                      name="childlocationId"
-                      className="accessLevel"
-                      value={childlocationId}
-                      onChange={(e) =>{
-                        setChildlocationId(e.target.value)
-                        setActuallyLocationID(e.target.value)
-                        // setLocationId(e.target.value)
-                      }}
-                    >
-                      <option value="" disable>
-                        Select a place
-                      </option>
-                      {placeList.map((i) => {
-                        return (
-                          <option key={i.LocationId} value={i.LocationId}>{i.Description}</option>
-                        );
-                      })}
-                    </select>
-                  </div>}
-                  
+                  {placeList.length !== 0 && (
+                    <div className="formElement">
+                      <label htmlFor="accessLevel">Choose Place</label>
+                      <select
+                        type="text"
+                        name="childlocationId"
+                        className="accessLevel"
+                        value={childlocationId}
+                        onChange={(e) => {
+                          setChildlocationId(e.target.value);
+                          setActuallyLocationID(e.target.value);
+                          // setLocationId(e.target.value)
+                        }}
+                      >
+                        <option value="" disable>
+                          Select a place
+                        </option>
+                        {placeList.map((i) => {
+                          return (
+                            <option key={i.LocationId} value={i.LocationId}>
+                              {i.Description}
+                            </option>
+                          );
+                        })}
+                      </select>
+                    </div>
+                  )}
 
                   <div className="formElement">
                     <label>Select the Type</label>
@@ -293,19 +331,11 @@ const getPlaces = async (parentLocationID) => {
                       <option value="" disable>
                         Select an address
                       </option>
-                      <option value="Subnet" >
-                        Subnet
-                      </option>
-                      <option value="Switch" >
-                        Switch
-                      </option>
-                      <option value="Access Points" >
-                        Access Points
-                      </option>
-
+                      <option value="Subnet">Subnet</option>
+                      <option value="Switch">Switch</option>
+                      <option value="Access Points">Access Points</option>
                     </select>
-                    </div>
-
+                  </div>
                 </div>
                 <input
                   type="submit"
@@ -316,19 +346,21 @@ const getPlaces = async (parentLocationID) => {
             </div>
           </>
         )}
-        <div style={{display:"flex",justifyContent:'center'}}>
-        <GrDocumentCsv style={{ fontSize: '25px',marginTop:'5px'}} onClick={()=>console.log('icon')} />
-
-        
-        <div className="tableSearchContainer">
-          <input
-            className="tableSearch"
-            placeholder="Search for Devices"
-            type="text"
-            value={searchQuery}
-            onChange={handleSearchChange}
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <GrDocumentCsv
+            style={{ fontSize: "25px", marginTop: "5px", cursor: "pointer" }}
+            onClick={handleCSVDownload}
           />
-        </div>
+
+          <div className="tableSearchContainer">
+            <input
+              className="tableSearch"
+              placeholder="Search for Devices"
+              type="text"
+              value={searchQuery}
+              onChange={handleSearchChange}
+            />
+          </div>
         </div>
       </div>
       <div className="table-container">

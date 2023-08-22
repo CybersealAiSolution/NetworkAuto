@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState, useRef } from "react";
 import "./index.css";
-import { instance, level } from "../../../../../Fetch";
+import { instance, level, currUser } from "../../../../../Fetch";
 import { toast } from "react-toastify";
 // import { Link } from "react-router-dom";
 import { Multiselect } from "multiselect-react-dropdown";
@@ -45,6 +45,7 @@ const TableComponent = () => {
         // dispatch(getCurrentUser());
         dispatch(getCurrentUser());
         localStorage.setItem("level", JSON.stringify(res.data.data.roles));
+        localStorage.setItem("currUser", JSON.stringify(res.data.data));
 
         // console.log("getAllAdmins", response.data);
         console.log("res", res.data.data);
@@ -123,7 +124,9 @@ const TableComponent = () => {
       userName: adminEmail,
       roles: accessLevel,
       locationId: locationId,
+      parentId : currUser.id,
     };
+    console.log("payload", payload)
     try {
       if (!updating) {
         const response = await instance.post("/addAdmin", payload);
@@ -156,16 +159,18 @@ const TableComponent = () => {
         </td>
         <td>
           {item.userName}{" "}
+          { (level === "root" || level === "admin") && (item.parentId!=="1234" &&(item.parentId=== currUser.id  || level==="root") )&& 
           <FiEdit2
             style={{ cursor: "pointer" }}
             onClick={() => handleEditAdmin(item)}
-          />
+          />}
         </td>
         <td>{item.delegations.includes("0") ? "❌ " : "✅"}</td>
         <td>{item.roles[0]}</td>
       </tr>
     ));
   console.log(level);
+  console.log(currUser);
   return (
     <div className="tableComponent">
       <div className="tableHeader">

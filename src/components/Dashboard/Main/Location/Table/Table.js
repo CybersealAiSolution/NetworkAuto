@@ -69,7 +69,7 @@ const TableComponent = () => {
   return (
     <div className="tableComponent">
       <div className="tableHeader">
-      {(level==="root" || level==="ReadAndWrite") && (<Link className="addbtn" to="/dashboard/add-address">+ Add</Link>)}
+      {(level==="root" || level==="ReadAndWrite" || level === 'admin') && (<Link className="addbtn" to="/dashboard/add-address">+ Add</Link>)}
         
         <div className="tableSearchContainer">
         <input 

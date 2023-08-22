@@ -2,7 +2,7 @@ import React from "react";
 import { useState,useEffect,useRef } from "react";
 import "./index.css";
 import { useParams } from "react-router-dom";
-import {instance} from "../../../../Fetch"
+import {instance,level} from "../../../../Fetch"
 
 
 const SubnetTable = () => {
@@ -79,7 +79,9 @@ const SubnetTable = () => {
     <div>
       <div className="tableHeader">
         {/* <Link className="addbtn" to="/dashboard/add-address">+ Add</Link> */}
-        <div onClick={() => setSidebarOpen(!isSidebarOpen)} className="addbtn">+ Add</div>
+        {(level==="root" || level==="ReadAndWrite" || level === 'admin') && (<div onClick={() => setSidebarOpen(!isSidebarOpen)} className="addbtn">
+          + Add
+        </div>)}
         {isSidebarOpen && 
               <>
                 <div className="overlay"></div>

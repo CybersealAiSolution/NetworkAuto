@@ -205,7 +205,7 @@ const getPlaces = async (parentLocationID) => {
   return (
     <div className="tableComponent">
       <div className="tableHeader">
-        {(level==="root" || level==="ReadAndWrite") ? (<div onClick={() => setSidebarOpen(!isSidebarOpen)} className="addbtn">
+        {(level==="root" || level==="ReadAndWrite" || level === 'admin') ? (<div onClick={() => setSidebarOpen(!isSidebarOpen)} className="addbtn">
           + Register Device
         </div>):(<div></div>)}
         {isSidebarOpen && (

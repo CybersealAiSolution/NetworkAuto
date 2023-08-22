@@ -7,8 +7,18 @@ import { toast } from "react-toastify";
 import { Multiselect } from "multiselect-react-dropdown";
 import Pagination from "../../../../Pagination/Pagination";
 import { FiEdit2 } from "react-icons/fi";
+import { useDispatch, useSelector } from "react-redux";
+// import { getCurrentUser } from "./store/userSlice/userDetailSlice";
+import { getCurrentUser } from "./../../../../../store/modules/userSlice/userDetailSlice";
 
 const TableComponent = () => {
+  const { roles, userName, active, delegations } = useSelector(state => state.users); // Use "state.users" here
+  const dispatch = useDispatch();
+
+  console.log('xxxxxxx', roles, userName, active, delegations);
+
+
+  console.log('yyyyyyyyy',useSelector(state => state.users));
   // const [error, setError] = useState(null);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [adminEmail, setAdminEmail] = useState("");
@@ -31,8 +41,9 @@ const TableComponent = () => {
         const response = await instance.get(
           `/getalladmins?page=${currentPage}`
         );
-        res = await instance.get("/getCurrentUser");
-
+        // res = await instance.get("/getCurrentUser");
+        // dispatch(getCurrentUser());
+        dispatch(getCurrentUser());
         localStorage.setItem("level", JSON.stringify(res.data.data.roles));
 
         // console.log("getAllAdmins", response.data);
@@ -57,7 +68,7 @@ const TableComponent = () => {
     const getAddresses = async () => {
       try {
         const response = await instance.get("/getEmergencyAddresses");
-        const res = await instance.get("/getCurrentUser");
+        // const res = await instance.get("/getCurrentUser");
         if (response.data.error) {
           alert(response.data.error);
           return;
@@ -82,7 +93,7 @@ const TableComponent = () => {
 
     getAddresses();
     getAllAdmins();
-  }, [randomValue, currentPage]);
+  }, [randomValue, currentPage,dispatch]);
 
   const handlePageChange = (pageNumber) => {
     console.log("changing....", pageNumber);

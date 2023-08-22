@@ -2,9 +2,11 @@ import React from "react";
 import { useState,useEffect,useRef } from "react";
 import "./index.css";
 import { Link, useParams } from "react-router-dom";
-import {instance,level} from "../../../../Fetch"
+import {instance} from "../../../../Fetch"
+import { useSelector } from "react-redux";
 
 const PlaceTable = () => {
+  const { roles } = useSelector((state) => state.users); // Use "state.users" here
     const [searchTerm, setSearchTerm] = useState("");
     const [isSidebarOpen, setSidebarOpen] = useState(false);
     const sidebarRef = useRef(null);
@@ -131,9 +133,9 @@ const PlaceTable = () => {
       <div>
         <div className="tableHeader">
           {/* <Link className="addbtn" to="/dashboard/add-address">+ Add</Link> */}
-          {(level==="root" || level==="ReadAndWrite" || level === 'admin') && (<div onClick={() => setSidebarOpen(!isSidebarOpen)} className="addbtn">
+          {(roles==="root" || roles==="ReadAndWrite" || roles === 'admin') ? (<div onClick={() => setSidebarOpen(!isSidebarOpen)} className="addbtn">
           + Add
-        </div>)}
+        </div>):<div></div>}
           {isSidebarOpen && 
                 <>
                   <div className="overlay"></div>
@@ -159,7 +161,7 @@ const PlaceTable = () => {
           <div className="tableSearchContainer">
           <input 
               className="tableSearch" 
-              placeholder="Search for Subnets" 
+              placeholder="Search for Places" 
               type="text"
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}

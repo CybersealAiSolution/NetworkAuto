@@ -3,10 +3,12 @@ import { useEffect, useState } from "react";
 // import axios from "axios";
 import "./index.css";
 import { Link } from "react-router-dom";
-import { instance ,level} from "../../../../../Fetch";
+import { instance } from "../../../../../Fetch";
 import Pagination from "../../../../Pagination/Pagination";
+import { useSelector } from "react-redux";
 
 const TableComponent = () => {
+  const { roles } = useSelector((state) => state.users); // Use "state.users" here
   const [searchTerm, setSearchTerm] = useState("");
   // const [error, setError] = useState(null);
   const [data, setData] = useState([]);
@@ -69,7 +71,7 @@ const TableComponent = () => {
   return (
     <div className="tableComponent">
       <div className="tableHeader">
-      {(level==="root" || level==="ReadAndWrite" || level === 'admin') && (<Link className="addbtn" to="/dashboard/add-address">+ Add</Link>)}
+      {(roles==="root" || roles==="ReadAndWrite" || roles === 'admin') && (<Link className="addbtn" to="/dashboard/add-address">+ Add</Link>)}
         
         <div className="tableSearchContainer">
         <input 

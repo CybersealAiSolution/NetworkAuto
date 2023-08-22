@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState, useRef } from "react";
 import "./index.css";
-import { instance, level, currUser } from "../../../../../Fetch";
+import { instance } from "../../../../../Fetch";
 import { toast } from "react-toastify";
 // import { Link } from "react-router-dom";
 import { Multiselect } from "multiselect-react-dropdown";
@@ -12,13 +12,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCurrentUser } from "./../../../../../store/modules/userSlice/userDetailSlice";
 
 const TableComponent = () => {
-  const { roles, userName, active, delegations } = useSelector(state => state.users); // Use "state.users" here
+  const { id, roles, delegations } = useSelector((state) => state.users); // Use "state.users" here
   const dispatch = useDispatch();
 
-  console.log('xxxxxxx', roles, userName, active, delegations);
-
-
-  console.log('yyyyyyyyy',useSelector(state => state.users));
   // const [error, setError] = useState(null);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [adminEmail, setAdminEmail] = useState("");
@@ -35,7 +31,8 @@ const TableComponent = () => {
   const [updating, Setupdating] = useState(false);
 
   useEffect(() => {
-    let res;
+    // let res;
+    dispatch(getCurrentUser());
     const getAllAdmins = async () => {
       try {
         const response = await instance.get(
@@ -43,12 +40,11 @@ const TableComponent = () => {
         );
         // res = await instance.get("/getCurrentUser");
         // dispatch(getCurrentUser());
-        dispatch(getCurrentUser());
-        localStorage.setItem("level", JSON.stringify(res.data.data.roles));
-        localStorage.setItem("currUser", JSON.stringify(res.data.data));
+        // localStorage.setItem("level", JSON.stringify(res.data.data.roles));
+        // localStorage.setItem("currUser", JSON.stringify(res.data.data));
 
         // console.log("getAllAdmins", response.data);
-        console.log("res", res.data.data);
+        // console.log("res", res.data.data);
         // console.log(localStorage.getItem("level"));
 
         // console.log("getAllAdmins", response.data);
@@ -74,10 +70,9 @@ const TableComponent = () => {
           alert(response.data.error);
           return;
         }
-        // [...response.data.data, { id: 0, name: "All" }];
-        // console.log("getAddresses", [ { fulladdress:"All", locationId: "0" },...response.data.data]);
-        console.log(res);
-        if (res.data.data.delegations[0] === "0") {
+
+        //this condition is for checking root
+        if (delegations[0] === "0") {
           setAddresses(
             response.data.data
               ? [{ fulladdress: "All", locationId: "0" }, ...response.data.data]
@@ -94,7 +89,7 @@ const TableComponent = () => {
 
     getAddresses();
     getAllAdmins();
-  }, [randomValue, currentPage,dispatch]);
+  }, [randomValue, currentPage, dispatch]);
 
   const handlePageChange = (pageNumber) => {
     console.log("changing....", pageNumber);
@@ -124,9 +119,9 @@ const TableComponent = () => {
       userName: adminEmail,
       roles: accessLevel,
       locationId: locationId,
-      parentId : currUser.id,
+      parentId: id,
     };
-    console.log("payload", payload)
+    console.log("payload", payload);
     try {
       if (!updating) {
         const response = await instance.post("/addAdmin", payload);
@@ -159,23 +154,25 @@ const TableComponent = () => {
         </td>
         <td>
           {item.userName}{" "}
-          { (level === "root" || level === "admin") && (item.parentId!=="1234" &&(item.parentId=== currUser.id  || level==="root") )&& 
-          <FiEdit2
-            style={{ cursor: "pointer" }}
-            onClick={() => handleEditAdmin(item)}
-          />}
+          {(roles === "root" || roles === "admin") &&
+            item.parentId !== "1234" &&
+            (item.parentId === id || roles === "root") && (
+              <FiEdit2
+                style={{ cursor: "pointer" }}
+                onClick={() => handleEditAdmin(item)}
+              />
+            )}
         </td>
         <td>{item.delegations.includes("0") ? "❌ " : "✅"}</td>
         <td>{item.roles[0]}</td>
       </tr>
     ));
-  console.log(level);
-  console.log(currUser);
+
   return (
     <div className="tableComponent">
       <div className="tableHeader">
         {/* <Link className="addbtn" to="/dashboard/add-address">+ Add</Link> */}
-        {(level === "root" || level === "admin") && (
+        {(roles === "root" || roles === "admin") && (
           <div
             onClick={() => setSidebarOpen(!isSidebarOpen)}
             className="addbtn"

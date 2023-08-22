@@ -2,11 +2,13 @@ import React from "react";
 import { useEffect, useState, useRef } from "react";
 // import axios from "axios";
 import "./index.css";
-import { instance ,level } from "./../../../../../Fetch";
+import { instance } from "./../../../../../Fetch";
 import { toast } from "react-toastify";
 import Pagination from "../../../../Pagination/Pagination";
+import { useSelector } from "react-redux";
 
 const TableComponent = () => {
+  const { roles } = useSelector((state) => state.users); // Use "state.users" here
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const sidebarRef = useRef(null);
@@ -108,7 +110,7 @@ const TableComponent = () => {
   return (
     <div className="tableComponent">
       <div className="tableHeader">
-        {(level==="root" || level==="ReadAndWrite" || level === 'admin') && (<div onClick={() => setSidebarOpen(!isSidebarOpen)} className="addbtn">
+        {(roles==="root" || roles==="ReadAndWrite" || roles === 'admin') && (<div onClick={() => setSidebarOpen(!isSidebarOpen)} className="addbtn">
           + Add
         </div>)}
         {isSidebarOpen && (

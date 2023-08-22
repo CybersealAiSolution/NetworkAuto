@@ -3,9 +3,10 @@ import { useState,useEffect,useRef } from "react";
 import "./index.css";
 import { useParams } from "react-router-dom";
 import {instance} from "../../../../Fetch"
-
+import { useSelector } from "react-redux";
 
 const SubnetTable = () => {
+  const { roles } = useSelector((state) => state.users); // Use "state.users" here
   const [searchTerm, setSearchTerm] = useState("");
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const sidebarRef = useRef(null);
@@ -79,7 +80,9 @@ const SubnetTable = () => {
     <div>
       <div className="tableHeader">
         {/* <Link className="addbtn" to="/dashboard/add-address">+ Add</Link> */}
-        <div onClick={() => setSidebarOpen(!isSidebarOpen)} className="addbtn">+ Add</div>
+        {(roles==="root" || roles==="ReadAndWrite" || roles === 'admin') ? (<div onClick={() => setSidebarOpen(!isSidebarOpen)} className="addbtn">
+          + Add
+        </div>):<div></div>}
         {isSidebarOpen && 
               <>
                 <div className="overlay"></div>

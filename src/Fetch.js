@@ -15,7 +15,3 @@ export const instance = axios.create({
   withCredentials: true, // This ensures cookies (sessions) are sent with every request
 });
 
-export const level = JSON.parse(localStorage.getItem("level"));
-
-export const currUser = JSON.parse(localStorage.getItem("currUser"));
-

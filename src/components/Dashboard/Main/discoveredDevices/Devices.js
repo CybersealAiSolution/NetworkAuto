@@ -7,7 +7,7 @@ const Devices = () => {
   return (
     <div className="adminComponent">
         <div className="adminComponentHeader">
-            <h1 className="adminComponentTitle">Descovered Devices</h1>
+            <h1 className="adminComponentTitle">Devices Inventory</h1>
             {/* <Botton/> */}
         </div>
         <div className='tableBox'>

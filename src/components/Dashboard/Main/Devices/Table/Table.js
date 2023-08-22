@@ -5,9 +5,11 @@ import { GrDocumentCsv } from "react-icons/gr";
 import { toast } from "react-toastify";
 import Pagination from "../../../../Pagination/Pagination";
 import { saveAs } from 'file-saver'; // Import the saveAs function
+import { useSelector } from "react-redux";
 // GrDocumentCsv
 
 const DeviceTableComponent = () => {
+  const { roles } = useSelector((state) => state.users); // Use "state.users" here
   const [searchQuery, setSearchQuery] = useState("");
   const [data, setData] = useState([]);
   const [addresses, setAddresses] = useState([]);
@@ -230,7 +232,7 @@ const DeviceTableComponent = () => {
   return (
     <div className="tableComponent">
       <div className="tableHeader">
-        {level === "root" || level === "ReadAndWrite" || level === "admin" ? (
+        {roles === "root" || roles === "ReadAndWrite" || roles === "admin" ? (
           <div
             onClick={() => setSidebarOpen(!isSidebarOpen)}
             className="addbtn"

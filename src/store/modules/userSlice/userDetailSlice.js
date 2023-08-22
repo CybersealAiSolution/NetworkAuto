@@ -30,10 +30,12 @@ export const userDetail = createSlice({
         },
         [getCurrentUser.fulfilled]:(state,action)=>{
             state.loading=false;
+            state.id=action.payload.data.id
             state.userName=action.payload.data.userName
             state.roles=action.payload.data.roles
             state.delegations=action.payload.data.delegations
             state.active=action.payload.data.active
+            state.parentId=action.payload.data.parentId
         },
         [getCurrentUser.rejected]:(state,action)=>{
             state.loading=false;

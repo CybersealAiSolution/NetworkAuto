@@ -50,7 +50,7 @@ const Header = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await instance.get("logout");
+      const response = await instance.get("signout");
       if (response.status === 200) {
         navigate("/");
         toast.success("Successfully Logged out!!");
@@ -73,10 +73,11 @@ const Header = () => {
       const response = await instance.post("/setCredentails", payload);
       console.log(response.data);
       if (response.status === 200) {
-        toast.success("Request Accepted, Please wait few minutes!!");
-        window.history.back();
+        toast.success(response.data.message);
+        setShowDeleteModal(!showDeleteModal);
       }
       if (response.data.error) {
+        toast.error(response.data.message);
         console.log(response.data.error);
         return;
       }

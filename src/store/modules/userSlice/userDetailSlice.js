@@ -40,6 +40,7 @@ export const userDetail = createSlice({
         [getCurrentUser.rejected]:(state,action)=>{
             state.loading=false;
             state.error=action.payload
+            window.location.href = "/";
         }
     }
 })

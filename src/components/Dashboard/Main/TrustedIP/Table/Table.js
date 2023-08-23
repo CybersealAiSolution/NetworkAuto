@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect, useState, useRef } from "react";
 // import axios from "axios";
 import "./index.css";
-import { instance } from "./../../../../../Fetch";
+import { instance } from "Fetch";
 import { toast } from "react-toastify";
 import Pagination from "../../../../Pagination/Pagination";
 import { useSelector } from "react-redux";

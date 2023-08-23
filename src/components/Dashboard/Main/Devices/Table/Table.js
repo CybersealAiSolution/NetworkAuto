@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import "./index.css";
-import { instance, level } from "../../../../../Fetch";
+import { instance, level } from "Fetch";
 import { GrDocumentCsv } from "react-icons/gr";
 import { toast } from "react-toastify";
 import Pagination from "../../../../Pagination/Pagination";

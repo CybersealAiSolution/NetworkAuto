@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./index.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import {instance} from "Fetch"
 
 const CreateDefaultTenant = () => {
   let navigate = useNavigate();
@@ -20,10 +21,6 @@ const csrftoken = getCookie('csrftoken');
   const [city, setcity] = useState(false);
   const [street, setstreet] = useState(false);
 
-  const instance = axios.create({
-    baseURL: "http://localhost:5000",
-    withCredentials: true, // This ensures cookies (sessions) are sent with every request
-  });
 
   
   // const csrftoken = getCookie('csrftoken');

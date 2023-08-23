@@ -1,7 +1,7 @@
 import "./index.css";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { instance } from "./../../../Fetch";
+import { instance } from "Fetch";
 import { useNavigate } from "react-router-dom";
 import ReactModal from "react-modal";
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { instance } from "./../../../../../Fetch";
+import { instance } from "Fetch";
 import "./index.css";
 import ReactModal from "react-modal";
 import { MdInfo } from "react-icons/md";

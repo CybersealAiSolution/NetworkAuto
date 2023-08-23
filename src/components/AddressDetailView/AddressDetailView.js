@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./index.css";
 import { useParams } from "react-router-dom";
 import Tabs from "./Tabs/Tabs";
-import {instance} from "../../Fetch"
+import {instance} from "Fetch"
 
 const AddressDetailView = () => {
   const [data, setData] = useState({});

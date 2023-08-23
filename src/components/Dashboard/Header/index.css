@@ -12,7 +12,7 @@
 
 .CurrentUserContainer{
     height: 100%;
-
+    position: relative;
     margin-right: 25px;
     display: flex;
     align-items: center;
@@ -60,3 +60,48 @@
         border-radius: 5px;
         
   }
+
+  .dropdownlist {
+    width: 200px;
+    /* height: 100px; */
+    background-color: white;
+    position: absolute;
+    top: 110%;
+    right: 0;
+    z-index: 2;
+    /* border: 1px solid black; */
+
+    box-shadow: 10px 10px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    
+  }
+  .currentUserDetail {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    z-index: 1;
+  }
+  .dropdown-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    border-radius: 20px;
+  }
+  
+  .dropdown-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    /* border-bottom: 1px solid #ccc; */
+    border-radius: 10px;
+    transition: background-color 0.3s;
+  }
+  
+  .dropdown-item:last-child {
+    border-bottom: none;
+  }
+  
+  .dropdown-item:hover {
+    background-color: #E1E7EC;
+  }
+  

@@ -1,64 +1,39 @@
 import React, { useState } from "react";
 import "./index.css";
-import axios from "axios";
+import { instance } from "./../../Fetch";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const CreateDefaultTenant = () => {
   let navigate = useNavigate();
-  // const csrftoken = Cookies.get("csrftoken"); // Read the CSRF token from cookies
-  const getCookie = (name) => {
-    const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
-    return cookieValue ? cookieValue.pop() : '';
-  }
-const csrftoken = getCookie('csrftoken');
-  // Set the CSRF token in the request headers
-  axios.defaults.headers.post["X-CSRFToken"] = csrftoken;
-  
-  const [name, setName] = useState("");
+  const [name, setName] = useState("Softel Communications Inc");
   const [email, setEmail] = useState("");
-  const [country, setcountry] = useState(false);
-  const [city, setcity] = useState(false);
-  const [street, setstreet] = useState(false);
-
-  const instance = axios.create({
-    baseURL: "http://localhost:5000",
-    withCredentials: true, // This ensures cookies (sessions) are sent with every request
-  });
-
-  
-  // const csrftoken = getCookie('csrftoken');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = {
       name: name,
       userName: email,
-      populateCountries: country,
-      populateCities: city,
-      populateStreetSuffix: street,
     };
     try {
-      const response = await instance.post("/createdefaulttenant", data, {
-        headers: {
-          "Content-Type": "application/json",
-          'X-CSRFToken': getCookie('csrftoken'),
-        },
-      });
+      const response = await instance.post("/createdefaulttenant", data);
 
-      
       console.log("s", response.data);
-      if (response.data.error) {
-        alert(response.data.error);
-        return;
-      } else {
+      if (response.status===200) {
+        toast.error(response.data.err_msg);
         navigate("/");
-        console.log("first");
+        return;
+      } else if(response.status===201) {
+        toast.success(response.data.message)
+        navigate("/");
+      }else if(response.status===500){
+        toast.error(response.data.err_msg);
       }
     } catch (error) {
       // Handle any errors that may occur during the API call
       console.error("Error sending data:", error);
     }
-    console.log({ name, email, country, city, street });
+    console.log({ name, email });
   };
 
   return (
@@ -85,36 +60,6 @@ const csrftoken = getCookie('csrftoken');
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-        </div>
-
-        <div className="form-group">
-          <div className="inputAlignment">
-            <input
-              type="checkbox"
-              checked={country}
-              onChange={() => setcountry(!country)}
-              id="country"
-            />
-            <label htmlFor="country">Populate Countries</label>
-          </div>
-          <div className="inputAlignment">
-            <input
-              type="checkbox"
-              checked={city}
-              onChange={() => setcity(!city)}
-              id="city"
-            />
-            <label htmlFor="city">Populate Cities</label>
-          </div>
-          <div className="inputAlignment">
-            <input
-              type="checkbox"
-              checked={street}
-              onChange={() => setstreet(!street)}
-              id="street"
-            />
-            <label htmlFor="street">Populate Street Suffix</label>
-          </div>
         </div>
         <div className="createBtn">
           <button type="submit">Create</button>

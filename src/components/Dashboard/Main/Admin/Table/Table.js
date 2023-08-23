@@ -7,6 +7,8 @@ import { toast } from "react-toastify";
 import { Multiselect } from "multiselect-react-dropdown";
 import Pagination from "../../../../Pagination/Pagination";
 import { FiEdit2 } from "react-icons/fi";
+import { AiOutlineDelete } from "react-icons/ai";
+import ReactModal from "react-modal";
 import { useDispatch, useSelector } from "react-redux";
 // import { getCurrentUser } from "./store/userSlice/userDetailSlice";
 import { getCurrentUser } from "./../../../../../store/modules/userSlice/userDetailSlice";
@@ -29,6 +31,8 @@ const TableComponent = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
   const [updating, Setupdating] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null);
 
   useEffect(() => {
     // let res;
@@ -146,14 +150,54 @@ const TableComponent = () => {
     setSidebarOpen(!isSidebarOpen);
   };
 
+  const handleDelete = async (itemToDelete) => {
+    try {
+      // Perform API call to delete the item
+      console.log("itemToDelete", itemToDelete);
+      const response = await instance.delete(`deleteAdmin/${itemToDelete.userName}`);
+
+      if (response.status === 204) {
+        // Handle any additional UI updates after deletion, if needed
+        setRandomValue(Math.random());
+        toast.success(response.message);
+        // Close the modal
+        setShowDeleteModal(false);
+      } else {
+        console.error("Error deleting item. Server returned:", response);
+        toast.error(response.message);
+      }
+    } catch (error) {
+      // Handle error if the deletion fails
+      console.error("Error deleting item:", error);
+    }
+  };
+
+  // const DeleteConfirmationModal = ({ show, onClose, onDelete }) => {
+  //   if (!show) {
+  //     return null;
+  //   }
+
+  //   return (
+  //     <div className="modal">
+  //       <div className="modal-content">
+  //         <p>Are you sure you want to delete?</p>
+  //         <button onClick={onDelete}>Yes</button>
+  //         <button onClick={onClose}>No</button>
+  //       </div>
+  //     </div>
+  //   );
+  // };
+
   const TableColumn = () =>
     data.map((item) => (
       <tr key={item.id}>
         <td>
           <input className="rowCheckbox" type="checkbox"></input>
         </td>
+        <td>{item.userName} </td>
+        <td>{item.delegations.includes("0") ? "❌ " : "✅"}</td>
+        <td>{item.roles[0]}</td>
         <td>
-          {item.userName}{" "}
           {(roles === "root" || roles === "admin") &&
             item.parentId !== "1234" &&
             (item.parentId === id || roles === "root") && (
@@ -163,8 +207,66 @@ const TableComponent = () => {
               />
             )}
         </td>
-        <td>{item.delegations.includes("0") ? "❌ " : "✅"}</td>
-        <td>{item.roles[0]}</td>
+        <td>
+          {(roles === "root" || roles === "admin") &&
+            item.parentId !== "1234" &&
+            (item.parentId === id || roles === "root") && (
+              <>
+                <AiOutlineDelete
+                  style={{ cursor: "pointer", marginRight: "10px" }}
+                  onClick={() => {
+                    setItemToDelete(item);
+                    setShowDeleteModal(true);
+                  }}
+                />
+              </>
+            )}
+
+          {/* Confirmation Modal */}
+          <ReactModal
+            isOpen={showDeleteModal}
+            onRequestClose={() => setShowDeleteModal(false)}
+            contentLabel="Delete Confirmation Modal"
+            style={{
+              overlay: {
+                backgroundColor: "rgba(0, 0, 0, 0.1)", // Overlay background color
+              },
+              content: {
+                width: "350px", // Set the width of the modal
+                height: "200px",
+                margin: "auto", // Center the modal horizontally
+                borderRadius: "8px", // Rounded corners
+                padding: "20px", // Add some padding
+              },
+            }}
+          >
+            <div style={{ textAlign: "center" }}>
+              <p>Are you sure you want to delete?</p>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-evenly",
+                  marginTop: "50px",
+                }}
+              >
+                <button
+                  style={{ backgroundColor: "red" }}
+                  onClick={() => handleDelete(item)}
+                >
+                  Yes
+                </button>
+                <button
+                  style={{
+                    backgroundColor: "gray",
+                  }}
+                  onClick={() => setShowDeleteModal(false)}
+                >
+                  No
+                </button>
+              </div>
+            </div>
+          </ReactModal>
+        </td>
       </tr>
     ));
 
@@ -300,6 +402,8 @@ const TableComponent = () => {
               <th>Admin</th>
               <th>Delegated</th>
               <th>Access Level</th>
+              <th></th>
+              <th></th>
             </tr>
           </thead>
           <tbody>

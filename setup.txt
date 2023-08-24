@@ -2,4 +2,8 @@ npm install
 
 npm install react-scripts --save
 
-npm start
+Rename the .env_example to .env
+
+Put a value in REACT_APP_BING_MAPS_KEY (check the docs)
+
+npm start

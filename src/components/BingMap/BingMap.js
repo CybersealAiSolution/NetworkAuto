@@ -3,11 +3,11 @@ import "./index.css";
 
 const BingMapComponent = (props) => {
   const mapRef = useRef(null);
+  const bingMapsUrl = `${process.env.REACT_APP_BING_MAPS_URL}?callback=initMap&key=${process.env.REACT_APP_BING_MAPS_KEY}`;
 
   useEffect(() => {
     const script = document.createElement("script");
-    script.src =
-      "https://www.bing.com/api/maps/mapcontrol?callback=initMap&key=AtxPEcqkS6l8tbwa-SP0bY9Yk0nsSU5ShmIUB6brcwM_TRftC2TJp5OPOOwddPdx";
+    script.src = bingMapsUrl;
     script.async = true;
     script.defer = true;
     window.initMap = () => {

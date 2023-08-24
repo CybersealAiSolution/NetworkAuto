@@ -110,10 +110,10 @@ const Header = () => {
             <span>Sync</span>
           </button>
         </div>
-
-        <div className="currentUserProfile"></div>
+        {data.userDisplayName && <img className="currentUserProfile" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" />}
         <div
           className="currentUserDetail"
+          style={{cursor:'pointer'}}
           onClick={() => setIsBlankDivVisible(!isBlankDivVisible)}
         >
           {data.userDisplayName}

@@ -10,16 +10,6 @@
     justify-content: space-between;
 }
 
-.adminComponentTitle{  
-    color: #404B5A;
-    margin: 0%;
-}
-
-.tableBox{
-    display: flex;
-    justify-content: center;
-}
-
 .addAdminFormSubmit{
     background-color: blue;
     color: white;

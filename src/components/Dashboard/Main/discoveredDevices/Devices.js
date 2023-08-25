@@ -7,8 +7,7 @@ const Devices = () => {
   return (
     <div className="adminComponent">
         <div className="adminComponentHeader">
-            <h1 className="adminComponentTitle">Devices Inventory</h1>
-            {/* <Botton/> */}
+            <h1 className="TableComponentTitle">Devices Inventory</h1>
         </div>
         <div className='tableBox'>
             <TableComponent/>

@@ -7,8 +7,7 @@ const Admin = () => {
     return (
         <div className="adminComponent">
             <div className="adminComponentHeader">
-                <h1 className="adminComponentTitle">Admins</h1>
-                {/* <Botton/> */}
+                <h1 className="TableComponentTitle">Admins</h1>
             </div>
             <div className='tableBox'>
                 <TableComponent/>

@@ -10,12 +10,8 @@
     justify-content: space-between;
 }
 
-.adminComponentTitle{  
-    color: #404B5A;
-    margin: 0%;
-}
-
-.tableBox{
-    display: flex;
-    justify-content: center;
+.TableComponentTitle{  
+    color: #404b5a;
+    margin-top: 0;
+    margin-left: 1.5%;
 }

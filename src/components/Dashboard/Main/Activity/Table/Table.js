@@ -92,6 +92,7 @@ const TableComponent = () => {
   return (
     <div className="tableComponent">
       <div className="tableHeader">
+        <div></div>
         <div className="tableSearchContainer">
         <input 
             className="tableSearch" 

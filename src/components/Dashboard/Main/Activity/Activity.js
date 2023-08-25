@@ -6,7 +6,7 @@ const Activity = () => {
   return (
     <div className="activityComponent">
       <div className="activityComponentHeader">
-        <h1 className="activityComponentTitle">Activity</h1>
+        <h1 className="TableComponentTitle">Activity</h1>
       </div>
 
       <div className="tableBox">

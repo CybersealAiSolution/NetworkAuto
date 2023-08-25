@@ -7,7 +7,7 @@ const TrustedIP = () => {
   return (
     <div className="activityComponent">
       <div className="activityComponentHeader">
-        <h1 className="activityComponentTitle">Trusted IPs</h1>
+        <h1 className="TableComponentTitle">Trusted IPs</h1>
       </div>
 
       <div className="tableBox">

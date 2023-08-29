@@ -12,7 +12,7 @@ function CallBack(props) {
     const urlObj = new URL(fullURL);
     urlObj.protocol = "https:";
     // Change the hostname
-    urlObj.hostname = "172.173.201.251";
+    urlObj.hostname = "20.228.194.127";
     urlObj.port = "5000";
 
     const updatedUrl = urlObj.toString();

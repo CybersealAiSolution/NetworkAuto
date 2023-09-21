@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState, useRef } from "react";
 import "./index.css";
-import { instance } from "../../../../../Fetch";
+import { instance } from "Fetch";
 import { toast } from "react-toastify";
 // import { Link } from "react-router-dom";
 import { Multiselect } from "multiselect-react-dropdown";

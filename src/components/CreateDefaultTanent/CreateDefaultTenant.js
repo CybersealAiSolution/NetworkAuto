@@ -1,13 +1,20 @@
 import React, { useState } from "react";
 import "./index.css";
-import { instance } from "./../../Fetch";
 import { useNavigate } from "react-router-dom";
+import {instance} from "Fetch"
 import { toast } from "react-toastify";
 
 const CreateDefaultTenant = () => {
   let navigate = useNavigate();
   const [name, setName] = useState("Softel Communications Inc");
   const [email, setEmail] = useState("");
+  const [country, setcountry] = useState(false);
+  const [city, setcity] = useState(false);
+  const [street, setstreet] = useState(false);
+
+
+  
+  // const csrftoken = getCookie('csrftoken');
 
   const handleSubmit = async (e) => {
     e.preventDefault();

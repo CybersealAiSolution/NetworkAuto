@@ -4,6 +4,7 @@ import axios from "axios";
 import BingMapComponent from "../BingMap/BingMap";
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import {instance} from "Fetch"
 
 const AddAddress = () => {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ const AddAddress = () => {
   };
 
   const instance = axios.create({
-    baseURL: "http://localhost:5000",
+    baseURL: "https://52.146.6.41:5000",
     withCredentials: true, // This ensures cookies (sessions) are sent with every request
   });
   const getCookie = (name) => {

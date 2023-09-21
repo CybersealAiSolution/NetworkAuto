@@ -2,7 +2,7 @@ import React from "react";
 import { useState,useEffect,useRef } from "react";
 import "./index.css";
 import { useParams } from "react-router-dom";
-import {instance} from "../../../../Fetch"
+import {instance} from "Fetch"
 import { useSelector } from "react-redux";
 
 const SubnetTable = () => {

@@ -374,7 +374,7 @@ const DeviceTableComponent = () => {
               </th>
               <th>Description</th>
               <th>Model ID</th>
-              <th>IP Address</th>
+              <th>Subnet</th>
               <th>BSSID</th>
               <th>ChassisID</th>
               <th>Location</th>

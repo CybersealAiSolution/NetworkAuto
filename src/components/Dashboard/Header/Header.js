@@ -9,9 +9,14 @@ const Header = () => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isBlankDivVisible, setIsBlankDivVisible] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showTeamsModal, setShowTeamsModal] = useState(false);
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("second");
+  const [password, setPassword] = useState("");
+  const [showServiceNowModal, setShowServiceNowModal] = useState(false);
+  const [instanceName, setInstanceName] = useState("");
+  const [userName, setUserName] = useState("");
+  const [serviceNowpassword, setServiceNowPassword] = useState("");
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -62,7 +67,7 @@ const Header = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleTeamSubmit = async (e) => {
     e.preventDefault();
     const payload = {
       password: password,
@@ -74,7 +79,33 @@ const Header = () => {
       console.log(response.data);
       if (response.status === 200) {
         toast.success(response.data.message);
-        setShowDeleteModal(!showDeleteModal);
+        setShowTeamsModal(!showTeamsModal);
+      }
+      if (response.data.error) {
+        toast.error(response.data.message);
+        console.log(response.data.error);
+        return;
+      }
+    } catch (error) {
+      console.error("Error sending data:", error);
+    }
+  };
+
+  // service now Credentials submit
+  const handleServiceNowSubmit = async (e) => {
+    e.preventDefault();
+    const payload = {
+      instanceName: instanceName,
+      userName: userName,
+      password: serviceNowpassword
+    };
+    try {
+      console.log(payload);
+      const response = await instance.post("/setServiceNowCredentails", payload);
+      console.log(response.data);
+      if (response.status === 200) {
+        toast.success(response.data.message);
+        setShowServiceNowModal(!showServiceNowModal);
       }
       if (response.data.error) {
         toast.error(response.data.message);
@@ -125,11 +156,22 @@ const Header = () => {
               <li
                 className="dropdown-item"
                 onClick={() => {
-                  setShowDeleteModal(true);
+                  setShowTeamsModal(true);
+                  setShowServiceNowModal(false);
                   setIsBlankDivVisible(!isBlankDivVisible);
                 }}
               >
-                User Credentials
+                Ms Teams Credentials
+              </li>
+              <li
+                className="dropdown-item"
+                onClick={() => {
+                  setShowServiceNowModal(true);
+                  setShowTeamsModal(false);
+                  setIsBlankDivVisible(!isBlankDivVisible);
+                }}
+              >
+                Service Now Credentials
               </li>
               <li className="dropdown-item" onClick={handleLogout}>
                 Logout
@@ -139,8 +181,8 @@ const Header = () => {
         )}
       </div>
       <ReactModal
-        isOpen={showDeleteModal}
-        onRequestClose={() => setShowDeleteModal(false)}
+        isOpen={showTeamsModal}
+        onRequestClose={() => setShowTeamsModal(false)}
         contentLabel="Delete Confirmation Modal"
         style={{
           overlay: {
@@ -157,7 +199,7 @@ const Header = () => {
       >
         <div>
           <h3 style={{ textAlign: "center" }}>Enter Credentials</h3>
-          <form onSubmit={handleSubmit} className="">
+          <form onSubmit={handleTeamSubmit} className="">
             <div className="form-group">
               <label htmlFor="email">Default Admin/Root User*</label>
               <input
@@ -176,6 +218,66 @@ const Header = () => {
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            <div className="createBtn">
+              <button type="submit">Submit</button>
+            </div>
+          </form>
+        </div>
+      </ReactModal>
+
+      <ReactModal
+        isOpen={showServiceNowModal}
+        onRequestClose={() => setShowServiceNowModal(false)}
+        contentLabel="Service Now Modal"
+        style={{
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.1)", // Overlay background color
+          },
+          content: {
+            width: "600px", // Set the width of the modal
+            height: "380px",
+            margin: "auto", // Center the modal horizontally
+            borderRadius: "8px", // Rounded corners
+            padding: "20px", // Add some padding
+          },
+        }}
+      >
+        <div>
+          <h3 style={{ textAlign: "center" }}>Enter Service Now Credentials</h3>
+          <form onSubmit={handleServiceNowSubmit} className="">
+            <div className="form-group">
+              <label htmlFor="email">Instance Name*</label>
+              <input
+                type="text"
+                id="text"
+                value={instanceName}
+                placeholder="devXXXXX"
+                onChange={(e) => setInstanceName(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="email">UserName*</label>
+              <input
+                type="text"
+                id="text"
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="email">Password*</label>
+              <input
+                type="password"
+                id="password"
+                value={serviceNowpassword}
+                onChange={(e) => setServiceNowPassword(e.target.value)}
                 required
               />
             </div>

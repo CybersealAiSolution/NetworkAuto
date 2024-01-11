@@ -71,12 +71,12 @@ const TableComponent = () => {
   return (
     <div className="tableComponent">
       <div className="tableHeader">
-      {(roles==="root" || roles==="ReadAndWrite" || roles === 'admin') && (<Link className="addbtn" to="/dashboard/add-address">+ Add</Link>)}
+      {(roles==="root" || roles==="ReadAndWrite" || roles === 'admin') ?  (<Link className="addbtn" to="/dashboard/add-address">+ Add</Link>):<div> </div>}
         
         <div className="tableSearchContainer">
         <input 
             className="tableSearch" 
-            placeholder="Search for Admins" 
+            placeholder="Search for Location" 
             type="text"
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}

@@ -110,9 +110,9 @@ const TableComponent = () => {
   return (
     <div className="tableComponent">
       <div className="tableHeader">
-        {(roles==="root" || roles==="ReadAndWrite" || roles === 'admin') && (<div onClick={() => setSidebarOpen(!isSidebarOpen)} className="addbtn">
+        {(roles==="root" || roles==="ReadAndWrite" || roles === 'admin') ? (<div onClick={() => setSidebarOpen(!isSidebarOpen)} className="addbtn">
           + Add
-        </div>)}
+        </div>):(<div></div>)}
         {isSidebarOpen && (
           <>
             <div className="overlay"></div>

@@ -274,14 +274,14 @@ const TableComponent = () => {
     <div className="tableComponent">
       <div className="tableHeader">
         {/* <Link className="addbtn" to="/dashboard/add-address">+ Add</Link> */}
-        {(roles === "root" || roles === "admin") && (
+        {(roles === "root" || roles === "admin") ? (
           <div
             onClick={() => setSidebarOpen(!isSidebarOpen)}
             className="addbtn"
           >
             + Add
           </div>
-        )}
+        ): (<div></div>)}
         {isSidebarOpen && (
           <>
             <div className="overlay"></div>

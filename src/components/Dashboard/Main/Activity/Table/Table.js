@@ -96,7 +96,7 @@ const TableComponent = () => {
         <div className="tableSearchContainer">
         <input 
             className="tableSearch" 
-            placeholder="Search for Admins" 
+            placeholder="Search for Activity" 
             type="text"
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}

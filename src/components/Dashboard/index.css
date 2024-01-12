@@ -13,7 +13,7 @@
 .headerAndMaincontainer{
     height: 100%;
     width: 80%;
-    
+    transition: width 1s ease-in-out;
 }
 
 .header{
@@ -26,4 +26,8 @@
     width: 100%;
     background-color: #E1E7EC;
     overflow-y: scroll;
+}
+
+.dashboard, .headerAndMaincontainer, .sidebar {
+    box-sizing: border-box;
 }

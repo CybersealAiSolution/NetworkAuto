@@ -5,7 +5,7 @@ import { instance } from "./../../../Fetch";
 import { useNavigate } from "react-router-dom";
 import ReactModal from "react-modal";
 
-const Header = () => {
+const Header = ({isSidebarOpen,setIsSidebarOpen}) => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isBlankDivVisible, setIsBlankDivVisible] = useState(false);

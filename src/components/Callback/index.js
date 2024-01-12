@@ -1,7 +1,11 @@
 import React, { useEffect } from "react";
-// import { connect } from "react-redux";
+import { connect } from "react-redux";
+import Backdrop from '@mui/material/Backdrop';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import CircularProgress from '@mui/joy/CircularProgress';
+import Button from '@mui/joy/Button';
+import './index.css'
 
 // import {userLogin} from 'actions' 
 console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
@@ -42,7 +46,13 @@ function CallBack(props) {
 
     return (
         <div >
-                Loading...
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open
+            >
+                <Button sx={{backgroundColor:'#073771'}} startDecorator={<CircularProgress variant="solid" />}>Loading…</Button>
+
+            </Backdrop>
        
         </div>
     )

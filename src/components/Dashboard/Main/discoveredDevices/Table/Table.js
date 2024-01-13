@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { instance } from "../../../../../Fetch";
+import { instance } from "Fetch";
 import "./index.css"; // Assuming you want to use the same CSS
 import Pagination from "../../../../Pagination/Pagination";
 

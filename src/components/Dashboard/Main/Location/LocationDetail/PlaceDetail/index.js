@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
-import { instance } from "../../../../../../Fetch";
+import { instance } from "Fetch";
 import { Box, Breadcrumbs, Button, Container, Typography } from "@mui/material";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Link } from "react-router-dom";

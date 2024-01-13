@@ -5,7 +5,7 @@ import TextField from "@mui/material/TextField";
 import FormControl from "@mui/joy/FormControl";
 import Button from "@mui/material/Button";
 import { useParams } from "react-router-dom";
-import { instance } from "../../../../../Fetch";
+import { instance } from "Fetch";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from "react-redux";
 import { setAlert } from "../../../../../store/alertSlice/alertSlice";

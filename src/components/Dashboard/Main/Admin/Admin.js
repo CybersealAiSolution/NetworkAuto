@@ -25,7 +25,7 @@ import {
 import LinearProgress from "@mui/material/LinearProgress";
 import MuiPagination from "@mui/material/Pagination";
 // import Filter from "./filter/filter";
-// import { instance } from "../../../../../Fetch";
+// import { instance } from "Fetch";
 
 const Admin = () => {
   const dispatch = useDispatch();

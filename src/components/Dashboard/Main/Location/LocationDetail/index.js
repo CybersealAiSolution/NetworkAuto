@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link, useParams } from "react-router-dom";
-import { instance } from "../../../../../Fetch";
+import { instance } from "Fetch";
 import { Box, Container, Typography,Button, Breadcrumbs } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
 import Tabs from "@mui/joy/Tabs";

@@ -3,7 +3,7 @@ import { Box, Stack } from "@mui/material";
 import FormLabel from "@mui/joy/FormLabel";
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/joy/FormControl";
-import { instance } from "../../../../../Fetch";
+import { instance } from "Fetch";
 import { Button as ButtonJoy } from "@mui/joy";
 import { setAlert } from "../../../../../store/alertSlice/alertSlice";
 import { useDispatch,useSelector } from "react-redux";

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./index.css";
-import { instance } from "./../../Fetch";
+import { instance } from "Fetch";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 

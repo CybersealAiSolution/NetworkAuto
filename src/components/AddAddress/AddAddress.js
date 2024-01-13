@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./index.css";
 import axios from "axios";
-import { instance } from "../../Fetch";
+import { instance } from "Fetch";
 import { Link, useParams } from "react-router-dom";
 import BingMapComponent from "../BingMap/BingMap";
 import { useNavigate } from 'react-router-dom';

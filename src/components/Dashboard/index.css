@@ -13,7 +13,7 @@
 .headerAndMaincontainer{
     height: 100%;
     width: 80%;
-    transition: width 1s ease-in-out;
+    transition: width 1s ease;
 }
 
 .header{

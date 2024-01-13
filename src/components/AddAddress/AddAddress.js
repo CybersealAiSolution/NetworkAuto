@@ -1,12 +1,19 @@
 import React, { useState } from "react";
 import "./index.css";
 import axios from "axios";
+import { instance } from "../../Fetch";
+import { Link, useParams } from "react-router-dom";
 import BingMapComponent from "../BingMap/BingMap";
 import { useNavigate } from 'react-router-dom';
+import { Box, Container,Button, Breadcrumbs,TextField } from "@mui/material";
+import Typography from "@mui/joy/Typography";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import { Button as ButtonJoy,FormControl,FormLabel,Autocomplete } from "@mui/joy";
 import { toast } from 'react-toastify';
 
 const AddAddress = () => {
   const navigate = useNavigate();
+  const [isLoading,setIsLoading] = useState(false);
   // State variables to store form values
   const [description, setDescription] = useState("");
   // const [houseNumber, sethouseNumber] = useState("444");
@@ -16,7 +23,7 @@ const AddAddress = () => {
   const [postalCode, setpostalCode] = useState("");
   const [latitude, setlatitude] = useState("");
   const [Longitude, setLongitude] = useState("");
-  const [option, setOption] = useState("US");
+  const [option, setOption] = useState("United States");
 
   // Handler for the text field change
   const handleDescriptionChange = (e) => {
@@ -26,7 +33,7 @@ const AddAddress = () => {
   // Handler for the select option change
   const handleOptionChange = (e) => {
     setOption(e.target.value);
-    console.log(option);
+    console.log("rrrr",e.target.value);
   };
 
   const instance = axios.create({
@@ -68,6 +75,8 @@ const AddAddress = () => {
       Longitude: Longitude,
       CountryOrRegion: option,
     };
+
+    setIsLoading(true);
     try {
       console.log(data);
       const response = await instance.post("/addLisAddress", data, {
@@ -89,72 +98,155 @@ const AddAddress = () => {
     } catch (error) {
       console.error("Error sending data:", error);
     }
+    finally{
+      setIsLoading(false);
+    }
   };
 
   return (
-    <div className="adminComponent">
-      <div className="adminComponentHeader">
-        <h1 className="adminComponentTitle">Add Address</h1>
-      </div>
-      <div className="mapContainer">
-      <div id="formBox">
-        <form onSubmit={handleSubmit}>
-          <div className="fieldFirst">
-            <label htmlFor="option">Description</label>
-            <input
-              type="text"
-              value={description}
-              onChange={handleDescriptionChange}
-              className="description"
-              id="description"
-              name="description"
+    <Box 
+      sx={{
+        display:"flex",
+        flexDirection:"column",
+        gap:"18px"
+      }}>
+      <Breadcrumbs
+          separator={<NavigateNextIcon fontSize="large" />}
+          aria-label="breadcrumb"
+          style={{ padding: "12px 24px 0px 24px" }}
+        >
+          <Link
+            underline="hover"
+            color="inherit"
+            component={Link}
+            to="/dashboard/location"
+          >
+            Location
+          </Link>
+          <Typography color="text.primary">Add Location</Typography>
+      </Breadcrumbs>
+      <Box sx={{paddingLeft:"24px"}}>
+        <Typography level="h2">Add Address</Typography>
+      </Box>
+      <Box sx={{
+        margin:"0px 24px 12px 24px",
+        padding:"24px",
+        border:"1px solid grey",
+        borderRadius:"12px",
+        backgroundColor:"white",
+        display:"flex",
+        flexDirection:"column",
+        gap:"18px",
+      }}>
+        
+          <form onSubmit={handleSubmit}>
+            <FormControl>
+              <FormLabel>Description</FormLabel>
+                <TextField
+                  id="outlined-basic"
+                  rows={1} // You can adjust the number of rows as per your requirements
+                  variant="outlined"
+                  value={description}
+                  onChange={handleDescriptionChange}
+                  style={{ width: "100%" }}
+                  placeholder="Add Description"
+                  size="small"
+                />
+            </FormControl>
+            <FormControl>
+              <FormLabel>Country or Region</FormLabel>
+              <Autocomplete
+                placeholder="Pick an Option"
+                options={["United States"]} 
+                sx={{ width: "100%" }}
+                value={option}
+                onChange={handleOptionChange}
+                
+              />
+            </FormControl>
+            
+            {/* <Box>
+              <label htmlFor="option">Description</label>
+              <input
+                type="text"
+                value={description}
+                onChange={handleDescriptionChange}
+                className="description"
+                id="description"
+                name="description"
+              />
+            </Box>
+            <Box>
+              <label htmlFor="option">Country or Region</label>
+              <select
+                id="options"
+                onChange={handleOptionChange}
+                required
+                value={option}
+              >
+                <option value="United States">United States</option>
+                
+              </select>
+            </Box> */}
+            <BingMapComponent
+              setstreetName={setstreetName}
+              setcity={setcity}
+              setStateorProvince={setStateorProvince}
+              setpostalCode={setpostalCode}
+              setlatitude={setlatitude}
+              setlongitude={setLongitude}
+              setOption={setOption}
             />
-          </div>
-          <div style={{ marginTop: "10px" }}>
-            <label htmlFor="option">Country or Region</label>
-            <select
-              id="options"
-              onChange={handleOptionChange}
-              required
-              value={option}
-            >
-              <option value="United States">United States</option>
-              {/* <option value="Canada">Canada</option>
-                <option value="United Kingdom">United Kingdom</option> */}
-            </select>
-          </div>
-          <BingMapComponent
-            setstreetName={setstreetName}
-            setcity={setcity}
-            setStateorProvince={setStateorProvince}
-            setpostalCode={setpostalCode}
-            setlatitude={setlatitude}
-            setlongitude={setLongitude}
-            setOption={setOption}
-          />
 
-          <div style={{ display: "flex" }}>
-            <button
-              className="savebtn"
-              style={{ marginRight: "10px" }}
-              type="submit"
-              onSubmit={handleSubmit}
+            
+
+            
+          </form>
+
+          <Box
+              className="buttn"
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "flex-end",
+                width: "100%",
+                gap: "10px",
+              }}
             >
-              Submit
-            </button>
-            <button
-              className="cancelbtn"
-              style={{ backgroundColor: "grey" }}
-              onClick={() => navigate('/dashboard/location')}
-            >
-              Cancel
-            </button>
-            {/* <Link className="savebtn" style={{ backgroundColor: "grey" }} to="/dashboard">Cancel</Link> */}
-          </div>
-        </form>
-      </div>
-      </div>
-    </div>
+              <ButtonJoy
+                variant="outlined"
+                sx={{
+                  backgroundColor: "#fff",
+                  color: "#000",
+                  border: "1px solid black",
+                  "&:hover": {
+                    border: "1px solid black",
+                  },
+                }}
+                onClick={() => navigate('/dashboard/location')}
+              >
+                Cancel
+              </ButtonJoy>
+              <ButtonJoy
+                variant="contained"
+                sx={{
+                  backgroundColor: "#000",
+                  color: "white",
+                  "&:hover": {
+                    backgroundColor: "black",
+                    color: "white",
+                  },
+                }}
+                onClick={handleSubmit}
+                loading={isLoading}
+                loadingPosition="start"
+              >
+                Submit
+              </ButtonJoy>
+          </Box>
+        
+      </Box>
+    </Box>
   );
 };
 

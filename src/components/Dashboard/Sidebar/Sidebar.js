@@ -162,7 +162,7 @@ const Sidebar = ({isSidebarOpen,setIsSidebarOpen}) => {
         height: "100%",
         display: "flex",
         flexDirection: "column",
-        transition: "width 1s ease-in",
+        transition: isSidebarOpen ? "" : "width 1s ease-in",
         // alignItems: 'flex-start',
         // gap: "36px",
       }}

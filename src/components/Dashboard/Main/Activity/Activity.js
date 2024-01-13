@@ -1,17 +1,16 @@
 import React from "react";
 import "./index.css";
-import TableComponent from "./Table/Table";
+import TableComponent from "./Table/Table";import Typography from "@mui/joy/Typography";
 
 const Activity = () => {
   return (
-    <div className="activityComponent">
-      <div className="activityComponentHeader">
-        <h1 className="TableComponentTitle">Activity</h1>
+    <div className="Component">
+      <div className="ComponentHeader">
+        <Typography level="h1">Activity</Typography>
       </div>
 
-      <div className="tableBox">
         <TableComponent />
-      </div>
+
     </div>
   );
 };

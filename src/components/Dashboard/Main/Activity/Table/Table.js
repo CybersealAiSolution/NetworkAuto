@@ -9,7 +9,7 @@ import "./index.css";
 import { toast } from "react-toastify";
 // import { Link } from "react-router-dom";
 import { Multiselect } from "multiselect-react-dropdown";
-import Pagination from "../../../../Pagination/Pagination";
+// import Pagination from "../../../../Pagination/Pagination";
 import { FiEdit2 } from "react-icons/fi";
 import { AiOutlineDelete } from "react-icons/ai";
 // import ReactModal from "react-modal";
@@ -91,6 +91,23 @@ const TableComponent = () => {
     setIsModalOpen(true);
   };
   console.log("selectedDetails", selectedDetails);
+
+  function Pagination({ page, onPageChange, className }) {
+    const apiRef = useGridApiContext();
+    const pageCount = Math.ceil(totalPage / paginationModel.pageSize);
+
+    return (
+      <MuiPagination
+        color="primary"
+        className={className}
+        count={pageCount}
+        page={page + 1}
+        onChange={(event, newPage) => {
+          onPageChange(event, newPage - 1);
+        }}
+      />
+    );
+  }
 
   const handleSearch = (event) => {
     event.preventDefault();

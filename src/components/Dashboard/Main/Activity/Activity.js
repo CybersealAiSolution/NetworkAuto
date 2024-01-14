@@ -1,6 +1,7 @@
 import React from "react";
 import "./index.css";
-import TableComponent from "./Table/Table";import Typography from "@mui/joy/Typography";
+import TableComponent from "./Table/Table";
+import Typography from "@mui/joy/Typography";
 
 const Activity = () => {
   return (
@@ -9,8 +10,7 @@ const Activity = () => {
         <Typography level="h1">Activity</Typography>
       </div>
 
-        <TableComponent />
-
+      <TableComponent />
     </div>
   );
 };

@@ -34,7 +34,7 @@ import {
 } from "@mui/x-data-grid";
 import LinearProgress from "@mui/material/LinearProgress";
 import MuiPagination from "@mui/material/Pagination";
-import { instance } from "../../../../Fetch";
+import { instance } from "Fetch";
 // import "./index.css";
 import { Box } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";

@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Button from '@mui/joy/Button';
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-// import { instance } from "../../../../../Fetch";
+// import { instance } from "Fetch";
 // import { setAlert } from "store/modules/alertSlice/alertSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';

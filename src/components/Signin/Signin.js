@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import "./index.css";
 import axios from "axios";
-import { instance } from '../../Fetch';
+import { instance } from 'Fetch';
 import { Box, Container,CircularProgress } from "@mui/material";
 
 

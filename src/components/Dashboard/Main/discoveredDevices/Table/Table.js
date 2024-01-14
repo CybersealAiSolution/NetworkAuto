@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { instance } from "../../../../../Fetch";
+import { instance } from "Fetch";
 import "./index.css"; // Assuming you want to use the same CSS
 // import Pagination from "../../../../Pagination/Pagination";
 import LinearProgress from "@mui/material/LinearProgress";

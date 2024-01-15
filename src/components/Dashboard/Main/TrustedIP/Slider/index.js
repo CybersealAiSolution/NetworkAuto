@@ -12,36 +12,17 @@ import { setAlert } from "../../../../../store/alertSlice/alertSlice";
 import { Button as ButtonJoy } from "@mui/joy";
 
 
-const Slider = ({ open, setSliderIsOpen, formType }) => {
+const Slider = ({ open, setSliderIsOpen }) => {
   const dispatch = useDispatch();
   let navigate = useNavigate();
   const { id } = useParams();
-  const [place, setPlace] = useState("");
-  const [subnet, setSubnet] = useState("");
-  const [switches, setSwitches] = useState("");
-  const [accessPoint, setAccessPoint] = useState("");
+  
   const [description, setDescription] = useState("");
   const [maskBits, setMaskBits] = useState("");
   const [IPAddress, setIPAddress] = useState("");
   const [isLoading,setIsLoading] = useState(false);
 
   useEffect(() => {}, [open]);
-
-  const handlePlaceInput = (e) => {
-    setPlace(e.target.value);
-  };
-
-  const handleSubnetInput = (e) => {
-    setSubnet(e.target.value);
-  };
-
-  const handleSwitchInput = (e) => {
-    setSwitches(e.target.value);
-  };
-
-  const handleAccessPointInput = (e) => {
-    setAccessPoint(e.target.value);
-  };
 
   const handleDescriptionInput = (e) => {
     setDescription(e.target.value);
@@ -54,219 +35,7 @@ const Slider = ({ open, setSliderIsOpen, formType }) => {
     setIPAddress(e.target.value);
   };
 
-  const handleAddPlace = async () => {
-    if (!place) {
-      dispatch(
-        setAlert({
-          msg: "Please fill all fields!",
-          status: "Failed",
-        })
-      );
-      return;
-    }
-    const payload = {
-      place
-    };
-
-    try {
-      setIsLoading(true);
-      const response = await instance.post(`/addPlaces/${id}`, payload, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      dispatch(
-        setAlert({
-          msg: response.data.message,
-          status: response.data.messageStatus,
-        })
-      );
-    } catch (error) {
-      if(error.response.status === 403){
-        dispatch(
-          setAlert({
-            msg: "missing CSRF Token",
-            status: "Failed",
-          })
-        );
-        navigate('/');
-      }
-      else{
-      dispatch(
-        setAlert({
-          msg: 'Something went Wrong!!',
-          status: 'Failed',
-        })
-      );}
-      console.error("Error ", error);
-    }
-    finally{
-      setIsLoading(false);
-      setSliderIsOpen(false);
-    }
-  };
-
-  const handleAddSubnet = async () => {
-    if (!subnet || !description) {
-      dispatch(
-        setAlert({
-          msg: "Please fill all fields!",
-          status: "Failed",
-        })
-      );
-      return;
-    }
-    const payload = {
-      subnet,
-      description,
-    };
-
-    try {
-      setIsLoading(true);
-      const response = await instance.post(`/addSubnets/${id}`, payload, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      dispatch(
-        setAlert({
-          msg: response.data.message,
-          status: response.data.messageStatus,
-        })
-      );
-    } catch (error) {
-      if(error.response.status === 403){
-        dispatch(
-          setAlert({
-            msg: "missing CSRF Token",
-            status: "Failed",
-          })
-        );
-        navigate('/');
-      }
-      else{
-      dispatch(
-        setAlert({
-          msg: 'Something went Wrong!!',
-          status: 'Failed',
-        })
-      );
-      }
-      console.error("Error ", error);
-    }
-    finally{
-      setIsLoading(false);
-      setSliderIsOpen(false);
-    }
-  };
-
-  const handleAddSwitch = async () => {
-    if (!switches || !description) {
-      dispatch(
-        setAlert({
-          msg: "Please fill all fields!",
-          status: "Failed",
-        })
-      );
-      return;
-    }
-    const payload = {
-      ChassisID:switches,
-      description:description,
-    };
-
-    try {
-      setIsLoading(true);
-      const response = await instance.post(`/addSwitches/${id}`, payload, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      dispatch(
-        setAlert({
-          msg: response.data.message,
-          status: response.data.messageStatus,
-        })
-      );
-    } catch (error) {
-      if(error.response.status === 403){
-        dispatch(
-          setAlert({
-            msg: "missing CSRF Token",
-            status: "Failed",
-          })
-        );
-        navigate('/');
-      }
-      else{
-      dispatch(
-        setAlert({
-          msg: 'Something went Wrong!!',
-          status: 'Failed',
-        })
-      );
-      }
-      console.error("Error ", error);
-    }
-    finally{
-      setIsLoading(false);
-      setSliderIsOpen(false);
-    }
-  };
-
-  const handleAddAccessPoint = async () => {
-    if (!accessPoint || !description) {
-      dispatch(
-        setAlert({
-          msg: "Please fill all fields!",
-          status: "Failed",
-        })
-      );
-      return;
-    }
-    const payload = {
-      bbsid:accessPoint,
-      description:description,
-    };
-
-    try {
-      setIsLoading(true);
-      const response = await instance.post(`/addAccessPoints/${id}`, payload, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      dispatch(
-        setAlert({
-          msg: response.data.message,
-          status: response.data.messageStatus,
-        })
-      );
-    } catch (error) {
-      if(error.response.status === 403){
-        dispatch(
-          setAlert({
-            msg: "missing CSRF Token",
-            status: "Failed",
-          })
-        );
-        navigate('/');
-      }
-      else{
-      dispatch(
-        setAlert({
-          msg: 'Something went Wrong!!',
-          status: 'Failed',
-        })
-      );
-      }
-      console.error("Error ", error);
-    }
-    finally{
-      setIsLoading(false);
-      setSliderIsOpen(false);
-    }
-  };
+  
 
   const handleAddTrustedIp = async () => {
     if (!maskBits || !description || !IPAddress) {
@@ -286,7 +55,7 @@ const Slider = ({ open, setSliderIsOpen, formType }) => {
 
     try {
       setIsLoading(true);
-      const response = await instance.post(`/addTrustedIp`, payload, {
+      const response = await instance.post(`/addTrustedIP`, payload, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -324,11 +93,8 @@ const Slider = ({ open, setSliderIsOpen, formType }) => {
   };
 
   const handleSubmit = () => {
-    if (formType === "place") handleAddPlace();
-    else if (formType === "subnet") handleAddSubnet();
-    else if (formType === "switch") handleAddSwitch();
-    else if (formType === "accessPoint") handleAddAccessPoint();
-    else if (formType === "TrustedIP") handleAddTrustedIp();
+   
+    handleAddTrustedIp();
     
   };
 
@@ -363,11 +129,7 @@ const Slider = ({ open, setSliderIsOpen, formType }) => {
               lineHeight: "24px",
             }}
           >
-            {formType === "place" && "Add Place"}
-            {formType === "subnet" && "Add subnet"}
-            {formType === "switch" && "Add Switch"}
-            {formType === "accessPoint" && "Add Access Point"}
-            {formType === "TrustedIP" && "Add Trusted IP"}
+            Add Trusted IP
           </Box>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -398,212 +160,8 @@ const Slider = ({ open, setSliderIsOpen, formType }) => {
           </svg>
         </Box>
 
-        {formType === "place" && (
-          <Stack
-            spacing={2}
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-start",
-              gap: "10px",
-              width: "380px",
-              height: "100%",
-            }}
-          >
-            <FormControl
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "flex-start",
-                gap: "6px",
-                width: "100%",
-              }}
-            >
-              <FormLabel>Place Name</FormLabel>
-              <TextField
-                id="outlined-basic"
-                placeholder="Enter Place Name"
-                rows={1}
-                variant="outlined"
-                value={place}
-                onChange={handlePlaceInput}
-                sx={{ width: "100%", padding: "0px" }}
-              />
-            </FormControl>
-          </Stack>
-        )}
-
-        {formType === "subnet" && (
-          <Stack
-            spacing={2}
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-start",
-              gap: "10px",
-              width: "380px",
-              height: "100%",
-            }}
-          >
-            <FormControl
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "flex-start",
-                gap: "6px",
-                width: "100%",
-              }}
-            >
-              <FormLabel>Subnet</FormLabel>
-              <TextField
-                id="outlined-basic"
-                placeholder="x.x.x.x or x.x.x.x.x.x.x.x"
-                rows={1}
-                variant="outlined"
-                value={subnet}
-                onChange={handleSubnetInput}
-                sx={{ width: "100%", padding: "0px" }}
-              />
-            </FormControl>
-
-            <FormControl
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "flex-start",
-                gap: "6px",
-                width: "100%",
-              }}
-            >
-              <FormLabel>Description</FormLabel>
-              <TextField
-                id="outlined-basic"
-                multiline
-                placeholder="Add a description so you know why it was created"
-                rows={2}
-                variant="outlined"
-                value={description}
-                onChange={handleDescriptionInput}
-                sx={{ width: "100%", padding: "0px" }}
-              />
-            </FormControl>
-          </Stack>
-        )}
-
-        {formType === "switch" && (
-          <Stack
-            spacing={2}
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-start",
-              gap: "10px",
-              width: "380px",
-              height: "100%",
-            }}
-          >
-            <FormControl
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "flex-start",
-                gap: "6px",
-                width: "100%",
-              }}
-            >
-              <FormLabel>Chassis ID</FormLabel>
-              <TextField
-                id="outlined-basic"
-                rows={1}
-                variant="outlined"
-                value={switches}
-                onChange={handleSwitchInput}
-                sx={{ width: "100%", padding: "0px" }}
-              />
-            </FormControl>
-
-            <FormControl
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "flex-start",
-                gap: "6px",
-                width: "100%",
-              }}
-            >
-              <FormLabel>Description</FormLabel>
-              <TextField
-                id="outlined-basic"
-                multiline
-                placeholder="Add a description so you know why it was created"
-                rows={2}
-                variant="outlined"
-                value={description}
-                onChange={handleDescriptionInput}
-                sx={{ width: "100%", padding: "0px" }}
-              />
-            </FormControl>
-          </Stack>
-        )}
-
-        {formType === "accessPoint" && (
-          <Stack
-            spacing={2}
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-start",
-              gap: "10px",
-              width: "380px",
-              height: "100%",
-            }}
-          >
-            <FormControl
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "flex-start",
-                gap: "6px",
-                width: "100%",
-              }}
-            >
-              <FormLabel>BSSID ID</FormLabel>
-              <TextField
-                id="outlined-basic"
-                rows={1}
-                variant="outlined"
-                placeholder="xx-xx-xx-xx-xx-xx or xx-xx-xx-xx-xx-x*"
-                value={accessPoint}
-                onChange={handleAccessPointInput}
-                sx={{ width: "100%", padding: "0px" }}
-              />
-            </FormControl>
-
-            <FormControl
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "flex-start",
-                gap: "6px",
-                width: "100%",
-              }}
-            >
-              <FormLabel>Description</FormLabel>
-              <TextField
-                id="outlined-basic"
-                multiline
-                placeholder="Add a description so you know why it was created"
-                rows={2}
-                variant="outlined"
-                value={description}
-                onChange={handleDescriptionInput}
-                sx={{ width: "100%", padding: "0px" }}
-              />
-            </FormControl>
-          </Stack>
-        )}
-
-        {formType === "TrustedIP" && (
+        
+        
           <Stack
             spacing={2}
             sx={{
@@ -679,7 +237,7 @@ const Slider = ({ open, setSliderIsOpen, formType }) => {
               />
             </FormControl>
           </Stack>
-        )}
+        
       </Box>
 
       <Box

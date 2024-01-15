@@ -44,7 +44,6 @@ export default function AddButton() {
         <Slider
           setSliderIsOpen={setIsSliderOpen}
           open={isSliderOpen}
-          formType="TrustedIP"
         />
     </Box>
     // )

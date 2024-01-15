@@ -42,7 +42,7 @@ import { instance } from "Fetch";
 
 const AddAdmin = (props) => {
   const { id, roles, delegations } = useSelector((state) => state.users); // Use "state.users" here
-  const [loadingCountries, setLoadingCountries] = useState(false)
+  const [loadingCountries, setLoadingCountries] = useState(false);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   // const [error, setError] = useState(null);
@@ -65,7 +65,7 @@ const AddAdmin = (props) => {
   useEffect(() => {
     setSidebarOpen(props.open);
     // let res;
-    dispatch(getCurrentUser());
+    // dispatch(getCurrentUser());
     // const getAllAdmins = async () => {
     //   try {
     //     const response = await instance.get(
@@ -109,22 +109,24 @@ const AddAdmin = (props) => {
         if (delegations[0] === "0") {
           setAddresses(
             response.data.data
-              ? [{ fulladdress: "All", locationId: "0" }, ...response.data.data]
+              ? [
+                  { fulladdress: "All", locationId: "0" },
+                  ...response.data.data.records,
+                ]
               : []
           );
           console.log(addresses, "addresses");
         } else {
-          setAddresses(response.data.data ? response.data.data : []);
+          setAddresses(response.data.data.records || []);
         }
         setLoadingCountries(false);
       } catch (error) {
         console.error("Error fetching devices:", error);
       }
     };
-
-    getAddresses();
+    if (props.open===true) getAddresses();
     // getAllAdmins();
-  }, [randomValue, currentPage, dispatch]);
+  }, [randomValue, currentPage, dispatch,props.open]);
 
   const handlePageChange = (pageNumber) => {
     console.log("changing....", pageNumber);
@@ -229,14 +231,14 @@ const AddAdmin = (props) => {
 
   const handleApplyClick = async (e) => {
     e.preventDefault();
-    if(!adminEmail){
+    if (!adminEmail) {
       toast.error("Please Enter Email Address!!");
       return;
-    } 
-    if(locationId.length===0){
+    }
+    if (locationId.length === 0) {
       toast.error("Please Select Location!!");
       return;
-    } 
+    }
     const payload = {
       userName: adminEmail,
       roles: accessLevel,
@@ -246,14 +248,14 @@ const AddAdmin = (props) => {
     console.log("payload", payload);
     try {
       // if (!updating) {
-        const response = await instance.post("/addAdmin", payload);
-        if (response.status === 201) {
-          toast.success("Successfully Added User!!");
-          // props.setrandomValue(Math.random());
-          props.closeSlider();
-        } else {
-          toast.error("Failed to Add User");
-        }
+      const response = await instance.post("/addAdmin", payload);
+      if (response.status === 201) {
+        toast.success("Successfully Added User!!");
+        // props.setrandomValue(Math.random());
+        props.closeSlider();
+      } else {
+        toast.error("Failed to Add User");
+      }
       // } else {
       //   const response = await instance.post("/updateAdmin", payload);
       //   if (response.status === 201) {
@@ -275,8 +277,8 @@ const AddAdmin = (props) => {
   const handleCountryChange = (event, newValue) => {
     console.log("newval:", newValue);
 
-    setPreSelected(newValue)
-    setLocationId(newValue?.map(i=>i.locationId));
+    setPreSelected(newValue);
+    setLocationId(newValue?.map((i) => i.locationId));
   };
 
   return (
@@ -323,10 +325,10 @@ const AddAdmin = (props) => {
           <Box
             sx={{
               color: "var(--grey-800, #404B5A)",
-              marginLeft:'6%'
+              marginLeft: "6%",
             }}
           >
-           <Typography level="h2"> Add Admin</Typography>
+            <Typography level="h2"> Add Admin</Typography>
           </Box>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -358,8 +360,6 @@ const AddAdmin = (props) => {
           </svg>
         </Box>
 
-
-    
         {/* <form className="addUserForm" onSubmit={submitForm}>
           <div>
             <div className="adminEmailFormDivision adminFormElement">
@@ -426,7 +426,7 @@ const AddAdmin = (props) => {
             gap: "10px",
             width: "380px",
             height: "100%",
-            marginLeft:'7%'
+            marginLeft: "7%",
           }}
         >
           <FormControl>
@@ -492,8 +492,8 @@ const AddAdmin = (props) => {
               loadingText="Loading..." // This prop sets the text displayed during loading
               disableCloseOnSelect
               getOptionLabel={(option) => option.fulladdress}
-              isOptionEqualToValue={(option, value) =>
-                option.locationId === value.locationId // Corrected to compare by id
+              isOptionEqualToValue={
+                (option, value) => option.locationId === value.locationId // Corrected to compare by id
               }
               // onInputChange={handleCountryInputChange} // Added this prop
               renderOption={(props, option, { selected }) => (
@@ -509,14 +509,16 @@ const AddAdmin = (props) => {
               )}
               style={{ width: "380px" }}
               renderInput={(params) => (
-                <TextField 
-                  {...params} 
+                <TextField
+                  {...params}
                   // Add the loading prop to TextField as well to show a progress indicator
                   InputProps={{
                     ...params.InputProps,
                     endAdornment: (
                       <>
-                        {loadingCountries ? <CircularProgress color="inherit" size={20} /> : null}
+                        {loadingCountries ? (
+                          <CircularProgress color="inherit" size={20} />
+                        ) : null}
                         {params.InputProps.endAdornment}
                       </>
                     ),
@@ -543,7 +545,7 @@ const AddAdmin = (props) => {
             /> */}
           </FormControl>
         </Stack>
-        </Box>
+      </Box>
 
       <Box
         sx={{

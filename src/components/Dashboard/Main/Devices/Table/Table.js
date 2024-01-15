@@ -58,8 +58,8 @@ const DeviceTableComponent = () => {
           alert(response.data.error);
           return;
         }
-        setData(response.data.data ? response.data.data : []);
-        setTotalPage(response.data.totalPages ? response.data.totalPages : 1);
+        setData(response.data.data.data ? response.data.data.data : []);
+        setTotalPage(response.data.data.total ? response.data.data.total : 1);
       } catch (error) {
         console.error("Error fetching devices:", error);
       }
@@ -72,7 +72,7 @@ const DeviceTableComponent = () => {
           alert(response.data.error);
           return;
         }
-        setAddresses(response.data.data ? response.data.data : []);
+        setAddresses(response.data.data.records || []);
       } catch (error) {
         console.error("Error fetching devices:", error);
       }

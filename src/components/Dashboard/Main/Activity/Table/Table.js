@@ -66,7 +66,7 @@ const TableComponent = () => {
           alert(response.data.error);
           return;
         } else {
-          setData(response.data.data ? response.data.data : []);
+          setData(response.data.data ? response.data.data.data : []);
           setTotalPage(response.data.totalPages ? response.data.totalPages : 1);
         }
       } catch (error) {

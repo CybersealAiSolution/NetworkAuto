@@ -88,9 +88,9 @@ function LocationComponent(props) {
       );
 
       console.log("data",response.data.data);
-      setUserList(response.data.data);
+      setUserList(response.data.data.records || []);
       if (response.status === 200) {
-        let data = response.data.data;
+        let data = response.data.data.records;
 
       // Check if the data is coming from cache and needs parsing
       if(response.data.messageStatus === "Cached"){

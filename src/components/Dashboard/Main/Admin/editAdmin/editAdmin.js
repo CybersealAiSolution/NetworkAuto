@@ -75,36 +75,36 @@ const EditAdmin = (props) => {
       setPreSelected([]);
     }
     // let res;
-    dispatch(getCurrentUser());
-    const getAllAdmins = async () => {
-      try {
-        const response = await instance.get(
-          `/getalladmins?page=${currentPage}`
-        );
-        // res = await instance.get("/getCurrentUser");
-        // dispatch(getCurrentUser());
-        // localStorage.setItem("level", JSON.stringify(res.data.data.roles));
-        // localStorage.setItem("currUser", JSON.stringify(res.data.data));
+    // dispatch(getCurrentUser());
+    // const getAllAdmins = async () => {
+    //   try {
+    //     const response = await instance.get(
+    //       `/getalladmins?page=${currentPage}`
+    //     );
+    //     // res = await instance.get("/getCurrentUser");
+    //     // dispatch(getCurrentUser());
+    //     // localStorage.setItem("level", JSON.stringify(res.data.data.roles));
+    //     // localStorage.setItem("currUser", JSON.stringify(res.data.data));
 
-        // console.log("getAllAdmins", response.data);
-        // console.log("res", res.data.data);
-        // console.log(localStorage.getItem("level"));
+    //     // console.log("getAllAdmins", response.data);
+    //     // console.log("res", res.data.data);
+    //     // console.log(localStorage.getItem("level"));
 
-        // console.log("getAllAdmins", response.data);
-        setData(response.data.data ? response.data.data : []);
-        setTotalPage(response.data.totalPages ? response.data.totalPages : 1);
-        if (response.data.error) {
-          alert(response.data.error);
-          return;
-        } else {
-          // navigate("/");
-          console.log("getalladmins success");
-        }
-      } catch (error) {
-        // Handle any errors that may occur during the API call
-        console.error("Error sending data:", error);
-      }
-    };
+    //     // console.log("getAllAdmins", response.data);
+    //     setData(response.data.data ? response.data.data : []);
+    //     setTotalPage(response.data.totalPages ? response.data.totalPages : 1);
+    //     if (response.data.error) {
+    //       alert(response.data.error);
+    //       return;
+    //     } else {
+    //       // navigate("/");
+    //       console.log("getalladmins success");
+    //     }
+    //   } catch (error) {
+    //     // Handle any errors that may occur during the API call
+    //     console.error("Error sending data:", error);
+    //   }
+    // };
     const getAddresses = async () => {
       try {
         setLoadingCountries(true);
@@ -119,21 +119,22 @@ const EditAdmin = (props) => {
         if (delegations[0] === "0") {
           setAddresses(
             response.data.data
-              ? [{ fulladdress: "All", locationId: "0" }, ...response.data.data]
+              ? [{ fulladdress: "All", locationId: "0" }, ...response.data.data.records]
               : []
           );
           console.log(addresses, "addresses");
         } else {
-          setAddresses(response.data.data ? response.data.data : []);
+          setAddresses(response.data.data.records || []);
         }
         setLoadingCountries(false);
       } catch (error) {
         console.error("Error fetching devices:", error);
       }
     };
-
-    getAddresses();
-    getAllAdmins();
+    if(props.open===true){
+      getAddresses();
+    }
+    // getAllAdmins();
   }, [randomValue, currentPage, dispatch,props.editSliderData]);
 
   const handlePageChange = (pageNumber) => {

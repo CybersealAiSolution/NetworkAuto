@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Typography from "@mui/joy/Typography";
 import { Box } from "@mui/material";
+// import { getCurrentUser } from "./../../../../../store/modules/userSlice/userDetailSlice";
 import {
   DataGrid,
   GridPagination,
@@ -24,6 +25,7 @@ import {
 } from "@mui/x-data-grid";
 import LinearProgress from "@mui/material/LinearProgress";
 import MuiPagination from "@mui/material/Pagination";
+import { getCurrentUser } from "store/modules/userSlice/userDetailSlice";
 // import Filter from "./filter/filter";
 // import { instance } from "Fetch";
 
@@ -379,7 +381,7 @@ const Admin = () => {
     });
   };
   useEffect(()=>{
-
+    dispatch(getCurrentUser());
   },[randomValue])
   return (
     <div className="Component">

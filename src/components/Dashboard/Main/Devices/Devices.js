@@ -89,8 +89,8 @@ function AdminComponent(props) {
       );
 
     //   if (response.status === 200) {
-        setUserList(response.data.data ? response.data.data : []); // Replacing instead of appending
-        setRowCount(response.data.totalPages ? response.data.totalPages : 1); // Assuming the backend sends a 'total' field with total number of rows
+        setUserList(response.data.data ? response.data.data.data : []); // Replacing instead of appending
+        setRowCount(response.data.data.total ? response.data.data.total : 1); // Assuming the backend sends a 'total' field with total number of rows
     //   } else {
     //     console.error("Request failed with status:", response.status);
     //   }

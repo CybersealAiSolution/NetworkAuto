@@ -61,13 +61,18 @@ const TableComponent = ({randomValueOut}) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [deleteSelectedUser, setdeleteSelectedUser] = useState(null);
   const [rowCount, setRowCount] = useState(0); // Total number of rows from the backend
+  
+  // useEffect(() => {
+  //   dispatch(getCurrentUser());
+  // }, [dispatch]);
+  
   useEffect(() => {
     // let res;
-    dispatch(getCurrentUser());
+    // dispatch(getCurrentUser());
     const getAllAdmins = async () => {
       try {
         const response = await instance.get(
-          `/getalladmins?page=${currentPage}`
+          `/getalladmins?page=${currentPage}&search_query=${searchQuery}`
         );
         // res = await instance.get("/getCurrentUser");
         // dispatch(getCurrentUser());
@@ -79,7 +84,7 @@ const TableComponent = ({randomValueOut}) => {
         // console.log(localStorage.getItem("level"));
 
         // console.log("getAllAdmins", response.data);
-        setData(response.data.data ? response.data.data : []);
+        setData(response.data.data ? response.data.data.records : []);
         setRowCount(response.data.totalPages ? response.data.totalPages : 1);
         if (response.data.error) {
           alert(response.data.error);
@@ -118,9 +123,9 @@ const TableComponent = ({randomValueOut}) => {
       }
     };
 
-    getAddresses();
+    // getAddresses();
     getAllAdmins();
-  }, [randomValue, currentPage, dispatch,randomValueOut]);
+  }, [randomValue, currentPage, dispatch,randomValueOut,searchQuery]);
 
   const handlePageChange = (pageNumber) => {
     console.log("changing....", pageNumber);

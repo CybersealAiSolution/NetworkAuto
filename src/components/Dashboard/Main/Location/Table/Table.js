@@ -39,8 +39,8 @@ const TableComponent = () => {
       try {
         const response = await instance.get(`/getEmergencyAddresses?page=${currentPage}`);
     
-        setData(response.data.data ? response.data.data : []);
-        setTotalPage(response.data.totalPages?response.data.totalPages:1);
+        setData(response.data.data.records || []);
+        setTotalPage(response.data.data.total || 1);
         if (response.data.error) {
           alert(response.data.error);
           return;

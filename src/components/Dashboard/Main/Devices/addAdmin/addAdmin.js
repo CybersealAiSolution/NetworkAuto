@@ -47,7 +47,7 @@ const AddAdmin = ({open,closeSlider,fetchData,selectedRowData}) => {
         alert(response.data.error);
         return;
       }
-      setAddresses(response.data.data ? response.data.data : []);
+      setAddresses(response.data.data.records || []);
     } catch (error) {
       console.error("Error fetching devices:", error);
     }

@@ -16,6 +16,8 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft"; // Toggle icon fo
 import ChevronRightIcon from "@mui/icons-material/ChevronRight"; // Toggle icon for opening
 import { CssVarsProvider } from '@mui/joy/styles';
 import ColorSchemeToggle from '../../ColorSheme';
+import Typography from "@mui/joy/Typography";
+
 
 
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -229,7 +231,7 @@ const Sidebar = ({isSidebarOpen,setIsSidebarOpen}) => {
           <ListItem disablePadding>
             <StyledBox1>
               <ListItemIcon sx={{ minWidth: "0px" }}>
-              <Tooltip title="Admin" placement="right" disableHoverListener={isSidebarOpen}>
+              <Tooltip title={<Typography level="subtitle2" fontSize="medium">Admin</Typography>}frontSize="medium" placement="right" disableHoverListener={isSidebarOpen}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
@@ -276,7 +278,7 @@ const Sidebar = ({isSidebarOpen,setIsSidebarOpen}) => {
           <ListItem disablePadding>
             <StyledBox1>
               <ListItemIcon sx={{ minWidth: "0px" }}>
-              <Tooltip title="Activity" placement="right" disableHoverListener={isSidebarOpen}>
+              <Tooltip title={<Typography level="subtitle2" fontSize="medium">Activity</Typography>} placement="right" disableHoverListener={isSidebarOpen}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
@@ -325,7 +327,7 @@ const Sidebar = ({isSidebarOpen,setIsSidebarOpen}) => {
           <ListItem disablePadding>
             <StyledBox1>
               <ListItemIcon sx={{ minWidth: "0px" }}>
-                <Tooltip title="Locations" placement="right" disableHoverListener={isSidebarOpen}>
+                <Tooltip  title={<Typography level="subtitle2" fontSize="medium">Locations</Typography>} placement="right" disableHoverListener={isSidebarOpen}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
@@ -374,7 +376,7 @@ const Sidebar = ({isSidebarOpen,setIsSidebarOpen}) => {
           <ListItem disablePadding>
             <StyledBox1>
               <ListItemIcon sx={{ minWidth: "0px" }}>
-              <Tooltip title="Devices Inventory" placement="right" disableHoverListener={isSidebarOpen}>
+              <Tooltip  title={<Typography level="subtitle2" fontSize="medium">Devices Inventory</Typography>} placement="right" disableHoverListener={isSidebarOpen}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
@@ -422,7 +424,7 @@ const Sidebar = ({isSidebarOpen,setIsSidebarOpen}) => {
           <ListItem disablePadding>
             <StyledBox1>
               <ListItemIcon sx={{ minWidth: "0px" }}>
-              <Tooltip title="Discovered Devices" placement="right" disableHoverListener={isSidebarOpen}>
+              <Tooltip  title={<Typography level="subtitle2" fontSize="medium">Discovered Devices</Typography>} placement="right" disableHoverListener={isSidebarOpen}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
@@ -470,7 +472,7 @@ const Sidebar = ({isSidebarOpen,setIsSidebarOpen}) => {
           <ListItem disablePadding>
             <StyledBox1>
               <ListItemIcon sx={{ minWidth: "0px" }}>
-              <Tooltip title="Trusted IPs" placement="right" disableHoverListener={isSidebarOpen}>
+              <Tooltip title={<Typography level="subtitle2" fontSize="medium">Trusted IPs</Typography>} placement="right" disableHoverListener={isSidebarOpen}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"

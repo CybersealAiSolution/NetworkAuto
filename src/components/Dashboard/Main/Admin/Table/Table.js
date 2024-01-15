@@ -179,7 +179,9 @@ const TableComponent = ({ randomValueOut }) => {
             (params.row.parentId === id || roles === "root") && (
               <FiEdit2
                 style={{ cursor: "pointer" }}
-                onClick={() => handleEditAdmin(params.row)}
+                onClick={() => {
+                  console.log("params",params.row);
+                  handleEditAdmin(params.row)}}
               />
             )}
 
@@ -351,6 +353,7 @@ const TableComponent = ({ randomValueOut }) => {
       userName: user.userName,
       roles: user.roles[0],
       delegation: user.delegations[0] !== "0" ? "✅" : "❌",
+      delegationList:user.delegations,
       parentId: user.parentId,
     };
   });

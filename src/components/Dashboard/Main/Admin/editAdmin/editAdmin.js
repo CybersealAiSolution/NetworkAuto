@@ -54,7 +54,7 @@ const EditAdmin = (props) => {
     props.editSliderData.roles || "admin"
   );
   // const [delegation, setDelegation] = useState([]);
-  const [locationId, setLocationId] = useState(props.locationId || []);
+  const [locationId, setLocationId] = useState(props.editSliderData.delegationList || []);
   const [preSelected, setPreSelected] = useState([]);
   const [randomValue, setRandomValue] = useState(Math.random());
   const [addresses, setAddresses] = useState([]);
@@ -66,11 +66,13 @@ const EditAdmin = (props) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
 
+  console.log("props-data",locationId)
+
   useEffect(() => {
     setSidebarOpen(props.open);
     setAccessLevel(props.editSliderData.roles)
     setAdminEmail(props.editSliderData.userName)
-    // setLocationId(props.locationId)
+    setLocationId(props.editSliderData.delegationList);
     if(props.open===false){
       setPreSelected([]);
     }
@@ -136,6 +138,29 @@ const EditAdmin = (props) => {
     }
     // getAllAdmins();
   }, [randomValue, currentPage, dispatch,props.editSliderData]);
+
+
+  const handlePreSelected = () => {
+    console.log("preselected",locationId);
+    // Filter the addresses to include only those whose locationId is in the locationId list
+    const filteredAddresses = addresses.filter(address =>
+      locationId.includes(address.locationId)
+    );
+
+    console.log("preselected-123",filteredAddresses);
+  
+    // Set the preSelected state with the filtered addresses
+    setPreSelected(filteredAddresses);
+  };
+  
+  useEffect(() => {
+    if (addresses.length > 0) {
+      handlePreSelected();
+    }
+  }, [addresses, locationId]);
+  
+
+  
 
   const handlePageChange = (pageNumber) => {
     console.log("changing....", pageNumber);

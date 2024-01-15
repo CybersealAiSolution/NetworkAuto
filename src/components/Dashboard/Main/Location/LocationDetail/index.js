@@ -7,7 +7,11 @@ import Tabs from "@mui/joy/Tabs";
 import TabList from "@mui/joy/TabList";
 import Tab, { tabClasses } from "@mui/joy/Tab";
 import TabPanel from "@mui/joy/TabPanel";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid,GridPagination,
+  useGridApiContext,
+  GridToolbarContainer,
+  GridToolbarExport, } from "@mui/x-data-grid";
+import MuiPagination from "@mui/material/Pagination";
 import SearchIcon from "@mui/icons-material/Search";
 import Slider from "../Slider";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
@@ -21,12 +25,32 @@ const LocationDetail = () => {
   const { id } = useParams();
   const searchInputRef = useRef(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredPlaces, setFilteredPlaces] = useState([]);
-  const [filteredSubsets, setFilteredSubsets] = useState([]);
-  const [filteredSwitchs, setFilteredSwitchs] = useState([]);
-  const [filteredAccessPoints, setFilteredAccessPoints] = useState([]);
   const [sliderIsOpen, setSliderIsOpen] = useState(false);
   const [formType, setFormType] = useState("place");
+  const [rowCountForPlaces,setRowCountForPlaces] = useState(0);
+  const [paginationModelForPlaces, setPaginationModelForPlaces] = React.useState({
+    pageSize: 25,
+    page: 0,
+  });
+
+  const [rowCountForSubnets,setRowCountForSubnets] = useState(0);
+  const [paginationModelForSubnets, setPaginationModelForSubnets] = React.useState({
+    pageSize: 25,
+    page: 0,
+  });
+
+  const [rowCountForAccessPoints,setRowCountForAccessPoints] = useState(0);
+  const [paginationModelForAccessPoints, setPaginationModelForAccessPoints] = React.useState({
+    pageSize: 25,
+    page: 0,
+  });
+
+  const [rowCountForSwitches,setRowCountForSwitches] = useState(0);
+  const [paginationModelForSwitches, setPaginationModelForSwitches] = React.useState({
+    pageSize: 25,
+    page: 0,
+  });
+  
 
   const getEmergencyAddress = async () => {
     try {
@@ -37,41 +61,53 @@ const LocationDetail = () => {
     }
   };
 
-  const getAccessPointData = async () => {
+  const getAccessPointData = async (paginationModel,searchQuery) => {
     try {
       const response = await instance.get(
-        `/getlocationsdetail/accessPoints/${id}`
+        `/getlocationsdetail/accessPoints/${id}?search=${searchQuery}&page=${
+          paginationModel.page + 1
+        }&page_size=${paginationModel.pageSize}`
       );
       setAccessPoints(
         response.data.accessPoints ? response.data.accessPoints : []
       );
+      setRowCountForAccessPoints(response.data.total);
     } catch (error) {
       console.error("Error getting access point data:", error);
     }
   };
 
-  const getPlaceData = async () => {
+  const getPlaceData = async (paginationModel,searchQuery) => {
     try {
-      const response = await instance.get(`/getlocationsdetail/places/${id}`);
+      const response = await instance.get(`/getlocationsdetail/places/${id}?search=${searchQuery}&page=${
+        paginationModel.page + 1
+      }&page_size=${paginationModel.pageSize}`);
       setPlaces(response.data.places ? response.data.places : []);
+      setRowCountForPlaces(response.data.total);
     } catch (error) {
       console.error("Error getting place data:", error);
     }
   };
 
-  const getSwitchesData = async () => {
+  const getSwitchesData = async (paginationModel,searchQuery) => {
     try {
-      const response = await instance.get(`/getlocationsdetail/switches/${id}`);
+      const response = await instance.get(`/getlocationsdetail/switches/${id}?search=${searchQuery}&page=${
+        paginationModel.page + 1
+      }&page_size=${paginationModel.pageSize}`);
       setSwitches(response.data.switches ? response.data.switches : []);
+      setRowCountForSwitches(response.data.total);
     } catch (error) {
       console.error("Error getting switches data:", error);
     }
   };
 
-  const getSubnetData = async () => {
+  const getSubnetData = async (paginationModel,searchQuery) => {
     try {
-      const response = await instance.get(`/getlocationsdetail/subnets/${id}`);
-      setSubnets(response.data.subnets ? response.data.subnets : []);
+      const response = await instance.get(`/getlocationsdetail/subnets/${id}?search=${searchQuery}&page=${
+        paginationModel.page + 1
+      }&page_size=${paginationModel.pageSize}`);
+      setSubnets(response.data.subnet ? response.data.subnet : []);
+      setRowCountForSubnets(response.data.total);
     } catch (error) {
       console.error("Error getting subnet data:", error);
     }
@@ -79,13 +115,32 @@ const LocationDetail = () => {
 
   useEffect(() => {
     getEmergencyAddress();
-    getAccessPointData();
-    getPlaceData();
-    getSwitchesData();
-    getSubnetData();
+    // getAccessPointData(paginationModelForAccessPoints,"");
+    // getPlaceData(paginationModelForPlaces,"");
+    // getSwitchesData(paginationModelForSwitches,"");
+    // getSubnetData(paginationModelForSubnets,"");
     localStorage.setItem("locationId", window.location.pathname);
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    getAccessPointData(paginationModelForAccessPoints,"");
+  }, [paginationModelForAccessPoints]);
+
+  useEffect(() => {
+    getPlaceData(paginationModelForPlaces,"");
+    
+  }, [paginationModelForPlaces]);
+
+  useEffect(() => {
+     getSwitchesData(paginationModelForSwitches,"");
+    
+  }, [paginationModelForSwitches]);
+
+  useEffect(() => {
+    getSubnetData(paginationModelForSubnets,"");
+    
+  }, [paginationModelForSubnets]);
 
   const placesColumns = [
     {
@@ -197,46 +252,132 @@ const LocationDetail = () => {
 
   const handleSearch = (e, instance) => {
     const query = e.target.value.toLowerCase();
-    // Filter places based on the search query for Address, LocationId, and Description
-    if (instance === "place") {
-      const filtered = places.filter(
-        (place) =>
-          place.Address.toLowerCase().includes(query) ||
-          place.LocationId.toLowerCase().includes(query) ||
-          place.Description.toLowerCase().includes(query)
-      );
-
-      setFilteredPlaces(filtered);
-    } else if (instance === "subnet") {
-      const filtered = subnets.filter(
-        (place) =>
-          place.Subnet.toLowerCase().includes(query) ||
-          place.LocationId.toLowerCase().includes(query) ||
-          place.Description.toLowerCase().includes(query)
-      );
-
-      setFilteredSubsets(filtered);
-    } else if (instance === "switch") {
-      const filtered = switches.filter(
-        (place) =>
-          place.ChassisID.toLowerCase().includes(query) ||
-          place.LocationId.toLowerCase().includes(query) ||
-          place.Description.toLowerCase().includes(query)
-      );
-
-      setFilteredSwitchs(filtered);
-    } else if (instance === "accessPoint") {
-      const filtered = accessPoints.filter(
-        (place) =>
-          place.BSSID.toLowerCase().includes(query) ||
-          place.LocationId.toLowerCase().includes(query) ||
-          place.Description.toLowerCase().includes(query)
-      );
-
-      setFilteredAccessPoints(filtered);
-    }
+    
 
     setSearchQuery(query);
+    if (instance === "place") {
+      getPlaceData(paginationModelForPlaces,query);
+    } else if (instance === "subnet") {
+      getSubnetData(paginationModelForSubnets,query);
+    } else if (instance === "switch") {
+      getSwitchesData(paginationModelForSwitches,query);
+    } else if (instance === "accessPoint") {
+      getAccessPointData(paginationModelForAccessPoints,query);
+    }
+
+
+  };
+
+  function PaginationForPlaces({ page, onPageChange, className }) {
+    const apiRef = useGridApiContext();
+    const pageCount = Math.ceil(rowCountForPlaces / paginationModelForPlaces.pageSize);
+
+    return (
+      <MuiPagination
+        color="primary"
+        className={className}
+        count={pageCount}
+        page={page + 1}
+        onChange={(event, newPage) => {
+          onPageChange(event, newPage - 1);
+        }}
+      />
+    );
+  }
+
+  function CustomPaginationForPlaces(props) {
+    return <GridPagination ActionsComponent={PaginationForPlaces} {...props} />;
+  }
+
+  const handleChangePaginationModelPlaces = (params) => {
+    setPaginationModelForPlaces({
+      pageSize: params.pageSize,
+      page: params.page,
+    });
+  };
+
+  function PaginationForSubnets({ page, onPageChange, className }) {
+    const apiRef = useGridApiContext();
+    const pageCount = Math.ceil(rowCountForSubnets / paginationModelForSubnets.pageSize);
+
+    return (
+      <MuiPagination
+        color="primary"
+        className={className}
+        count={pageCount}
+        page={page + 1}
+        onChange={(event, newPage) => {
+          onPageChange(event, newPage - 1);
+        }}
+      />
+    );
+  }
+
+  function CustomPaginationForSubnets(props) {
+    return <GridPagination ActionsComponent={PaginationForSubnets} {...props} />;
+  }
+
+  const handleChangePaginationModelSubnets = (params) => {
+    setPaginationModelForSubnets({
+      pageSize: params.pageSize,
+      page: params.page,
+    });
+  };
+
+  function PaginationForSwitches({ page, onPageChange, className }) {
+    const apiRef = useGridApiContext();
+    const pageCount = Math.ceil(rowCountForSwitches / paginationModelForSwitches.pageSize);
+
+    return (
+      <MuiPagination
+        color="primary"
+        className={className}
+        count={pageCount}
+        page={page + 1}
+        onChange={(event, newPage) => {
+          onPageChange(event, newPage - 1);
+        }}
+      />
+    );
+  }
+
+  function CustomPaginationForSwitches(props) {
+    return <GridPagination ActionsComponent={PaginationForSwitches} {...props} />;
+  }
+
+  const handleChangePaginationModelSwitches = (params) => {
+    setPaginationModelForSwitches({
+      pageSize: params.pageSize,
+      page: params.page,
+    });
+  };
+
+  function PaginationForAccessPoints({ page, onPageChange, className }) {
+    const apiRef = useGridApiContext();
+    const pageCount = Math.ceil(rowCountForAccessPoints / paginationModelForAccessPoints.pageSize);
+
+    return (
+      <MuiPagination
+        color="primary"
+        className={className}
+        count={pageCount}
+        page={page + 1}
+        onChange={(event, newPage) => {
+          onPageChange(event, newPage - 1);
+        }}
+      />
+    );
+  }
+
+  function CustomPaginationForAccessPoints(props) {
+    return <GridPagination ActionsComponent={PaginationForAccessPoints} {...props} />;
+  }
+
+  const handleChangePaginationModelAccessPoints = (params) => {
+    setPaginationModelForAccessPoints({
+      pageSize: params.pageSize,
+      page: params.page,
+    });
   };
 
   return (
@@ -272,7 +413,7 @@ const LocationDetail = () => {
           style={{
             padding: "12px",
             display: "flex",
-            // justifyContent: "space-evenly",
+            justifyContent: "space-evenly",
             maxWidth:'100%',
             gap:"8px",
           }}
@@ -494,11 +635,15 @@ const LocationDetail = () => {
             <TabPanel value={0} sx={{ padding: 0}}>
               <DataGrid
                 className="userInventory"
-                rows={filteredPlaces.length > 0 ? filteredPlaces : places}
+                rows={places}
                 columns={placesColumns}
                 getRowId={(row) => row.LocationId}
                 autoHeight={false}
                 disableRowSelectionOnClick
+                rowCount={rowCountForPlaces}
+                paginationMode="server"
+                paginationModel={paginationModelForPlaces}
+                onPaginationModelChange={handleChangePaginationModelPlaces}
                 sx={{
                   borderRadius: "20px",
                   // overflow: "scroll",
@@ -507,20 +652,26 @@ const LocationDetail = () => {
                 }}
                 // rowHeight={35} // Set the desired row height in pixels
                 slots={{
+                  pagination: CustomPaginationForPlaces,
                   toolbar: () => CustomGridToolbar("place"),
                   loadingOverlay: LinearProgress,
                 }}
-                hideFooter={true}
+                // hideFooter={true}
               />
             </TabPanel>
             <TabPanel value={1} sx={{ padding: 0 }}>
               <DataGrid
                 className="userInventory"
-                rows={filteredSubsets.length > 0 ? filteredSubsets : subnets}
+                rows={subnets}
                 columns={subnetsColumns}
                 getRowId={(row) => row.Subnet}
                 disableRowSelectionOnClick
+                rowCount={rowCountForSubnets}
+                paginationMode="server"
+                paginationModel={paginationModelForSubnets}
+                onPaginationModelChange={handleChangePaginationModelSubnets}
                 slots={{
+                  pagination: CustomPaginationForSubnets,
                   toolbar: () => CustomGridToolbar("subnet"),
                   loadingOverlay: LinearProgress,
                 }}
@@ -530,21 +681,23 @@ const LocationDetail = () => {
                   background: "white",
                   height: 572, // Example fixed height
                 }}
-                hideFooter={true}
+                // hideFooter={true}
               />
             </TabPanel>
             <TabPanel value={2} sx={{ padding: 0}}>
               <DataGrid
                 className="userInventory"
-                rows={
-                  filteredAccessPoints.length > 0
-                    ? filteredAccessPoints
-                    : accessPoints
+                rows={ accessPoints
                 }
                 columns={accessPointsColumns}
                 getRowId={(row) => row.BSSID}
                 disableRowSelectionOnClick
+                rowCount={rowCountForAccessPoints}
+                paginationMode="server"
+                paginationModel={paginationModelForAccessPoints}
+                onPaginationModelChange={handleChangePaginationModelAccessPoints}
                 slots={{
+                  pagination: CustomPaginationForAccessPoints,
                   toolbar: () => CustomGridToolbar("accessPoint"),
                   loadingOverlay: LinearProgress,
                 }}
@@ -554,17 +707,22 @@ const LocationDetail = () => {
                   height: 572, // Example fixed height
                   background: "white",
                 }}
-                hideFooter={true}
+                // hideFooter={true}
               />
             </TabPanel>
             <TabPanel value={3} sx={{ padding: 0}}>
               <DataGrid
                 className="userInventory"
-                rows={filteredSwitchs.length > 0 ? filteredSwitchs : switches}
+                rows={switches}
                 columns={switchesColumns}
                 getRowId={(row) => row.ChassisID}
                 disableRowSelectionOnClick
+                rowCount={rowCountForSwitches}
+                paginationMode="server"
+                paginationModel={paginationModelForSwitches}
+                onPaginationModelChange={handleChangePaginationModelSwitches}
                 slots={{
+                  pagination: CustomPaginationForSwitches,
                   toolbar: () => CustomGridToolbar("switch"),
                   loadingOverlay: LinearProgress,
                 }}
@@ -574,7 +732,7 @@ const LocationDetail = () => {
                   height: 572, // Example fixed height
                   background: "white",
                 }}
-                hideFooter={true}
+                // hideFooter={true}
               />
             </TabPanel>
           </Tabs>

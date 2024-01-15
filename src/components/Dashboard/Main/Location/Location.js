@@ -190,12 +190,7 @@ function LocationComponent(props) {
             className="onHover"
             onClick={() => {
               copyLocationId(params.row.locationId);
-              dispatch(
-                setAlert({
-                  msg: "Copied...",
-                  status: "Successful",
-                })
-              );
+              toast.success('Copied...');
             }}
             sx={{
               fontSize: "medium",

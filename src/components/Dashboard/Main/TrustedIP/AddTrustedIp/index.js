@@ -8,7 +8,7 @@ import { Button as ButtonJoy } from "@mui/joy";
 import { setAlert } from "../../../../../store/alertSlice/alertSlice";
 import { useDispatch,useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
-
+import { toast } from 'react-toastify';
 
 
 const AddTrustedIp = (props) => {
@@ -35,7 +35,7 @@ const AddTrustedIp = (props) => {
   const handleApplyClick = async (event) => {
     
     if (formData.remark === "") {
-      dispatch(setAlert({ msg: "Remark required", status: "Failed" }));
+      toast.error('Remark required!!');
       props.closeSlider();
       return;
     }
@@ -53,13 +53,7 @@ const AddTrustedIp = (props) => {
       // if (!updating) {
         const response = await instance.post("manage_did/addRemark", payload);
 
-        
-        dispatch(
-          setAlert({
-            msg: response.data.message,
-            status: response.data.messageStatus,
-          })
-        );
+        toast.success(response.data.message);
         if (response.data.messageStatus === "Successful") {
           props.fetchData({pageSize: 25, page: 0}, "", {
             numberType: [],
@@ -72,40 +66,20 @@ const AddTrustedIp = (props) => {
       console.error("Error sending data:", err);
       if (err?.response && err?.response?.status === 401) {
         if (err?.response?.data?.redirect) {
-          dispatch(
-            setAlert({
-              msg: err?.response?.data?.message,
-              status: err?.response?.data?.messageStatus,
-            })
-          );
+          toast.error(err.response.data.message);
           // Redirect the user to the homepage or login page. This depends on your routing library.
           navigate('/'); // Adjust this based on your frontend framework.
         }
     }
     else if(err?.response && err?.response?.status === 400){
-      dispatch(
-        setAlert({
-          msg: err?.response?.data?.message,
-          status: err?.response?.data?.messageStatus,
-        })
-      );
+      toast.error(err.response.data.message);
     } 
     else if(err?.response?.status === 403){
-      dispatch(
-        setAlert({
-          msg: "missing CSRF Token",
-          status: "Failed",
-        })
-      );
+      toast.error('missing CSRF Token');
       navigate('/');
     }
     else{
-      dispatch(
-        setAlert({
-          msg: err?.response?.data?.message,
-          status: err?.response?.data?.messageStatus,
-        })
-      );
+      toast.error(err.response.data.message);
     } 
   }
     finally{

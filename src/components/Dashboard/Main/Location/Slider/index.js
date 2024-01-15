@@ -6,12 +6,11 @@ import FormControl from "@mui/joy/FormControl";
 import Button from "@mui/material/Button";
 import { useParams } from "react-router-dom";
 import { instance } from "Fetch";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setAlert } from "../../../../../store/alertSlice/alertSlice";
 import { Button as ButtonJoy } from "@mui/joy";
 import { toast } from "react-toastify";
-
 
 const Slider = ({ open, setSliderIsOpen, formType }) => {
   const dispatch = useDispatch();
@@ -24,7 +23,7 @@ const Slider = ({ open, setSliderIsOpen, formType }) => {
   const [description, setDescription] = useState("");
   const [maskBits, setMaskBits] = useState("");
   const [IPAddress, setIPAddress] = useState("");
-  const [isLoading,setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {}, [open]);
 
@@ -47,7 +46,7 @@ const Slider = ({ open, setSliderIsOpen, formType }) => {
   const handleDescriptionInput = (e) => {
     setDescription(e.target.value);
   };
-  
+
   const handleMaskBitsInput = (e) => {
     setMaskBits(e.target.value);
   };
@@ -67,7 +66,7 @@ const Slider = ({ open, setSliderIsOpen, formType }) => {
       return;
     }
     const payload = {
-      placeName:place
+      placeName: place,
     };
 
     try {
@@ -78,33 +77,15 @@ const Slider = ({ open, setSliderIsOpen, formType }) => {
         },
       });
       toast.success(response.data.message);
-      // dispatch(
-      //   setAlert({
-      //     msg: response.data.message,
-      //     status: response.data.messageStatus,
-      //   })
-      // );
     } catch (error) {
-      if(error.response.status === 403){
+      if (error.response.status === 403) {
         toast.error("missing CSRF Token");
-        // dispatch(
-        //   setAlert({
-        //     msg: "missing CSRF Token",
-        //     status: "Failed",
-        //   })
-        // );
-        navigate('/');
+        navigate("/");
+      } else {
+        toast.error("Something went Wrong!!");
       }
-      else{
-      dispatch(
-        setAlert({
-          msg: 'Something went Wrong!!',
-          status: 'Failed',
-        })
-      );}
       console.error("Error ", error);
-    }
-    finally{
+    } finally {
       setIsLoading(false);
       setSliderIsOpen(false);
     }
@@ -112,12 +93,7 @@ const Slider = ({ open, setSliderIsOpen, formType }) => {
 
   const handleAddSubnet = async () => {
     if (!subnet || !description) {
-      dispatch(
-        setAlert({
-          msg: "Please fill all fields!",
-          status: "Failed",
-        })
-      );
+      toast.info("Please fill all fields!");
       return;
     }
     const payload = {
@@ -132,33 +108,16 @@ const Slider = ({ open, setSliderIsOpen, formType }) => {
           "Content-Type": "application/json",
         },
       });
-      dispatch(
-        setAlert({
-          msg: response.data.message,
-          status: response.data.messageStatus,
-        })
-      );
+      toast.success(response.data.message);
     } catch (error) {
-      if(error.response.status === 403){
-        dispatch(
-          setAlert({
-            msg: "missing CSRF Token",
-            status: "Failed",
-          })
-        );
-        navigate('/');
-      }
-      else{
-      dispatch(
-        setAlert({
-          msg: 'Something went Wrong!!',
-          status: 'Failed',
-        })
-      );
+      if (error.response.status === 403) {
+        toast.error("missing CSRF Token!!");
+        navigate("/");
+      } else {
+        toast.error("Something went Wrong!!");
       }
       console.error("Error ", error);
-    }
-    finally{
+    } finally {
       setIsLoading(false);
       setSliderIsOpen(false);
     }
@@ -166,17 +125,12 @@ const Slider = ({ open, setSliderIsOpen, formType }) => {
 
   const handleAddSwitch = async () => {
     if (!switches || !description) {
-      dispatch(
-        setAlert({
-          msg: "Please fill all fields!",
-          status: "Failed",
-        })
-      );
+      toast.info("Please fill all fields!");
       return;
     }
     const payload = {
-      ChassisID:switches,
-      description:description,
+      ChassisID: switches,
+      description: description,
     };
 
     try {
@@ -186,33 +140,16 @@ const Slider = ({ open, setSliderIsOpen, formType }) => {
           "Content-Type": "application/json",
         },
       });
-      dispatch(
-        setAlert({
-          msg: response.data.message,
-          status: response.data.messageStatus,
-        })
-      );
+      toast.success(response.data.message);
     } catch (error) {
-      if(error.response.status === 403){
-        dispatch(
-          setAlert({
-            msg: "missing CSRF Token",
-            status: "Failed",
-          })
-        );
-        navigate('/');
-      }
-      else{
-      dispatch(
-        setAlert({
-          msg: 'Something went Wrong!!',
-          status: 'Failed',
-        })
-      );
+      if (error.response.status === 403) {
+        toast.error('missing CSRF Token');
+        navigate("/");
+      } else {
+        toast.error('Something went Wrong!!');
       }
       console.error("Error ", error);
-    }
-    finally{
+    } finally {
       setIsLoading(false);
       setSliderIsOpen(false);
     }
@@ -220,17 +157,12 @@ const Slider = ({ open, setSliderIsOpen, formType }) => {
 
   const handleAddAccessPoint = async () => {
     if (!accessPoint || !description) {
-      dispatch(
-        setAlert({
-          msg: "Please fill all fields!",
-          status: "Failed",
-        })
-      );
+      toast.info("Please fill all fields!");
       return;
     }
     const payload = {
-      bbsid:accessPoint,
-      description:description,
+      bbsid: accessPoint,
+      description: description,
     };
 
     try {
@@ -240,37 +172,16 @@ const Slider = ({ open, setSliderIsOpen, formType }) => {
           "Content-Type": "application/json",
         },
       });
-      toast.success(`${response.data.message}`);
-      // dispatch(
-      //   setAlert({
-      //     msg: response.data.message,
-      //     status: response.data.messageStatus,
-      //   })
-      // );
+      toast.success(response.data.message);
     } catch (error) {
-      // toast.error("Something went Wrong!!");
-      if(error.response.status === 403){
-        // dispatch(
-        //   setAlert({
-        //     msg: "missing CSRF Token",
-        //     status: "Failed",
-        //   })
-        // );
+      if (error.response.status === 403) {
         toast.error("missing CSRF Token");
-        navigate('/');
-      }
-      else{
-      // dispatch(
-      //   setAlert({
-      //     msg: 'Something went Wrong!!',
-      //     status: 'Failed',
-      //   })
-      // );
-      toast.error("Something went Wrong!!");
+        navigate("/");
+      } else {
+        toast.error("Something went Wrong!!");
       }
       console.error("Error ", error);
-    }
-    finally{
+    } finally {
       setIsLoading(false);
       setSliderIsOpen(false);
     }
@@ -337,7 +248,6 @@ const Slider = ({ open, setSliderIsOpen, formType }) => {
     else if (formType === "switch") handleAddSwitch();
     else if (formType === "accessPoint") handleAddAccessPoint();
     // else if (formType === "TrustedIP") handleAddTrustedIp();
-    
   };
 
   return (

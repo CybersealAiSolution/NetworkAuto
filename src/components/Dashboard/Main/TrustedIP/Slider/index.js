@@ -40,12 +40,7 @@ const Slider = ({ open, setSliderIsOpen }) => {
 
   const handleAddTrustedIp = async () => {
     if (!maskBits || !description || !IPAddress) {
-      dispatch(
-        setAlert({
-          msg: "Please fill all fields!",
-          status: "Failed",
-        })
-      );
+      toast.error("Please fill all fields!");
       return;
     }
     const payload = {

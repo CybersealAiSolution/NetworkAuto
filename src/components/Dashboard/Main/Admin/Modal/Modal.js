@@ -8,6 +8,7 @@ import Modal from "@mui/material/Modal";
 import { useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import { instance } from "Fetch";
+import { toast } from 'react-toastify';
 
 const style = {
   position: "absolute",
@@ -35,6 +36,7 @@ const BasicModal = (props) => {
     try {
       setLoader(true)
       const response = await instance.get(`/tenants/deleteAdmin/${obj.userName}`);
+      toast.success(response.data.message);
       // dispatch(
       //   setAlert({
       //     msg: response.data.message,
@@ -44,20 +46,10 @@ const BasicModal = (props) => {
     } catch (err) {
       console.error(`failed to delete admin users ${err}`);
       if (err.response.status === 403) {
-        // dispatch(
-        //   setAlert({
-        //     msg: "missing CSRF Token",
-        //     status: "Failed",
-        //   })
-        // );
+        toast.error('missing CSRF Token');
         navigate('/');
       } else {
-        // dispatch(
-        //   setAlert({
-        //     msg: "Failed to delete tenant admins ",
-        //     status: "Failed",
-        //   })
-        // );
+        toast.error("Failed to delete tenant admins ");
       }
     }
     setLoader(false)

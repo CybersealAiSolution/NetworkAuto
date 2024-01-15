@@ -28,6 +28,7 @@ import MuiPagination from "@mui/material/Pagination";
 import { getCurrentUser } from "store/modules/userSlice/userDetailSlice";
 // import Filter from "./filter/filter";
 // import { instance } from "Fetch";
+import { toast } from 'react-toastify';
 
 const Admin = () => {
   const dispatch = useDispatch();
@@ -85,12 +86,7 @@ const Admin = () => {
       console.error("Request failed to fetch tenants form data", err);
       if (err.response && err.response.status === 401) {
         if (err.response.data.redirect) {
-          //   dispatch(
-          //     setAlert({
-          //       msg: err.response.data.message,
-          //       status: "Failed",
-          //     })
-          //   );
+          toast.error(err.response.data.message);
           navigate("/");
         }
       } else {
@@ -100,6 +96,7 @@ const Admin = () => {
         //     status: "Failed",
         //   })
         // );
+        toast.error("Failed to fetch tenant admins form data");
       }
     }
 

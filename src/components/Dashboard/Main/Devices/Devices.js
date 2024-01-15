@@ -1,23 +1,3 @@
-// import React, { useState } from 'react'
-// import './index.css'
-// import TableComponent from '../Devices/Table/Table'
-// // import Botton from './Button/Button'
-
-// const Devices = () => {
-//   return (
-//     <div className="adminComponent">
-//         <div className="adminComponentHeader">
-//             <h1 className="TableComponentTitle">Devices</h1>
-//         </div>
-//         <div className='tableBox'>
-//             <TableComponent/>
-//         </div>
-//     </div>
-// )
-// }
-
-// export default Devices
-
 import React, { useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import Typography from "@mui/joy/Typography";
@@ -52,7 +32,6 @@ import Menu from "@mui/material/MenuList";
 import Popper from "@mui/material/Popper";
 import Paper from "@mui/material/Paper";
 import { ClickAwayListener } from "@mui/base/ClickAwayListener";
-
 
 function AdminComponent(props) {
   const dispatch = useDispatch();
@@ -102,23 +81,13 @@ function AdminComponent(props) {
       toast.error(`${err.response.data.message}`);
       if (err.response && err.response.status === 401) {
         if (err.response.data.redirect) {
-          // dispatch(
-          //   setAlert({
-          //     msg: err.response.data.message,
-          //     status: "Failed",
-          //   })
-          // );
+          toast.error(err.response.data.message);
           navigate('/');
         }
       } 
-      // else {
-      //   dispatch(
-      //     setAlert({
-      //       msg: "Failed to fetch tenant admins form data",
-      //       status: "Failed",
-      //     })
-      //   );
-      // }
+      else {
+        toast.error('Failed to fetch tenant admins form data');
+      }
     }
 
     setIsLoading(false);

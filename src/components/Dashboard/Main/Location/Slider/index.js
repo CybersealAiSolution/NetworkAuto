@@ -57,16 +57,17 @@ const Slider = ({ open, setSliderIsOpen, formType }) => {
 
   const handleAddPlace = async () => {
     if (!place) {
-      dispatch(
-        setAlert({
-          msg: "Please fill all fields!",
-          status: "Failed",
-        })
-      );
+      toast.error("Please fill all fields!");
+      // dispatch(
+      //   setAlert({
+      //     msg: "Please fill all fields!",
+      //     status: "Failed",
+      //   })
+      // );
       return;
     }
     const payload = {
-      place
+      placeName:place
     };
 
     try {
@@ -76,20 +77,22 @@ const Slider = ({ open, setSliderIsOpen, formType }) => {
           "Content-Type": "application/json",
         },
       });
-      dispatch(
-        setAlert({
-          msg: response.data.message,
-          status: response.data.messageStatus,
-        })
-      );
+      toast.success(response.data.message);
+      // dispatch(
+      //   setAlert({
+      //     msg: response.data.message,
+      //     status: response.data.messageStatus,
+      //   })
+      // );
     } catch (error) {
       if(error.response.status === 403){
-        dispatch(
-          setAlert({
-            msg: "missing CSRF Token",
-            status: "Failed",
-          })
-        );
+        toast.error("missing CSRF Token");
+        // dispatch(
+        //   setAlert({
+        //     msg: "missing CSRF Token",
+        //     status: "Failed",
+        //   })
+        // );
         navigate('/');
       }
       else{

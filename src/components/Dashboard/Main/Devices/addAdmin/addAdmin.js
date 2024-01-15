@@ -114,7 +114,7 @@ const AddAdmin = ({open,closeSlider,fetchData,selectedRowData}) => {
     console.log("newval:", newValue);
     setChoosenAddress(newValue);
     if(newValue)getPlaces(newValue.locationId);
-    else {setChoosenPlace(null);setChoosenType("");}
+    else {setChoosenPlace(null);setChoosenType("");setPlaceList([]);}
 
   };
 

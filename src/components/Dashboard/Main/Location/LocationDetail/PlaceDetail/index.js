@@ -77,9 +77,9 @@ const PlaceDetail = () => {
         }&page_size=${paginationModel.pageSize}`
       );
       setAccessPoints(
-        response.data.accessPoints ? response.data.accessPoints : []
+        response.data.data.accessPoints ? response.data.data.accessPoints : []
       );
-      setRowCountForAccessPoints(response.data.total);
+      setRowCountForAccessPoints(response.data.data.totalData);
     } catch (error) {
       console.error("Error getting access point data:", error);
     }
@@ -91,8 +91,8 @@ const PlaceDetail = () => {
       const response = await instance.get(`/getlocationsdetail/switches/${id}?search=${searchQuery}&page=${
         paginationModel.page + 1
       }&page_size=${paginationModel.pageSize}`);
-      setSwitches(response.data.switches ? response.data.switches : []);
-      setRowCountForSwitches(response.data.total);
+      setSwitches(response.data.data.switches ? response.data.data.switches : []);
+      setRowCountForSwitches(response.data.data.totalData);
     } catch (error) {
       console.error("Error getting switches data:", error);
     }
@@ -103,8 +103,8 @@ const PlaceDetail = () => {
       const response = await instance.get(`/getlocationsdetail/subnets/${id}?search=${searchQuery}&page=${
         paginationModel.page + 1
       }&page_size=${paginationModel.pageSize}`);
-      setSubnets(response.data.subnet ? response.data.subnet : []);
-      setRowCountForSubnets(response.data.total);
+      setSubnets(response.data.data.subnet ? response.data.data.subnet : []);
+      setRowCountForSubnets(response.data.data.totalData);
     } catch (error) {
       console.error("Error getting subnet data:", error);
     }

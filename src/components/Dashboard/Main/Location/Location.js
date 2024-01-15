@@ -93,10 +93,10 @@ function LocationComponent(props) {
       if (response.status === 200) {
         let data = response.data.data.records || [];
 
-      // Check if the data is coming from cache and needs parsing
-      if(response.data.messageStatus === "Cached"){
-        data = JSON.parse(data);
-      }
+      // // Check if the data is coming from cache and needs parsing
+      // if(response.data.messageStatus === "Cached"){
+      //   data = JSON.parse(data);
+      // }
         setUserList(data);
         setRowCount(data.total);
       } else {

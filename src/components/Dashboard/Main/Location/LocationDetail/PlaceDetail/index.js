@@ -213,7 +213,7 @@ console.log(data);
           style={{
             padding: "2%",
             display: "flex",
-            // justifyContent: "space-around",
+            justifyContent: "space-evenly",
             maxWidth:'100%',
             gap:"8px"
           }}

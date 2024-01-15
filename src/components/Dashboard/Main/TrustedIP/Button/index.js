@@ -7,7 +7,7 @@ import Slider from "../Slider";
 // import TrustedIp from "..";
 
 export default function AddButton() {
-  // const { roles } = useSelector((state) => state.users); // Use "state.users" here
+  const { roles } = useSelector((state) => state.users); // Use "state.users" here
   const [isSliderOpen, setIsSliderOpen] = useState(false);
 
   const handleCloseSlider = () => {
@@ -19,7 +19,7 @@ export default function AddButton() {
 //   };
 
   return (
-    // (roles === "root" || roles === "admin") && (
+    (roles === "root" || roles === "admin") && (
       <Box>
         <Button
             sx={{
@@ -44,9 +44,8 @@ export default function AddButton() {
         <Slider
           setSliderIsOpen={setIsSliderOpen}
           open={isSliderOpen}
-          formType="TrustedIP"
         />
     </Box>
-    // )
+    )
   );
 }

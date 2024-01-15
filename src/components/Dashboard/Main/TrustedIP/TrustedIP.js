@@ -40,6 +40,7 @@ import { Box } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { border, borderBottom } from "@mui/system";
 // import Button from "./Button/index";
+import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import Tabs from '@mui/joy/Tabs';
 import TabList from '@mui/joy/TabList';
@@ -97,27 +98,28 @@ function TrustedIp() {
         }
       } catch (err) {
         console.error("Request to fetch Trusted IPs failed");
+        toast.error(`${err.response.data.message}`);
         if (err.response && err.response.status === 401) {
           if (err.response.data.redirect) {
-            dispatch(
-              setAlert({
-                msg: err.response.data.message,
-                status: err.response.data.messageStatus,
-              })
-            );
+            // dispatch(
+            //   setAlert({
+            //     msg: err.response.data.message,
+            //     status: err.response.data.messageStatus,
+            //   })
+            // );
               // Redirect the user to the homepage or login page. This depends on your routing library.
               navigate('/'); // Adjust this based on your frontend framework.
               
           }
       }
-      else{
-        dispatch(
-          setAlert({
-            msg: err.response.data.message,
-            status: err.response.data.messageStatus,
-          })
-        );
-      }   
+      // else{
+      //   dispatch(
+      //     setAlert({
+      //       msg: err.response.data.message,
+      //       status: err.response.data.messageStatus,
+      //     })
+      //   );
+      // }   
       }
   
       setLoading(false);
@@ -267,7 +269,9 @@ function TrustedIp() {
         <div className="ComponentHeader">
           <Typography level="h1">Trusted IPs</Typography>
           {/* {roles !== 'ReadOnly' &&  */}
+          {(roles === "root" || roles === "admin") && (
           <AddButton />
+          )}
           {/*  } */}
 
         </div>

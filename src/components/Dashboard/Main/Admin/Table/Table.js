@@ -83,9 +83,9 @@ const TableComponent = ({randomValueOut}) => {
         // console.log("res", res.data.data);
         // console.log(localStorage.getItem("level"));
 
-        // console.log("getAllAdmins", response.data);
-        setData(response.data.data ? response.data.data.records : []);
-        setRowCount(response.data.totalPages ? response.data.totalPages : 1);
+        // console.log("getAllAdmins", response.data.data);
+        setData(response.data.data?.records ? response.data.data?.records : []);
+        setRowCount(response.data.data.total ? response.data.data.total : 1);
         if (response.data.error) {
           alert(response.data.error);
           return;

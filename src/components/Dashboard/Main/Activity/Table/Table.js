@@ -56,26 +56,56 @@ const TableComponent = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [deleteSelectedUser, setdeleteSelectedUser] = useState(null);
   const [rowCount, setRowCount] = useState(0); // Total number of rows from the backend
-  useEffect(() => {
-    const geteventlogs = async () => {
-      try {
-        const response = await instance.get(
-          `/eventlogs/getevents?page=${currentPage}`
-        );
-        if (response.data.error) {
-          alert(response.data.error);
-          return;
-        } else {
-          setData(response.data.data ? response.data.data.data : []);
-          setTotalPage(response.data.totalPages ? response.data.totalPages : 1);
-        }
-      } catch (error) {
-        // Handle any errors that may occur during the API call
-        console.error("Error sending data:", error);
+
+
+  const geteventlogs = async (paginationModel,searchQuery) => {
+    try {
+      const response = await instance.get(
+        `/eventlogs/getevents?&page=${paginationModel.page + 1
+        }&page_size=${paginationModel.pageSize
+        }&search=${searchQuery}`
+      );
+      if (response.data.error) {
+        alert(response.data.error);
+        return;
+      } else {
+        setData(response.data.data ? response.data.data.data : []);
+        setTotalPage(response.data.data.totalData ? response.data.data.totalData : 1);
+
       }
+    } catch (error) {
+      // Handle any errors that may occur during the API call
+      console.error("Error sending data:", error);
+    }
+  };
+
+
+
+  useEffect(() => {
+    // Define a function that you can call conditionally
+    const doFetchData = () => {
+      geteventlogs(paginationModel, searchQuery);
     };
-    geteventlogs();
-  }, []);
+
+    // Check the condition inside the effect
+    if (searchQuery === "") {
+    //   if (tenantId) {
+        doFetchData();
+    //   }
+    } else {
+      // Set up a delay for the fetchData call
+      const timeoutId = setTimeout(() => {
+        // if (tenantId) {
+          doFetchData();
+        // }
+      }, 1500); // Adjust time as needed
+
+      // Cleanup function to cancel the timeout if the component unmounts or any dependency changes
+      return () => clearTimeout(timeoutId);
+    }
+    // Since you're referencing `searchQuery` inside useEffect, it should be included in the dependency array.
+  }, [paginationModel, searchQuery]);
+
 
   const transformAndOpenModal = (details) => {
     try {
@@ -235,7 +265,7 @@ const TableComponent = () => {
             loadingOverlay: LinearProgress,
           }}
           loading={loading}
-          checkboxSelection
+          // checkboxSelection
           disableRowSelectionOnClick
           sx={{
             borderRadius: "20px",

@@ -46,7 +46,9 @@
 .tablediv{
     /* margin-top: '-10%'; */
     flex-grow: 1;
-    height:50%;
+    height:650px;
+    /* min-height:700px; */
+    overflow-y:auto;
     margin-bottom: 15px;
 }
 

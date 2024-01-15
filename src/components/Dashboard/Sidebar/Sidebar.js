@@ -157,12 +157,12 @@ const Sidebar = ({isSidebarOpen,setIsSidebarOpen}) => {
     <Box
       bgcolor="#F8F9FA"
       sx={{
-        width: isSidebarOpen ? "100%" : "90px", // Adjust the width accordingly
+        // width: isSidebarOpen ? "100%" : "90px", // Adjust the width accordingly
         // minWidth: "250px",
         height: "100%",
         display: "flex",
         flexDirection: "column",
-        transition: isSidebarOpen ? "" : "width 1s ease-in",
+        // transition: isSidebarOpen ? "" : "width 1s ease-in",
         // alignItems: 'flex-start',
         // gap: "36px",
       }}
@@ -171,13 +171,14 @@ const Sidebar = ({isSidebarOpen,setIsSidebarOpen}) => {
         {isSidebarOpen && (
           <Box sx={{
             display:"flex",
-            // gap:"12px",
-            justifyContent:"flex-end"
+            width:"100%",
+            gap:"24px",
+            // justifyContent:"space-around"
           }}>
             <IconButton onClick={handleToggleSidebar}>
               <ChevronLeftIcon />
             </IconButton>
-            {/* <Link to="/dashboard" style={{ textDecoration: 'none'}}>
+            <Link to="/dashboard" style={{ }}>
               <StyledImage
                 src="/softel-communications-logo-small.png"
                 alt="My Image"
@@ -185,10 +186,10 @@ const Sidebar = ({isSidebarOpen,setIsSidebarOpen}) => {
                 sx={{
                   alignSelf: "center",
                   padding: "0px",
-                  // minHeight: "80px",
+                  minHeight: "80px",
                 }}
               />
-          </Link> */}
+          </Link>
           {/* <CssVarsProvider>
             <ColorSchemeToggle sx={{ ml: 'auto' }} />
           </CssVarsProvider> */}

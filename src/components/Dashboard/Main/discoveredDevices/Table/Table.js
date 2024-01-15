@@ -69,22 +69,48 @@ const DeviceTableComponent = () => {
     );
   });
 
-  useEffect(() => {
-    const getDevices = async () => {
-      try {
-        const response = await instance.get(`/devices/?page=${currentPage}`);
-        if (response.data.error) {
-          alert(response.data.error);
-          return;
-        }
-        setData(response.data.data.data ? response.data.data.data : []);
-        setTotalPage(response.data.data.total ? response.data.data.total : 1);
-      } catch (error) {
-        console.error("Error fetching devices:", error);
+
+  const getDevices = async (paginationModel, searchQuery) => {
+    try {
+      const response = await instance.get(`/devices/?&page=${paginationModel.page + 1
+      }&page_size=${paginationModel.pageSize
+      }&search=${searchQuery}`);
+      if (response.data.error) {
+        alert(response.data.error);
+        return;
+
       }
+      setData(response.data.data.data ? response.data.data.data : []);
+        setTotalPage(response.data.data.total ? response.data.data.total : 1);
+    } catch (error) {
+      console.error("Error fetching devices:", error);
+    }
+  };
+
+  useEffect(() => {
+    // Define a function that you can call conditionally
+    const doFetchData = () => {
+      getDevices(paginationModel, searchQuery);
     };
-    getDevices();
-  }, [currentPage]);
+
+    // Check the condition inside the effect
+    if (searchQuery === "") {
+    //   if (tenantId) {
+        doFetchData();
+    //   }
+    } else {
+      // Set up a delay for the fetchData call
+      const timeoutId = setTimeout(() => {
+        // if (tenantId) {
+          doFetchData();
+        // }
+      }, 1500); // Adjust time as needed
+
+      // Cleanup function to cancel the timeout if the component unmounts or any dependency changes
+      return () => clearTimeout(timeoutId);
+    }
+    // Since you're referencing `searchQuery` inside useEffect, it should be included in the dependency array.
+  }, [paginationModel, searchQuery]);
 
   const DeviceTableColumn = () =>
     filteredData?.map((item, index) => (

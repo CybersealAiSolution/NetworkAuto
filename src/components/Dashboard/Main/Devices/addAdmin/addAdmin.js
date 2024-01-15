@@ -178,6 +178,7 @@ const AddAdmin = ({open,closeSlider,fetchData,selectedRowData}) => {
     } catch (error) {
       // Handle any errors that may occur during the API call
       console.error("Error sending data:", error);
+      toast.error(`${error.response.data.message}`);
     }
 
     

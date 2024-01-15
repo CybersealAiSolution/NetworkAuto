@@ -345,7 +345,7 @@ function AdminComponent(props) {
           paddingBottom:"2.3%",
           width: "100%",
         }}>
-        <Typography level="h1">Devices</Typography>
+        <Typography level="h1">Devices Inventory</Typography>
         {/* {(roles === "root" || roles === "admin") &&  ( */}
         <AddButton 
             reload={() => fetchData(paginationModel, searchQuery)} selectedRowData={selectedRowData}

@@ -28,7 +28,17 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SearchIcon from "@mui/icons-material/Search";
-const TableComponent = ({randomValueOut}) => {
+import Button from "@mui/joy/Button";
+import Divider from "@mui/joy/Divider";
+import DialogTitle from "@mui/joy/DialogTitle";
+import DialogContent from "@mui/joy/DialogContent";
+import DialogActions from "@mui/joy/DialogActions";
+import Modal from "@mui/joy/Modal";
+import ModalDialog from "@mui/joy/ModalDialog";
+import DeleteForever from "@mui/icons-material/DeleteForever";
+import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
+
+const TableComponent = ({ randomValueOut }) => {
   const { id, roles, delegations } = useSelector((state) => state.users); // Use "state.users" here
   const dispatch = useDispatch();
   const [isEdit, setIsEdit] = useState(false);
@@ -61,11 +71,12 @@ const TableComponent = ({randomValueOut}) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [deleteSelectedUser, setdeleteSelectedUser] = useState(null);
   const [rowCount, setRowCount] = useState(0); // Total number of rows from the backend
-  
+  const [open, setOpen] = React.useState(false);
+
   // useEffect(() => {
   //   dispatch(getCurrentUser());
   // }, [dispatch]);
-  
+
   useEffect(() => {
     // let res;
     // dispatch(getCurrentUser());
@@ -74,16 +85,6 @@ const TableComponent = ({randomValueOut}) => {
         const response = await instance.get(
           `/getalladmins?page=${currentPage}&search_query=${searchQuery}`
         );
-        // res = await instance.get("/getCurrentUser");
-        // dispatch(getCurrentUser());
-        // localStorage.setItem("level", JSON.stringify(res.data.data.roles));
-        // localStorage.setItem("currUser", JSON.stringify(res.data.data));
-
-        // console.log("getAllAdmins", response.data);
-        // console.log("res", res.data.data);
-        // console.log(localStorage.getItem("level"));
-
-        // console.log("getAllAdmins", response.data.data);
         setData(response.data.data?.records ? response.data.data?.records : []);
         setRowCount(response.data.data.total ? response.data.data.total : 1);
         if (response.data.error) {
@@ -125,7 +126,7 @@ const TableComponent = ({randomValueOut}) => {
 
     // getAddresses();
     getAllAdmins();
-  }, [randomValue, currentPage, dispatch,randomValueOut,searchQuery]);
+  }, [randomValue, currentPage, dispatch, randomValueOut, searchQuery]);
 
   const handlePageChange = (pageNumber) => {
     console.log("changing....", pageNumber);
@@ -207,53 +208,54 @@ const TableComponent = ({randomValueOut}) => {
                     marginLeft: "3px",
                   }}
                   onClick={() => {
-                    setItemToDelete(params.row);
+                    setItemToDelete(params.value);
                     setShowDeleteModal(true);
                   }}
                 />
-                <ReactModal
-            isOpen={showDeleteModal}
-            onRequestClose={() => setShowDeleteModal(false)}
-            contentLabel="Delete Confirmation Modal"
-            style={{
-              overlay: {
-                backgroundColor: "rgba(0, 0, 0, 0.1)", // Overlay background color
-              },
-              content: {
-                width: "350px", // Set the width of the modal
-                height: "200px",
-                margin: "auto", // Center the modal horizontally
-                borderRadius: "8px", // Rounded corners
-                padding: "20px", // Add some padding
-              },
-            }}
-          >
-            <div style={{ textAlign: "center" }}>
-              <p>Are you sure you want to delete?</p>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-evenly",
-                  marginTop: "50px",
-                }}
-              >
-                <button
-                  style={{ backgroundColor: "red" }}
-                  onClick={() => handleDelete(params.row)}
-                >
-                  Yes
-                </button>
-                <button
+                <DeleteModal />
+                {/* <ReactModal
+                  isOpen={showDeleteModal}
+                  onRequestClose={() => setShowDeleteModal(false)}
+                  contentLabel="Delete Confirmation Modal"
                   style={{
-                    backgroundColor: "gray",
+                    overlay: {
+                      backgroundColor: "rgba(0, 0, 0, 0.1)", // Overlay background color
+                    },
+                    content: {
+                      width: "350px", // Set the width of the modal
+                      height: "200px",
+                      margin: "auto", // Center the modal horizontally
+                      borderRadius: "8px", // Rounded corners
+                      padding: "20px", // Add some padding
+                    },
                   }}
-                  onClick={() => setShowDeleteModal(false)}
                 >
-                  No
-                </button>
-              </div>
-            </div>
-          </ReactModal>
+                  <div style={{ textAlign: "center" }}>
+                    <p>Are you sure you want to delete?</p>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-evenly",
+                        marginTop: "50px",
+                      }}
+                    >
+                      <button
+                        style={{ backgroundColor: "red" }}
+                        onClick={() => handleDelete()}
+                      >
+                        Yes
+                      </button>
+                      <button
+                        style={{
+                          backgroundColor: "gray",
+                        }}
+                        onClick={() => setShowDeleteModal(false)}
+                      >
+                        No
+                      </button>
+                    </div>
+                  </div>
+                </ReactModal> */}
               </>
             )}
           {/* <BasicModal open={open} userObject={params.row} handleClose={handleClose} /> */}
@@ -266,19 +268,6 @@ const TableComponent = ({randomValueOut}) => {
   const handleEditAdmin = (data) => {
     setEditSliderData(data);
 
-    // console.log("item", userName, roles, delegation);
-    // setAdminEmail(userName);
-    // setAccessLevel(roles[0]);
-    // setLocationId(delegation);
-    // const filteredAddresses = addresses.filter((address) =>
-    //   delegation.includes(address.locationId)
-    // );
-    // const actualFilteredValue = filteredAddresses?.map((i) => ({
-    //   name: i.fulladdress,
-    //   id: i.locationId,
-    // }));
-    // setPreSelected(actualFilteredValue);
-    // Setupdating(true);
     setSidebarOpen(!isSidebarOpen);
   };
   function Pagination({ page, onPageChange, className }) {
@@ -297,11 +286,55 @@ const TableComponent = ({randomValueOut}) => {
       />
     );
   }
+  const DeleteModal = () => {
+    return (
+      <React.Fragment>
+        {/* <Button
+          variant="outlined"
+          color="danger"
+          endDecorator={<DeleteForever />}
+          onClick={() => setOpen(true)}
+        >
+          Discard
+        </Button> */}
+        <Modal open={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
+          <ModalDialog variant="outlined" role="alertdialog">
+            <DialogTitle>
+              <WarningRoundedIcon />
+              Confirmation
+            </DialogTitle>
+            <Divider />
+            <DialogContent>
+              Are you sure you want to delete this user?
+            </DialogContent>
+            <DialogActions>
+              <Button
+                variant="solid"
+                color="danger"
+                onClick={() => {
+                  handleDelete()
+                  setOpen(false)
+                }}
+              >
+                Yes I'm Sure
+              </Button>
+              <Button
+                variant="plain"
+                color="neutral"
+                onClick={() => setShowDeleteModal(false)}
+              >
+                Cancel
+              </Button>
+            </DialogActions>
+          </ModalDialog>
+        </Modal>
+      </React.Fragment>
+    );
+  };
   const handleSearch = (event) => {
     event.preventDefault();
     console.log(searchQuery);
     setSearchQuery(event.target.value);
-    
   };
   function CustomPagination(props) {
     return <GridPagination ActionsComponent={Pagination} {...props} />;
@@ -410,103 +443,19 @@ const TableComponent = ({randomValueOut}) => {
             }}
           ></div>
         )}
-        {/* <Filter
-              // setRandomValue={setRandomV}
-              editSliderData={editSliderData}
-              isEdit={isEdit}
-              setIsEdit={setIsEdit}
-              open={isSliderOpen}
-              closeSlider={handleCloseSlider}
-              onApplyFilters={handleApplyFilters}
-              setrandomValue={setrandomValue}
-            /> */}
 
         <GridToolbarContainer>
           <GridToolbarExport />
         </GridToolbarContainer>
-
-        {/* <Box sx={{ gap: "15px" }}>
-              <MoreVertOutlinedIcon
-                cursor="pointer"
-                        ref={anchorRef}
-                onClick={() => setPopperOpen(prevState => !prevState)}
-                    // sx={{py:'15px'}}
-              />
-                    
-              <Popper
-                open={popperOpen}
-                anchorEl={anchorRef.current}
-                placement="bottom-end"
-                sx={{ bottom: "115px" }}
-              >
-                <Paper>
-                  <Menu >
-                    <MenuItem
-                      disabled={
-                        roles !== "ReadOnly"? false : true
-                      }
-                      onClick={() =>{
-                        setModalOpen(true);
-                        setPopperOpen(false);
-                        //downloadAuditFileCsv(!props.isSliderOpen);
-    
-                      }}
-                    >{" "}Edit Department{" "}
-                    </MenuItem>
-                  </Menu>
-                </Paper>
-              </Popper>
-                    
-            </Box>
-    
-            <ChangeDepartment 
-              departmentModalOpen={modalOpen}
-              setDepartmentModalOpen={setModalOpen}
-            /> */}
       </Box>
     );
   }
-  const submitForm = async (event) => {
-    event.preventDefault();
-    const payload = {
-      userName: adminEmail,
-      roles: accessLevel,
-      locationId: locationId,
-      parentId: id,
-    };
-    console.log("payload", payload);
-    try {
-      if (!updating) {
-        const response = await instance.post("/addAdmin", payload);
-        if (response.status === 201) {
-          toast.success("Successfully Added User!!");
-        } else {
-          toast.error("Failed to Add User");
-        }
-      } else {
-        const response = await instance.post("/updateAdmin", payload);
-        if (response.status === 201) {
-          toast.success("Successfully Updated User!!");
-        } else {
-          toast.error("Failed to Update User");
-        }
-      }
-    } catch (error) {
-      console.error("Error sending data:", error);
-      toast.error("An error occurred");
-    }
-    setRandomValue(Math.random());
-    // setrandomValue(Math.random());
-    setSidebarOpen(!isSidebarOpen);
-  };
 
-  const handleDelete = async (itemToDelete) => {
+  const handleDelete = async () => {
     try {
       // Perform API call to delete the item
-      console.log("itemToDelete", itemToDelete);
-      const response = await instance.delete(
-        `deleteAdmin/${itemToDelete.userName}`
-      );
+      console.log("xxx", itemToDelete);
+      const response = await instance.delete(`deleteAdmin/${itemToDelete}`);
 
       if (response.status === 204) {
         // Handle any additional UI updates after deletion, if needed
@@ -540,87 +489,87 @@ const TableComponent = ({randomValueOut}) => {
   //   );
   // };
 
-  const TableColumn = () =>
-    data.map((item) => (
-      <tr key={item.id}>
-        <td>
-          <input className="rowCheckbox" type="checkbox"></input>
-        </td>
-        <td>{item.userName} </td>
-        <td>{item.delegations.includes("0") ? "❌ " : "✅"}</td>
-        <td>{item.roles[0]}</td>
-        <td>
-          {(roles === "root" || roles === "admin") &&
-            item.parentId !== "1234" &&
-            (item.parentId === id || roles === "root") && (
-              <FiEdit2
-                style={{ cursor: "pointer" }}
-                onClick={() => handleEditAdmin(item)}
-              />
-            )}
-        </td>
-        <td>
-          {(roles === "root" || roles === "admin") &&
-            item.parentId !== "1234" &&
-            (item.parentId === id || roles === "root") && (
-              <>
-                <AiOutlineDelete
-                  style={{ cursor: "pointer", marginRight: "10px" }}
-                  onClick={() => {
-                    setItemToDelete(item);
-                    setShowDeleteModal(true);
-                  }}
-                />
-              </>
-            )}
+  // const TableColumn = () =>
+  //   data.map((item) => (
+  //     <tr key={item.id}>
+  //       <td>
+  //         <input className="rowCheckbox" type="checkbox"></input>
+  //       </td>
+  //       <td>{item.userName} </td>
+  //       <td>{item.delegations.includes("0") ? "❌ " : "✅"}</td>
+  //       <td>{item.roles[0]}</td>
+  //       <td>
+  //         {(roles === "root" || roles === "admin") &&
+  //           item.parentId !== "1234" &&
+  //           (item.parentId === id || roles === "root") && (
+  //             <FiEdit2
+  //               style={{ cursor: "pointer" }}
+  //               onClick={() => handleEditAdmin(item)}
+  //             />
+  //           )}
+  //       </td>
+  //       <td>
+  //         {(roles === "root" || roles === "admin") &&
+  //           item.parentId !== "1234" &&
+  //           (item.parentId === id || roles === "root") && (
+  //             <>
+  //               <AiOutlineDelete
+  //                 style={{ cursor: "pointer", marginRight: "10px" }}
+  //                 onClick={() => {
+  //                   setItemToDelete(item);
+  //                   setShowDeleteModal(true);
+  //                 }}
+  //               />
+  //             </>
+  //           )}
 
-          {/* Confirmation Modal */}
-          <ReactModal
-            isOpen={showDeleteModal}
-            onRequestClose={() => setShowDeleteModal(false)}
-            contentLabel="Delete Confirmation Modal"
-            style={{
-              overlay: {
-                backgroundColor: "rgba(0, 0, 0, 0.1)", // Overlay background color
-              },
-              content: {
-                width: "350px", // Set the width of the modal
-                height: "200px",
-                margin: "auto", // Center the modal horizontally
-                borderRadius: "8px", // Rounded corners
-                padding: "20px", // Add some padding
-              },
-            }}
-          >
-            <div style={{ textAlign: "center" }}>
-              <p>Are you sure you want to delete?</p>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-evenly",
-                  marginTop: "50px",
-                }}
-              >
-                <button
-                  style={{ backgroundColor: "red" }}
-                  onClick={() => handleDelete(item)}
-                >
-                  Yes
-                </button>
-                <button
-                  style={{
-                    backgroundColor: "gray",
-                  }}
-                  onClick={() => setShowDeleteModal(false)}
-                >
-                  No
-                </button>
-              </div>
-            </div>
-          </ReactModal>
-        </td>
-      </tr>
-    ));
+  //         {/* Confirmation Modal */}
+  //         <ReactModal
+  //           isOpen={showDeleteModal}
+  //           onRequestClose={() => setShowDeleteModal(false)}
+  //           contentLabel="Delete Confirmation Modal"
+  //           style={{
+  //             overlay: {
+  //               backgroundColor: "rgba(0, 0, 0, 0.1)", // Overlay background color
+  //             },
+  //             content: {
+  //               width: "350px", // Set the width of the modal
+  //               height: "200px",
+  //               margin: "auto", // Center the modal horizontally
+  //               borderRadius: "8px", // Rounded corners
+  //               padding: "20px", // Add some padding
+  //             },
+  //           }}
+  //         >
+  //           <div style={{ textAlign: "center" }}>
+  //             <p>Are you sure you want to delete?</p>
+  //             <div
+  //               style={{
+  //                 display: "flex",
+  //                 justifyContent: "space-evenly",
+  //                 marginTop: "50px",
+  //               }}
+  //             >
+  //               <button
+  //                 style={{ backgroundColor: "red" }}
+  //                 onClick={() => handleDelete(item)}
+  //               >
+  //                 Yes
+  //               </button>
+  //               <button
+  //                 style={{
+  //                   backgroundColor: "gray",
+  //                 }}
+  //                 onClick={() => setShowDeleteModal(false)}
+  //               >
+  //                 No
+  //               </button>
+  //             </div>
+  //           </div>
+  //         </ReactModal>
+  //       </td>
+  //     </tr>
+  //   ));
 
   const handleCloseSlider = () => {
     setSidebarOpen(false);
@@ -648,7 +597,7 @@ const TableComponent = ({randomValueOut}) => {
         editSliderData={editSliderData}
         setRandomValue={setRandomValue}
       />
-      
+
       <div className="tablediv">
         <DataGrid
           className="userInventory"

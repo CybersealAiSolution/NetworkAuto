@@ -289,7 +289,7 @@ const EditAdmin = (props) => {
     setPreSelected(newValue);
     setLocationId(newValue?.map((i) => i.locationId));
   };
-  console.log("xxx", props.editSliderData);
+  // console.log("xxx", props.editSliderData);
   return (
     <Box
       className={`slider ${props.open ? "open" : ""}`}

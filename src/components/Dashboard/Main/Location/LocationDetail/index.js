@@ -199,7 +199,7 @@ const LocationDetail = () => {
     const query = e.target.value.toLowerCase();
     // Filter places based on the search query for Address, LocationId, and Description
     if (instance === "place") {
-      const filtered = places.filter(
+      const filtered = places?.filter(
         (place) =>
           place.Address.toLowerCase().includes(query) ||
           place.LocationId.toLowerCase().includes(query) ||
@@ -208,7 +208,7 @@ const LocationDetail = () => {
 
       setFilteredPlaces(filtered);
     } else if (instance === "subnet") {
-      const filtered = subnets.filter(
+      const filtered = subnets?.filter(
         (place) =>
           place.Subnet.toLowerCase().includes(query) ||
           place.LocationId.toLowerCase().includes(query) ||
@@ -217,7 +217,7 @@ const LocationDetail = () => {
 
       setFilteredSubsets(filtered);
     } else if (instance === "switch") {
-      const filtered = switches.filter(
+      const filtered = switches?.filter(
         (place) =>
           place.ChassisID.toLowerCase().includes(query) ||
           place.LocationId.toLowerCase().includes(query) ||
@@ -226,7 +226,7 @@ const LocationDetail = () => {
 
       setFilteredSwitchs(filtered);
     } else if (instance === "accessPoint") {
-      const filtered = accessPoints.filter(
+      const filtered = accessPoints?.filter(
         (place) =>
           place.BSSID.toLowerCase().includes(query) ||
           place.LocationId.toLowerCase().includes(query) ||

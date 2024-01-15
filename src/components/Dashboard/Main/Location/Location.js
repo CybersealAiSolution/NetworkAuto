@@ -334,7 +334,7 @@ function LocationComponent(props) {
             component={Link}
             to="/dashboard/location/add-address"
           >
-            Add Location
+            + Add Location
           </Button>
         )}
         {/* )} */}

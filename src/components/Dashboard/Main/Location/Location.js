@@ -355,12 +355,14 @@ function LocationComponent(props) {
       </Box>
 
       <Box 
-        // className="tablediv"
-        sx={{
-        flexGrow:1,
-        height:"70%",
-        marginBottom:"15px",
-      }}>
+        className="tablediv"
+      //   sx={{
+      //   flexGrow:1,
+      //   height:"500px",
+      //   overflowY:"auto",
+      //   marginBottom:"15px",
+      // }}
+      >
         <DataGrid
           className="userInventory"
           rowClassName={getRowClassName}

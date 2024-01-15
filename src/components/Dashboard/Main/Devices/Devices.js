@@ -356,14 +356,16 @@ function AdminComponent(props) {
       </Box>
 
       <Box 
-        // className="tablediv"
-        sx={{
-        flexGrow:1,
-        height:"70%",
-        // overflowY:"auto",
-        marginBottom:"15px",
+        className="tablediv"
+    //     sx={{
+    //     flexGrow:1,
+    //     // height:"70%",
+    //     height:"700px",
+    //     overflowY:"auto",
+    //     marginBottom:"15px",
         
-      }}>
+    //   }}
+      >
         <DataGrid
           className="userInventory"
           rows={data}

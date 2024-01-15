@@ -60,7 +60,7 @@ function AdminComponent(props) {
 
 //   const { id, roles, tenantId } = useSelector((state) => state.users); // Use "state.users" here
   const searchInputRef = useRef(null);
-  
+  const [isLoading,setIsLoading] = useState(false);
 
   
 
@@ -68,7 +68,6 @@ function AdminComponent(props) {
   const [searchQuery, setSearchQuery] = useState("");
   const [userList, setUserList] = useState([]);
   const [rowCount, setRowCount] = useState(0); // Total number of rows from the backend
-  const [loading, setLoading] = useState(false);
   const [selectedRowData,setSelectedRowData] = useState([]);
   const [paginationModel, setPaginationModel] = React.useState({
     pageSize: 25,
@@ -78,7 +77,7 @@ function AdminComponent(props) {
 
   
   const fetchData = async (paginationModel, searchQuery) => {
-    setLoading(true);
+    setIsLoading(true);
     // const jsonString = JSON.stringify(filter);
     // const encodedFilter = encodeURIComponent(jsonString);
 
@@ -86,7 +85,7 @@ function AdminComponent(props) {
       const response = await instance.get(
         `/unSyncedDevices/?&page=${paginationModel.page + 1
         }&page_size=${paginationModel.pageSize
-        }&search_query=${searchQuery}`
+        }&search=${searchQuery}`
       );
 
     //   if (response.status === 200) {
@@ -117,7 +116,7 @@ function AdminComponent(props) {
       }
     }
 
-    setLoading(false);
+    setIsLoading(false);
   };
 
   
@@ -178,21 +177,19 @@ function AdminComponent(props) {
   };
 
 
-  const
-
-
-    data =
+  const data =
       userList &&
       userList.map((user) => {
         return {
-          id: user.id,
-          short_description: user.short_description,
-          model_id: user.model_id ,
-          ip_address: user.ip_address,
-          BSSID: user.BSSID,
-          ChassisID: user.ChassisID,
-          msTeamsStatus: user.msTeamsStatus,
-          location: user.location,
+            id: user.id,
+            // id: index,
+            short_description: user.short_description,
+            model_id: user.model_id ,
+            ip_address: user.ip_address,
+            BSSID: user.BSSID,
+            ChassisID: user.ChassisID,
+            msTeamsStatus: user.msTeamsStatus,
+            location: user.location,
         };
       });
 
@@ -314,11 +311,16 @@ function AdminComponent(props) {
       </Box>
     );
   }
-  const handleRowSelection = (selectionModel) => {
+
+  const handleRowSelection = (e) => {
     // Assuming 'data' holds all the rows data you've fetched from your API
-    const selectedData = selectionModel.map((id) =>
+    
+    console.log("selectedData",e);
+    // console.log("selectedData",row);
+    const selectedData = e.map((id) =>
       data.find((row) => row.id === id)
     );
+    console.log("selectedData-1223",selectedData)
     setSelectedRowData(selectedData);
   };
   
@@ -357,8 +359,10 @@ function AdminComponent(props) {
         // className="tablediv"
         sx={{
         flexGrow:1,
-        height:"70%",
+        // height:"70%",
+        overflowY:"auto",
         marginBottom:"15px",
+        
       }}>
         <DataGrid
           className="userInventory"
@@ -373,11 +377,14 @@ function AdminComponent(props) {
             toolbar: CustomGridToolbar,
             loadingOverlay: LinearProgress,
           }}
-          loading={loading}
+          loading={isLoading}
           checkboxSelection
-          onSelectionModelChange={handleRowSelection}
+          onRowSelectionModelChange={(e) => { handleRowSelection(e)}}
+        //   onSelectionModelChange={() => handleRowSelection()}
           disableRowSelectionOnClick
           sx={{
+            
+            height:"700px",
             borderRadius: "20px",
             overflow: "hidden",
             background: "white",

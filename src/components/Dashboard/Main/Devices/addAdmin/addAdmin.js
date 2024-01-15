@@ -291,9 +291,9 @@ const AddAdmin = ({open,closeSlider,fetchData,selectedRowData}) => {
                 display:"flex",
                 gap:"12px"
               }}>
-                <FiberManualRecordIcon fontSize="small" color="blue"/>
+                <FiberManualRecordIcon sx={{fontSize:"small", color:"blue"}}/>
                 <Typography>
-                  item.short_description
+                  {item.short_description}
                 </Typography>
               </Box>
             ))}

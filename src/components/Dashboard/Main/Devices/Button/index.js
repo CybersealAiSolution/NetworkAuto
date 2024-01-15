@@ -8,21 +8,12 @@ import { useSelector } from "react-redux";
 export default function AddButton({reload,selectedRowData}) {
   // const { roles } = useSelector((state) => state.users); // Use "state.users" here
   const [isSliderOpen, setIsSliderOpen] = useState(false);
-  const [addAdmin, setaddAdmin] = useState({
-    selectAccessLevel: "ReadOnly",
-    admin: { title: "" },
-    departmentDelegation: [],
-    countryDelegation: [],
-  });
-
+  
   const handleCloseSlider = () => {
     setIsSliderOpen(false);
   };
 
-  const handleApplyFilters = (filters) => {
-    setaddAdmin(filters);
-    console.log(filters);
-  };
+  
 
   return (
     // (roles === "root" || roles === "admin") && (
@@ -40,7 +31,7 @@ export default function AddButton({reload,selectedRowData}) {
                 color: "white",
               },
             }}
-            // disabled={selectedRowData.length === 0}
+            disabled={selectedRowData.length === 0}
             onClick={() => setIsSliderOpen(!isSliderOpen)}
           >
              + Register Device
@@ -52,7 +43,6 @@ export default function AddButton({reload,selectedRowData}) {
         <AddAdmin
           open={isSliderOpen}
           closeSlider={handleCloseSlider}
-          onApplyFilters={handleApplyFilters}
           fetchData={() => reload()}
           selectedRowData={selectedRowData}
         />

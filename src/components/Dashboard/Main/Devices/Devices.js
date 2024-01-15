@@ -359,8 +359,8 @@ function AdminComponent(props) {
         // className="tablediv"
         sx={{
         flexGrow:1,
-        // height:"70%",
-        overflowY:"auto",
+        height:"70%",
+        // overflowY:"auto",
         marginBottom:"15px",
         
       }}>
@@ -384,7 +384,7 @@ function AdminComponent(props) {
           disableRowSelectionOnClick
           sx={{
             
-            height:"700px",
+            // height:"700px",
             borderRadius: "20px",
             overflow: "hidden",
             background: "white",

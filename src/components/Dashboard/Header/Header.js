@@ -231,7 +231,7 @@ const Header = ({ isSidebarOpen, setIsSidebarOpen }) => {
         </ModalDialog>
       </Modal>
 
-      <Modal open={showTeamsModal} onClose={() => setShowTeamsModal(true)}>
+      <Modal open={showTeamsModal} onClose={() => setShowTeamsModal(false)}>
         <ModalDialog
           aria-labelledby="basic-modal-dialog-title"
           aria-describedby="basic-modal-dialog-description"

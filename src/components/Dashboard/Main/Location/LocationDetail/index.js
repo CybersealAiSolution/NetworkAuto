@@ -220,13 +220,15 @@ const LocationDetail = () => {
           open={sliderIsOpen}
           formType={formType}
         />
-        {(roles === "root" || roles === "admin") && (
+        {(roles === "root" || roles === "admin") ? (
         <Button
           sx={{ borderRadius: "20px" }}
           onClick={() => setSliderIsOpen(true)}
         >
           + Add
         </Button>
+        ) : (
+          <Box sx={{ flex: 1 }} /> // Invisible spacer
         )}
         <Box
           sx={{

@@ -37,6 +37,7 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { setAlert } from "../../../../store/alertSlice/alertSlice";
 import { Link ,useLocation} from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
+import { toast } from "react-toastify";
 import Tabs from '@mui/joy/Tabs';
 import TabList from '@mui/joy/TabList';
 import Tab, { tabClasses } from '@mui/joy/Tab';
@@ -103,38 +104,20 @@ function LocationComponent(props) {
       }
     } catch (err) {
       console.error("Request to fetch emergency addresses failed");
+      toast.error(`${err.response.data.message}`);
       if (err.response && err.response.status === 401) {
         if (err.response.data.redirect) {
-          dispatch(
-            setAlert({
-              msg: err.response.data.message,
-              status: err.response.data.messageStatus,
-            })
-          );
-            // Redirect the user to the homepage or login page. This depends on your routing library.
-            navigate('/'); // Adjust this based on your frontend framework.
+          navigate('/'); // Adjust this based on your frontend framework.
             
         }
-    }
-    else{
-      dispatch(
-        setAlert({
-          msg: err.response.data.message,
-          status: err.response.data.messageStatus,
-        })
-      );
-    }   
+      }
+     
     }
 
     setLoading(false);
   };
 
-  // useEffect(() => {
-  //   fetchData(paginationModel, searchQuery);
-  //   // Trigger the asynchronous action to fetch tenant details
-  //   dispatch(getCurrentTenant());
-  // }, [paginationModel, searchQuery,dispatch]);
-
+  
   useEffect(() => {
     // Define a function that you can call conditionally
     const doFetchData = () => {
@@ -331,6 +314,8 @@ function LocationComponent(props) {
       }}>
         <Typography level="h1">Location</Typography>
         {/* {(roles ==="root" || roles==="ReadAndWrite" || roles === 'admin') &&  ( */}
+          
+        {(roles === "root" || roles === "admin") && (
           <Button
             variant="contained"
             // disabled={adminDetails.roles === "ReadOnly"}
@@ -351,6 +336,7 @@ function LocationComponent(props) {
           >
             Add Location
           </Button>
+        )}
         {/* )} */}
       </Box>
 

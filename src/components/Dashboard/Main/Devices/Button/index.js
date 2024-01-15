@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 // import Button from "@mui/material/Button";
 
 export default function AddButton({reload,selectedRowData}) {
-  // const { roles } = useSelector((state) => state.users); // Use "state.users" here
+  const { roles } = useSelector((state) => state.users); // Use "state.users" here
   const [isSliderOpen, setIsSliderOpen] = useState(false);
   
   const handleCloseSlider = () => {
@@ -16,7 +16,7 @@ export default function AddButton({reload,selectedRowData}) {
   
 
   return (
-    // (roles === "root" || roles === "admin") && (
+    (roles === "root" || roles === "admin") && (
       <Box>
         <Button
           variant="contained"
@@ -48,7 +48,7 @@ export default function AddButton({reload,selectedRowData}) {
         />
         
       </Box>
-    // )
+    )
   );
 }
 

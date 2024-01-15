@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from "react-redux";
 import { setAlert } from "../../../../../store/alertSlice/alertSlice";
 import { Button as ButtonJoy } from "@mui/joy";
+import { toast } from "react-toastify";
 
 
 const Slider = ({ open, setSliderIsOpen }) => {
@@ -60,29 +61,32 @@ const Slider = ({ open, setSliderIsOpen }) => {
           "Content-Type": "application/json",
         },
       });
-      dispatch(
-        setAlert({
-          msg: response.data.message,
-          status: response.data.messageStatus,
-        })
-      );
+      toast.success(`${response.data.message}`);
+      // dispatch(
+      //   setAlert({
+      //     msg: response.data.message,
+      //     status: response.data.messageStatus,
+      //   })
+      // );
     } catch (error) {
       if(error.response.status === 403){
-        dispatch(
-          setAlert({
-            msg: "missing CSRF Token",
-            status: "Failed",
-          })
-        );
+        // dispatch(
+        //   setAlert({
+        //     msg: "missing CSRF Token",
+        //     status: "Failed",
+        //   })
+        // );
+        toast.error("missing CSRF Token");
         navigate('/');
       }
       else{
-      dispatch(
-        setAlert({
-          msg: 'Something went Wrong!!',
-          status: 'Failed',
-        })
-      );
+      // dispatch(
+      //   setAlert({
+      //     msg: 'Something went Wrong!!',
+      //     status: 'Failed',
+      //   })
+      // );
+      toast.error("Something went Wrong!!");
       }
       console.error("Error ", error);
     }

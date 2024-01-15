@@ -44,6 +44,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setAlert } from "store/alertSlice/alertSlice";
 import { useNavigate } from "react-router-dom";
 import useMediaQuery from '@mui/material/useMediaQuery'
+import { toast } from "react-toastify";
 // import { getCurrentTenant } from "../../../../store/modules/tenantSlice/tenantDetailSlice"
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import MenuItem from "@mui/material/MenuItem";
@@ -57,8 +58,10 @@ function AdminComponent(props) {
   const dispatch = useDispatch();
   let navigate = useNavigate();
   const anchorRef = useRef(null);
+  const { roles } = useSelector((state) => state.users); // Use "state.users" here
+  
 
-//   const { id, roles, tenantId } = useSelector((state) => state.users); // Use "state.users" here
+//   const {  roles, tenantId } = useSelector((state) => state.users); // Use "state.users" here
   const searchInputRef = useRef(null);
   const [isLoading,setIsLoading] = useState(false);
 
@@ -96,24 +99,26 @@ function AdminComponent(props) {
     //   }
     } catch (err) {
       console.error("Request failed to fetch tenants form data", err);
+      toast.error(`${err.response.data.message}`);
       if (err.response && err.response.status === 401) {
         if (err.response.data.redirect) {
-          dispatch(
-            setAlert({
-              msg: err.response.data.message,
-              status: "Failed",
-            })
-          );
+          // dispatch(
+          //   setAlert({
+          //     msg: err.response.data.message,
+          //     status: "Failed",
+          //   })
+          // );
           navigate('/');
         }
-      } else {
-        dispatch(
-          setAlert({
-            msg: "Failed to fetch tenant admins form data",
-            status: "Failed",
-          })
-        );
-      }
+      } 
+      // else {
+      //   dispatch(
+      //     setAlert({
+      //       msg: "Failed to fetch tenant admins form data",
+      //       status: "Failed",
+      //     })
+      //   );
+      // }
     }
 
     setIsLoading(false);
@@ -349,9 +354,11 @@ function AdminComponent(props) {
         }}>
         <Typography level="h1">Devices Inventory</Typography>
         {/* {(roles === "root" || roles === "admin") &&  ( */}
+        {(roles === "root" || roles === "admin") && (
         <AddButton 
             reload={() => fetchData(paginationModel, searchQuery)} selectedRowData={selectedRowData}
         />
+        )}
         {/* )} */}
       </Box>
 

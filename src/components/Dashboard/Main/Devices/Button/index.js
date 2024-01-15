@@ -1,27 +1,34 @@
 import React, { useState } from "react";
 import "./index.css";
+import AddAdmin from "../addAdmin/addAdmin";
 import { Box, Button } from "@mui/material";
 import { useSelector } from "react-redux";
-import AddTrustedIp from "../AddTrustedIp";
-import Slider from "../Slider";
-// import TrustedIp from "..";
+// import Button from "@mui/material/Button";
 
-export default function AddButton() {
+export default function AddButton({reload,selectedRowData}) {
   // const { roles } = useSelector((state) => state.users); // Use "state.users" here
   const [isSliderOpen, setIsSliderOpen] = useState(false);
+  const [addAdmin, setaddAdmin] = useState({
+    selectAccessLevel: "ReadOnly",
+    admin: { title: "" },
+    departmentDelegation: [],
+    countryDelegation: [],
+  });
 
   const handleCloseSlider = () => {
     setIsSliderOpen(false);
   };
 
-//   const handleApplyFilters = (filters) => {
-//     console.log(filters);
-//   };
+  const handleApplyFilters = (filters) => {
+    setaddAdmin(filters);
+    console.log(filters);
+  };
 
   return (
     // (roles === "root" || roles === "admin") && (
       <Box>
         <Button
+          variant="contained"
             sx={{
               height:'50px',
               backgroundColor: "#000",
@@ -33,20 +40,26 @@ export default function AddButton() {
                 color: "white",
               },
             }}
+            // disabled={selectedRowData.length === 0}
             onClick={() => setIsSliderOpen(!isSliderOpen)}
           >
-             + Add Trusted IP
+             + Register Device
           </Button>
 
         {isSliderOpen && (
           <div className="overlay" onClick={() => setIsSliderOpen(false)}></div>
         )}
-        <Slider
-          setSliderIsOpen={setIsSliderOpen}
+        <AddAdmin
           open={isSliderOpen}
-          formType="TrustedIP"
+          closeSlider={handleCloseSlider}
+          onApplyFilters={handleApplyFilters}
+          fetchData={() => reload()}
+          selectedRowData={selectedRowData}
         />
-    </Box>
+        
+      </Box>
     // )
   );
 }
+
+

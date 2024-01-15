@@ -358,7 +358,7 @@ function LocationComponent(props) {
         // className="tablediv"
         sx={{
         flexGrow:1,
-        height:"700%",
+        height:"70%",
         marginBottom:"15px",
       }}>
         <DataGrid

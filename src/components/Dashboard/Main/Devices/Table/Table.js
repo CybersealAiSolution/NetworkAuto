@@ -94,6 +94,7 @@ const DeviceTableComponent = () => {
         : [];
       devices.push(match[0]);
     });
+    // console.log("devices",devices);
     return devices;
   };
 
@@ -273,6 +274,7 @@ const DeviceTableComponent = () => {
                       className="accessLevel"
                       value={locationId}
                       onChange={(e) => {
+                        console.log("setval",e.target.value)
                         setLocationId(e.target.value);
                         setActuallyLocationID(e.target.value);
                         getPlaces(e.target.value);

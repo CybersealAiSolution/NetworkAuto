@@ -63,7 +63,7 @@ const AddAdmin = ({open,closeSlider,fetchData,selectedRowData}) => {
         return;
       }
       console.log("response.data", response.data);
-      setPlaceList(response.data.places ? response.data.places : []);
+      setPlaceList(response.data.data.places ? response.data.data.places : []);
     } catch (error) {
       console.error("Error fetching devices:", error);
     }

@@ -114,12 +114,14 @@ const AddAdmin = ({open,closeSlider,fetchData,selectedRowData}) => {
     console.log("newval:", newValue);
     setChoosenAddress(newValue);
     if(newValue)getPlaces(newValue.locationId);
+    else {setChoosenPlace(null);setChoosenType("");}
 
   };
 
   const handlePlaceChange = (e,newValue) => {
     console.log("newval123:", newValue);
     setChoosenPlace(newValue);
+    if(!newValue)setChoosenType("");
   }
 
   const handleTypeChange = (event, newValue) => {

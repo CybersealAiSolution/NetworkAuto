@@ -8,6 +8,7 @@ import Tabs from "@mui/joy/Tabs";
 import TabList from "@mui/joy/TabList";
 import Tab, { tabClasses } from "@mui/joy/Tab";
 import TabPanel from "@mui/joy/TabPanel";
+import { useSelector, useDispatch } from "react-redux";
 import { DataGrid,GridPagination,
   useGridApiContext,
   GridToolbarContainer,
@@ -26,6 +27,9 @@ const PlaceDetail = () => {
   const { id } = useParams();
   const searchInputRef = useRef(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const { roles } = useSelector((state) => state.users); // Use "state.users" here
+  
+
   
   const [sliderIsOpen, setSliderIsOpen] = useState(false);
   const [formType, setFormType] = useState("subnet");
@@ -175,12 +179,14 @@ const PlaceDetail = () => {
           open={sliderIsOpen}
           formType={formType}
         />
+        {(roles === "root" || roles === "admin") && (
         <Button
           sx={{ borderRadius: "20px" }}
           onClick={() => setSliderIsOpen(true)}
         >
           + Add
         </Button>
+        )}
         <Box
           sx={{
             display: "flex",
@@ -334,7 +340,7 @@ console.log(data);
         <Breadcrumbs
           separator={<NavigateNextIcon fontSize="large" />}
           aria-label="breadcrumb"
-          style={{ paddingLeft: "20px" }}
+          style={{ paddingLeft: "20px",backgroundColor: "#F4F4F4", }}
         >
           <Link
             underline="hover"

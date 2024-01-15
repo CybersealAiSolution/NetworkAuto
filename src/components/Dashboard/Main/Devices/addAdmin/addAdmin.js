@@ -113,7 +113,7 @@ const AddAdmin = ({open,closeSlider,fetchData,selectedRowData}) => {
   const handleAddressChange = (event, newValue) => {
     console.log("newval:", newValue);
     setChoosenAddress(newValue);
-    getPlaces(newValue.locationId);
+    if(newValue)getPlaces(newValue.locationId);
 
   };
 

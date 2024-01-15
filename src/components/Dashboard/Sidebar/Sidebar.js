@@ -157,12 +157,12 @@ const Sidebar = ({isSidebarOpen,setIsSidebarOpen}) => {
     <Box
       bgcolor="#F8F9FA"
       sx={{
-        width: isSidebarOpen ? "100%" : "90px", // Adjust the width accordingly
+        // width: isSidebarOpen ? "100%" : "90px", // Adjust the width accordingly
         // minWidth: "250px",
         height: "100%",
         display: "flex",
         flexDirection: "column",
-        transition: isSidebarOpen ? "" : "width 1s ease-in",
+        // transition: isSidebarOpen ? "" : "width 1s ease-in",
         // alignItems: 'flex-start',
         // gap: "36px",
       }}

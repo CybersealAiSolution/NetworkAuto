@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 // import axios from "axios";
 import "./index.css";
 import { Link } from "react-router-dom";
-import { instance } from "../../../../../Fetch";
+import { instance } from "Fetch";
 import Pagination from "../../../../Pagination/Pagination";
 import { useSelector } from "react-redux";
 
@@ -39,8 +39,8 @@ const TableComponent = () => {
       try {
         const response = await instance.get(`/getEmergencyAddresses?page=${currentPage}`);
     
-        setData(response.data.data ? response.data.data : []);
-        setTotalPage(response.data.totalPages?response.data.totalPages:1);
+        setData(response.data.data.records || []);
+        setTotalPage(response.data.data.total || 1);
         if (response.data.error) {
           alert(response.data.error);
           return;

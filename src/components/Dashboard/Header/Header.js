@@ -1,11 +1,45 @@
 import "./index.css";
-import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import { instance } from "./../../../Fetch";
+import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
+// import { TenantInfo } from "actions";
 import { useNavigate } from "react-router-dom";
+import Button from "@mui/joy/Button";
+import Divider from "@mui/material/Divider";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ModalClose from "@mui/joy/ModalClose";
+import ManageAccountsOutlinedIcon from "@mui/icons-material/ManageAccountsOutlined";
+import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
+import CorporateFareOutlinedIcon from "@mui/icons-material/CorporateFareOutlined";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import Input from "@mui/joy/Input";
+import Modal from "@mui/joy/Modal";
+import ModalDialog from "@mui/joy/ModalDialog";
+import Stack from "@mui/joy/Stack";
+import FormControl from "@mui/joy/FormControl";
+import FormLabel from "@mui/joy/FormLabel";
+import { Typography as TypographyJoy } from "@mui/joy";
+import {
+  Toolbar,
+  Typography,
+  Tooltip,
+  Badge,
+  Menu,
+  MenuItem,
+  Avatar,
+  Box,
+  IconButton,
+} from "@mui/material";
+// import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
+import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
+import { toast } from "react-toastify";
+import { instance } from "Fetch";
+import KeyIcon from "@mui/icons-material/Key";
 import ReactModal from "react-modal";
+import { auto } from "@popperjs/core";
 
-const Header = () => {
+const Header = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isBlankDivVisible, setIsBlankDivVisible] = useState(false);
@@ -16,6 +50,9 @@ const Header = () => {
   const [instanceName, setInstanceName] = useState("");
   const [userName, setUserName] = useState("");
   const [serviceNowpassword, setServiceNowPassword] = useState("");
+  const [serviceNowModalLoading, setServiceNowModalLoading] = useState(false);
+  const [isShowPassword, setIsShowPassword] = useState(false);
+  const [modalLoading, setModalLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -53,6 +90,8 @@ const Header = () => {
     }, 3000); // 5 seconds
   };
 
+  useEffect(() => {}, []);
+
   const handleLogout = async () => {
     try {
       const response = await instance.get("signout");
@@ -69,9 +108,10 @@ const Header = () => {
 
   const handleTeamSubmit = async (e) => {
     e.preventDefault();
+    setModalLoading(true);
     const payload = {
       password: password,
-      userName: email
+      userName: email,
     };
     try {
       console.log(payload);
@@ -89,19 +129,24 @@ const Header = () => {
     } catch (error) {
       console.error("Error sending data:", error);
     }
+    setModalLoading(false);
   };
 
   // service now Credentials submit
   const handleServiceNowSubmit = async (e) => {
     e.preventDefault();
+    setServiceNowModalLoading(true);
     const payload = {
       instanceName: instanceName,
       userName: userName,
-      password: serviceNowpassword
+      password: serviceNowpassword,
     };
     try {
       console.log(payload);
-      const response = await instance.post("/setServiceNowCredentails", payload);
+      const response = await instance.post(
+        "/setServiceNowCredentails",
+        payload
+      );
       console.log(response.data);
       if (response.status === 200) {
         toast.success(response.data.message);
@@ -115,179 +160,253 @@ const Header = () => {
     } catch (error) {
       console.error("Error sending data:", error);
     }
+    setServiceNowModalLoading(false);
   };
 
   return (
-    <div className="headerComponent">
-      <div className="organizationName">
-        {" "}
-        <h3>
-          <b>{data.tenantName}</b>
-        </h3>
-      </div>
-
-      <div className="CurrentUserContainer">
-        <div>
-          {isLoading && (
-            <div className="loading-container">
-              <img
-                src="https://i.gifer.com/ZKZg.gif"
-                alt="loading"
-                className="loading-gif"
-              />
-            </div>
-          )}
-          <button onClick={handleSyncing}>
-            <span>Sync</span>
-          </button>
-        </div>
-        {data.userDisplayName && <img className="currentUserProfile" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" />}
-        <div
-          className="currentUserDetail"
-          style={{cursor:'pointer'}}
-          onClick={() => setIsBlankDivVisible(!isBlankDivVisible)}
+    <>
+      <Modal
+        open={showServiceNowModal}
+        onClose={() => setShowServiceNowModal(false)}
+      >
+        <ModalDialog
+          aria-labelledby="basic-modal-dialog-title"
+          aria-describedby="basic-modal-dialog-description"
+          sx={{ maxWidth: 500, width: "30%" }}
         >
-          {data.userDisplayName}
-          <div className="useremailinfo">{data.user}</div>
-        </div>
-        {isBlankDivVisible && (
-          <div className="dropdownlist">
-            <ul className="dropdown-list">
-              <li
-                className="dropdown-item"
-                onClick={() => {
-                  setShowTeamsModal(true);
-                  setShowServiceNowModal(false);
-                  setIsBlankDivVisible(!isBlankDivVisible);
-                }}
+          <ModalClose
+            variant="outlined"
+            sx={{
+              top: "calc(-1/4 * var(--IconButton-size))",
+              right: "calc(-1/4 * var(--IconButton-size))",
+              boxShadow: "0 2px 12px 0 rgba(0 0 0 / 0.2)",
+              borderRadius: "50%",
+              bgcolor: "background.surface",
+            }}
+          />
+          <TypographyJoy id="basic-modal-dialog-title" level="h2">
+            Service Now Credentials
+          </TypographyJoy>
+          <form onSubmit={handleServiceNowSubmit}>
+            <Stack spacing={2}>
+              <FormControl>
+                <FormLabel>Instance Name</FormLabel>
+                <Input
+                  autoFocus
+                  required
+                  value={instanceName}
+                  placeholder={"e.g : devXXXXXX"}
+                  onChange={(e) => setInstanceName(e.target.value)}
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>UserName</FormLabel>
+                <Input
+                  autoFocus
+                  required
+                  value={userName}
+                  placeholder={"Username"}
+                  onChange={(e) => setUserName(e.target.value)}
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>Password</FormLabel>
+                <Input
+                  autoFocus
+                  type="password"
+                  required
+                  value={serviceNowpassword}
+                  onChange={(e) => setServiceNowPassword(e.target.value)}
+                />
+              </FormControl>
+              <Button
+                type="submit"
+                loading={serviceNowModalLoading}
+                loadingPosition="start"
               >
-                Ms Teams Credentials
-              </li>
-              <li
-                className="dropdown-item"
-                onClick={() => {
-                  setShowServiceNowModal(true);
-                  setShowTeamsModal(false);
-                  setIsBlankDivVisible(!isBlankDivVisible);
-                }}
+                Submit
+              </Button>
+            </Stack>
+          </form>
+        </ModalDialog>
+      </Modal>
+
+      <Modal open={showTeamsModal} onClose={() => setShowTeamsModal(false)}>
+        <ModalDialog
+          aria-labelledby="basic-modal-dialog-title"
+          aria-describedby="basic-modal-dialog-description"
+          sx={{ maxWidth: 500, width: "30%" }}
+        >
+          <ModalClose
+            variant="outlined"
+            sx={{
+              top: "calc(-1/4 * var(--IconButton-size))",
+              right: "calc(-1/4 * var(--IconButton-size))",
+              boxShadow: "0 2px 12px 0 rgba(0 0 0 / 0.2)",
+              borderRadius: "50%",
+              bgcolor: "background.surface",
+            }}
+          />
+          <TypographyJoy id="basic-modal-dialog-title" level="h2">
+            MS Teams Global Admin Credentials
+          </TypographyJoy>
+          <form onSubmit={handleTeamSubmit}>
+            <Stack spacing={2}>
+              <FormControl>
+                <FormLabel>User ID</FormLabel>
+                <Input
+                  autoFocus
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder={"Email"}
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>Password</FormLabel>
+                <Input
+                  type={isShowPassword ? "text" : "password"}
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  fullWidth
+                  InputProps={{
+                    endAdornment: (
+                      <IconButton
+                        onClick={() => setIsShowPassword(!isShowPassword)}
+                        edge="end"
+                      >
+                        {isShowPassword ? (
+                          <VisibilityOffIcon />
+                        ) : (
+                          <VisibilityIcon />
+                        )}
+                      </IconButton>
+                    ),
+                  }}
+                />
+              </FormControl>
+              <Button
+                type="submit"
+                loading={modalLoading}
+                loadingPosition="start"
               >
-                Service Now Credentials
-              </li>
-              <li className="dropdown-item" onClick={handleLogout}>
-                Logout
-              </li>
-            </ul>
-          </div>
-        )}
-      </div>
-      <ReactModal
-        isOpen={showTeamsModal}
-        onRequestClose={() => setShowTeamsModal(false)}
-        contentLabel="Delete Confirmation Modal"
-        style={{
-          overlay: {
-            backgroundColor: "rgba(0, 0, 0, 0.1)", // Overlay background color
-          },
-          content: {
-            width: "600px", // Set the width of the modal
-            height: "330px",
-            margin: "auto", // Center the modal horizontally
-            borderRadius: "8px", // Rounded corners
-            padding: "20px", // Add some padding
-          },
+                Submit
+              </Button>
+            </Stack>
+          </form>
+        </ModalDialog>
+      </Modal>
+
+      <Box
+        bgcolor="#F8F9FA"
+        sx={{
+          height: "100%",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          px: "2%",
         }}
       >
-        <div>
-          <h3 style={{ textAlign: "center" }}>Enter Credentials</h3>
-          <form onSubmit={handleTeamSubmit} className="">
-            <div className="form-group">
-              <label htmlFor="email">Default Admin/Root User*</label>
-              <input
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
+        <Typography variant="h6" sx={{ flexGrow: "1", color: "#6E7A8A" }}>
+          <b> {data.tenantName ? data.tenantName : "Organization Name"}</b>
+        </Typography>
+        <Box sx={{ display: "flex", flexGrow: 0 }}>
+          <Button
+            loading={isLoading ? true : false}
+            loadingPosition="start"
+            color={"success"}
+            variant={"soft"}
+            sx={{ height: "40px", my: auto }}
+            onClick={handleSyncing}
+          >
+            Tenant Sync
+          </Button>
 
-            <div className="form-group">
-              <label htmlFor="email">Type password*</label>
-              <input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-            <div className="createBtn">
-              <button type="submit">Submit</button>
-            </div>
-          </form>
-        </div>
-      </ReactModal>
+          <Box>
+            <IconButton
+              size="large"
+              aria-label="show 17 new notifications"
+              color="inherit"
+            ></IconButton>
+          </Box>
+          <Tooltip title="Open settings">
+            <IconButton
+              onClick={() => setIsBlankDivVisible(!isBlankDivVisible)}
+            >
+              <Avatar alt={data.user} src="/static/images/avatar/2.jpg" />
+            </IconButton>
+          </Tooltip>
 
-      <ReactModal
-        isOpen={showServiceNowModal}
-        onRequestClose={() => setShowServiceNowModal(false)}
-        contentLabel="Service Now Modal"
-        style={{
-          overlay: {
-            backgroundColor: "rgba(0, 0, 0, 0.1)", // Overlay background color
-          },
-          content: {
-            width: "600px", // Set the width of the modal
-            height: "380px",
-            margin: "auto", // Center the modal horizontally
-            borderRadius: "8px", // Rounded corners
-            padding: "20px", // Add some padding
-          },
-        }}
-      >
-        <div>
-          <h3 style={{ textAlign: "center" }}>Enter Service Now Credentials</h3>
-          <form onSubmit={handleServiceNowSubmit} className="">
-            <div className="form-group">
-              <label htmlFor="email">Instance Name*</label>
-              <input
-                type="text"
-                id="text"
-                value={instanceName}
-                placeholder="devXXXXX"
-                onChange={(e) => setInstanceName(e.target.value)}
-                required
-              />
-            </div>
+          <Menu
+            sx={{ mt: "45px", maxWidth: "400px" }}
+            id="menu-appbar"
+            anchorEl={isBlankDivVisible}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            open={Boolean(isBlankDivVisible)}
+            onClose={() => setIsBlankDivVisible(!isBlankDivVisible)}
+          >
+            <Tooltip title={data.user ? data.user : "Username"} followCursor>
+              <MenuItem
+                onClick={() => setIsBlankDivVisible(!isBlankDivVisible)}
+              >
+                <Typography
+                  textAlign="center"
+                  sx={{
+                    // width:'90%' ,
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {data.user ? data.user : "Username"}{" "}
+                </Typography>
+              </MenuItem>
+            </Tooltip>
 
-            <div className="form-group">
-              <label htmlFor="email">UserName*</label>
-              <input
-                type="text"
-                id="text"
-                value={userName}
-                onChange={(e) => setUserName(e.target.value)}
-                required
-              />
-            </div>
+            <Divider />
 
-            <div className="form-group">
-              <label htmlFor="email">Password*</label>
-              <input
-                type="password"
-                id="password"
-                value={serviceNowpassword}
-                onChange={(e) => setServiceNowPassword(e.target.value)}
-                required
-              />
-            </div>
-            <div className="createBtn">
-              <button type="submit">Submit</button>
-            </div>
-          </form>
-        </div>
-      </ReactModal>
-    </div>
+            <MenuItem
+              onClick={() => {
+                setIsBlankDivVisible(!isBlankDivVisible);
+                setShowTeamsModal(true);
+              }}
+            >
+              <ListItemIcon>
+                <ManageAccountsOutlinedIcon fontSize="small" />
+              </ListItemIcon>
+              <Typography textAlign="center">MsTeams Admin Detail</Typography>
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                setIsBlankDivVisible(!isBlankDivVisible);
+                setShowServiceNowModal(true);
+              }}
+            >
+              <ListItemIcon>
+                <KeyIcon fontSize="small" />
+              </ListItemIcon>
+              <Typography textAlign="center">Service Now Credential</Typography>
+            </MenuItem>
+            <Divider />
+            <MenuItem onClick={handleLogout}>
+              <ListItemIcon>
+                <LogoutOutlinedIcon fontSize="small" />
+              </ListItemIcon>
+              <Typography textAlign="center">Log Out</Typography>
+            </MenuItem>
+          </Menu>
+        </Box>
+      </Box>
+    </>
   );
 };
 

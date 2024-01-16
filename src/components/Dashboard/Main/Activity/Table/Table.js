@@ -1,10 +1,37 @@
-import React from "react";
-import { useEffect, useState } from "react";
-import { instance } from "./../../../../../Fetch";
+import { instance } from "Fetch";
 import "./index.css";
 import ReactModal from "react-modal";
 import { MdInfo } from "react-icons/md";
-import Pagination from "../../../../Pagination/Pagination";
+import React from "react";
+import { useEffect, useState, useRef } from "react";
+import "./index.css";
+// import { instance } from "Fetch";
+import { toast } from "react-toastify";
+// import { Link } from "react-router-dom";
+import { Multiselect } from "multiselect-react-dropdown";
+// import Pagination from "../../../../Pagination/Pagination";
+import { FiEdit2 } from "react-icons/fi";
+import { AiOutlineDelete } from "react-icons/ai";
+// import ReactModal from "react-modal";
+import { useDispatch, useSelector } from "react-redux";
+// import { getCurrentUser } from "./store/userSlice/userDetailSlice";
+import { getCurrentUser } from "./../../../../../store/modules/userSlice/userDetailSlice";
+// import { instance } from "Fetch";
+// import EditAdmin from "../editAdmin/editAdmin";
+import LinearProgress from "@mui/material/LinearProgress";
+import MuiPagination from "@mui/material/Pagination";
+import {
+  DataGrid,
+  GridPagination,
+  useGridApiContext,
+  GridToolbarContainer,
+  GridToolbarExport,
+} from "@mui/x-data-grid";
+import { Box } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import SearchIcon from "@mui/icons-material/Search";
 
 const TableComponent = () => {
   const [data, setData] = useState([]);
@@ -14,31 +41,71 @@ const TableComponent = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
-
-  const filteredActivity = data.filter(item =>
-    item.description?.toLowerCase().includes(searchTerm?.toLowerCase()) || 
-    item.summary?.toLowerCase().includes(searchTerm?.toLowerCase()) ||
-    item.userName?.toLowerCase().includes(searchTerm?.toLowerCase())
+  const [paginationModel, setPaginationModel] = React.useState({
+    pageSize: 25,
+    page: 0,
+  });
+  const [loading, setLoading] = useState(false);
+  const filteredActivity = data.filter(
+    (item) =>
+      item.description?.toLowerCase().includes(searchTerm?.toLowerCase()) ||
+      item.summary?.toLowerCase().includes(searchTerm?.toLowerCase()) ||
+      item.userName?.toLowerCase().includes(searchTerm?.toLowerCase())
   );
+  const searchInputRef = useRef(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [deleteSelectedUser, setdeleteSelectedUser] = useState(null);
+  const [rowCount, setRowCount] = useState(0); // Total number of rows from the backend
+
+
+  const geteventlogs = async (paginationModel,searchQuery) => {
+    try {
+      const response = await instance.get(
+        `/eventlogs/getevents?&page=${paginationModel.page + 1
+        }&page_size=${paginationModel.pageSize
+        }&search=${searchQuery}`
+      );
+      if (response.data.error) {
+        alert(response.data.error);
+        return;
+      } else {
+        setData(response.data.data ? response.data.data.data : []);
+        setTotalPage(response.data.data.totalData ? response.data.data.totalData : 1);
+
+      }
+    } catch (error) {
+      // Handle any errors that may occur during the API call
+      console.error("Error sending data:", error);
+    }
+  };
+
+
 
   useEffect(() => {
-    const geteventlogs = async () => {
-      try {
-        const response = await instance.get(`/eventlogs/getevents?page=${currentPage}`);
-        if (response.data.error) {
-          alert(response.data.error);
-          return;
-        } else {
-          setData(response.data.data ? response.data.data : []);
-          setTotalPage(response.data.totalPages?response.data.totalPages:1);
-        }
-      } catch (error) {
-        // Handle any errors that may occur during the API call
-        console.error("Error sending data:", error);
-      }
+    // Define a function that you can call conditionally
+    const doFetchData = () => {
+      geteventlogs(paginationModel, searchQuery);
     };
-    geteventlogs();
-  }, [currentPage]);
+
+    // Check the condition inside the effect
+    if (searchQuery === "") {
+    //   if (tenantId) {
+        doFetchData();
+    //   }
+    } else {
+      // Set up a delay for the fetchData call
+      const timeoutId = setTimeout(() => {
+        // if (tenantId) {
+          doFetchData();
+        // }
+      }, 1500); // Adjust time as needed
+
+      // Cleanup function to cancel the timeout if the component unmounts or any dependency changes
+      return () => clearTimeout(timeoutId);
+    }
+    // Since you're referencing `searchQuery` inside useEffect, it should be included in the dependency array.
+  }, [paginationModel, searchQuery]);
+
 
   const transformAndOpenModal = (details) => {
     try {
@@ -54,73 +121,158 @@ const TableComponent = () => {
     setIsModalOpen(true);
   };
   console.log("selectedDetails", selectedDetails);
-  const TableColumn = () =>
-  filteredActivity.map((item) => (
-      <tr key={item.id} className={`log-level-${item.level?.toLowerCase()}`}>
-        <td>
-          <input className="rowCheckbox" type="checkbox" />
-        </td>
-        <td>
-          <b>{item.level}</b>
-        </td>
-        <td>{item.userName}</td>
-        <td>
-          <div style={{ width: "15rem", whiteSpace: "normal" }}>
-            {item.description}
-            {item.details ? (
-              <MdInfo
-                onClick={() => transformAndOpenModal(item.details)}
-                style={{ color: "#007bff", cursor: "pointer" }}
-              />
-            ) : null}
-          </div>
-        </td>
-        <td>
-          <div style={{ width: "27rem", whiteSpace: "normal" }}>
-            {item.summary}
-          </div>
-        </td>
-        <td>{item.created}</td>
-      </tr>
-    ));
 
-    const handlePageChange = (pageNumber) => {
-      console.log("changing....",pageNumber);
-      setCurrentPage(pageNumber);
+  function Pagination({ page, onPageChange, className }) {
+    const apiRef = useGridApiContext();
+    const pageCount = Math.ceil(totalPage / paginationModel.pageSize);
+
+    return (
+      <MuiPagination
+        color="primary"
+        className={className}
+        count={pageCount}
+        page={page + 1}
+        onChange={(event, newPage) => {
+          onPageChange(event, newPage - 1);
+        }}
+      />
+    );
+  }
+
+  const handleSearch = (event) => {
+    event.preventDefault();
+    console.log(searchQuery);
+    setSearchQuery(event.target.value);
+  };
+  const handlePageChange = (pageNumber) => {
+    console.log("changing....", pageNumber);
+    setCurrentPage(pageNumber);
+  };
+  function CustomPagination(props) {
+    return <GridPagination ActionsComponent={Pagination} {...props} />;
+  }
+  const handleChangePaginationModel = (params) => {
+    setPaginationModel({
+      pageSize: params.pageSize,
+      page: params.page,
+    });
+  };
+  function CustomGridToolbar(props) {
+    useEffect(() => {
+      if (searchInputRef.current) {
+        searchInputRef.current.focus();
+      }
+    }, []);
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "center",
+          gap: "20px",
+          padding: "18px 24px",
+          alignSelf: "stretch",
+          height: "55px",
+          borderBottom: "1px solid var(--grey-500, #E0E0E0)",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            width: "320px",
+            height: "40px",
+            padding: "12px 24px 12px 18px",
+            gap: "12px",
+            borderRadius: "36px",
+            border: "1px solid var(--grey-500, #E0E0E0)",
+            background: "var(--grey-100, #F8F9FA)",
+          }}
+        >
+          <SearchIcon></SearchIcon>
+
+          <input
+            // key="search-input"
+            ref={searchInputRef}
+            style={{
+              border: "none",
+              backgroundColor: "var(--grey-100, #F8F9FA)",
+              outline: "none",
+            }}
+            placeholder="Search for Activity"
+            value={searchQuery}
+            onChange={handleSearch}
+          />
+        </Box>
+      </Box>
+    );
+  }
+  const columns = [
+    {
+      field: "level",
+      headerName: "Level",
+      flex: 1,
+      minWidth: 100,
+      cellClassName: (params) => `log-level-${params.row.level.toLowerCase()}`,
+      renderCell: (params) => (
+        <>
+          {params.row.level}
+          {params.row.details ? (
+            <MdInfo
+              onClick={() => transformAndOpenModal(params.row.details)}
+              style={{ color: "#007bff", cursor: "pointer", marginLeft: "5px" }}
+            />
+          ) : null}
+        </>
+      ),
+    },
+    {
+      field: "userName",
+      headerName: "User",
+      flex: 3,
+      minWidth: 300,
+    },
+    { field: "description", headerName: "Description", flex: 3, minWidth: 500 },
+    { field: "summary", headerName: "Summary", flex: 3, minWidth: 500 },
+    { field: "created", headerName: "TimeStamp", flex: 2, minWidth: 200 },
+  ];
+  const rowData = data?.map((item, i) => {
+    return {
+      id: i,
+      userName: item.userName,
+      level: item.level,
+      description: item.description,
+      summary: item.summary,
+      created: item.created,
+      details: item.details,
     };
+  });
 
   return (
-    <div className="tableComponent">
-      <div className="tableHeader">
-        <div></div>
-        <div className="tableSearchContainer">
-        <input 
-            className="tableSearch" 
-            placeholder="Search for Activity" 
-            type="text"
-            value={searchTerm}
-            onChange={e => setSearchTerm(e.target.value)}
+    <>
+      <div className="tablediv">
+        <DataGrid
+          className="userInventory"
+          rows={rowData}
+          columns={columns}
+          rowCount={rowCount}
+          paginationMode="server"
+          paginationModel={paginationModel}
+          onPaginationModelChange={handleChangePaginationModel}
+          slots={{
+            pagination: CustomPagination,
+            toolbar: CustomGridToolbar,
+            loadingOverlay: LinearProgress,
+          }}
+          loading={loading}
+          // checkboxSelection
+          disableRowSelectionOnClick
+          sx={{
+            borderRadius: "20px",
+            overflow: "hidden",
+            background: "white",
+          }}
         />
-        </div>
-      </div>
-      <div className="table-container">
-        <table className="table">
-          <thead>
-            <tr>
-              <th>
-                <input className="headerCheckbox" type="checkbox"></input>
-              </th>
-              <th>Level</th>
-              <th>UserName</th>
-              <th>Description</th>
-              <th>Summary</th>
-              <th>Timestamp</th>
-            </tr>
-          </thead>
-          <tbody>
-            <TableColumn />
-          </tbody>
-        </table>
       </div>
       <ReactModal
         isOpen={isModalOpen}
@@ -153,7 +305,6 @@ const TableComponent = () => {
               ))}
             </div>
           ) : (
-            // <div>{selectedDetails}</div>
             <div>
               {typeof selectedDetails === "string" ? (
                 <div>
@@ -168,12 +319,7 @@ const TableComponent = () => {
           )}
         </div>
       </ReactModal>
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPage}
-        onPageChange={handlePageChange} // Pass the function reference
-      />
-    </div>
+    </>
   );
 };
 

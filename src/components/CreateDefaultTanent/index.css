@@ -1,66 +1,8 @@
-.form-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #f2f2f2;
-  flex-direction: column;
-}
-.heading {
-  margin-bottom: 20px;
-  font-size: 25px;
-  font-weight: 300;
-}
-.form {
-width: 30%;
-  background-color: #fff;
-  padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
 
-.form-group {
-  margin-bottom: 20px;
-}
 
-label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 5px;
-  color: rgb(86, 85, 85);
+  .createDefaultTenantDiv{
+    height: 100%;
+    width: 100%;
+    padding-top: 10%;
+    background-color: #EBEBEF;
 }
-
-input {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
-
-.form-group .inputAlignment {
-    display: flex;
-    align-items: center;
-  }
-  
-  .form-group input[type="checkbox"] {
-    /* Optional: You can adjust the width and height of the checkboxes as needed */
-    width: 20px;
-    height: 20px;
-    margin-right: 5px; /* Optional: Add some spacing between checkbox and label */
-  }
-  .createBtn{
-    display: flex;
-    justify-content: center;
-  }

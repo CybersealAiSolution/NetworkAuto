@@ -1,5 +1,6 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
-import { instance } from "../../../Fetch";
+import { instance } from "Fetch";
+// import { instance } from "Fetch";
 
 export const getCurrentUser = createAsyncThunk('getCurrentUser',async (payload,{rejectWithValue})=>{
     const response = await instance('getCurrentUser');

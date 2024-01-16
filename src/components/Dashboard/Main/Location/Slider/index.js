@@ -13,7 +13,7 @@ import { Button as ButtonJoy } from "@mui/joy";
 import { toast } from "react-toastify";
 
 const Slider = ({ open, setSliderIsOpen, formType }) => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   let navigate = useNavigate();
   const { id } = useParams();
   const [place, setPlace] = useState("");
@@ -21,8 +21,8 @@ const Slider = ({ open, setSliderIsOpen, formType }) => {
   const [switches, setSwitches] = useState("");
   const [accessPoint, setAccessPoint] = useState("");
   const [description, setDescription] = useState("");
-  const [maskBits, setMaskBits] = useState("");
-  const [IPAddress, setIPAddress] = useState("");
+  // const [maskBits, setMaskBits] = useState("");
+  // const [IPAddress, setIPAddress] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {}, [open]);
@@ -47,12 +47,12 @@ const Slider = ({ open, setSliderIsOpen, formType }) => {
     setDescription(e.target.value);
   };
 
-  const handleMaskBitsInput = (e) => {
-    setMaskBits(e.target.value);
-  };
-  const handleIPAddressInput = (e) => {
-    setIPAddress(e.target.value);
-  };
+  // const handleMaskBitsInput = (e) => {
+  //   setMaskBits(e.target.value);
+  // };
+  // const handleIPAddressInput = (e) => {
+  //   setIPAddress(e.target.value);
+  // };
 
   const handleAddPlace = async () => {
     if (!place) {

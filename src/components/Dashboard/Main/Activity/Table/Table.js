@@ -38,8 +38,8 @@ const TableComponent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDetails, setSelectedDetails] = useState([]);
   const [isJson, setIsJson] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPage, setTotalPage] = useState(1);
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const [totalPage, setTotalPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [paginationModel, setPaginationModel] = React.useState({
     pageSize: 25,
@@ -70,7 +70,7 @@ const TableComponent = () => {
         return;
       } else {
         setData(response.data.data ? response.data.data.data : []);
-        setTotalPage(response.data.data.totalData ? response.data.data.totalData : 1);
+        setRowCount(response.data.data.totalData ? response.data.data.totalData : 1);
 
       }
     } catch (error) {
@@ -124,7 +124,7 @@ const TableComponent = () => {
 
   function Pagination({ page, onPageChange, className }) {
     const apiRef = useGridApiContext();
-    const pageCount = Math.ceil(totalPage / paginationModel.pageSize);
+    const pageCount = Math.ceil(rowCount / paginationModel.pageSize);
 
     return (
       <MuiPagination
@@ -144,10 +144,10 @@ const TableComponent = () => {
     console.log(searchQuery);
     setSearchQuery(event.target.value);
   };
-  const handlePageChange = (pageNumber) => {
-    console.log("changing....", pageNumber);
-    setCurrentPage(pageNumber);
-  };
+  // const handlePageChange = (pageNumber) => {
+  //   console.log("changing....", pageNumber);
+  //   setCurrentPage(pageNumber);
+  // };
   function CustomPagination(props) {
     return <GridPagination ActionsComponent={Pagination} {...props} />;
   }

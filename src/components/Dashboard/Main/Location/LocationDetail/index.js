@@ -25,7 +25,9 @@ const LocationDetail = () => {
   const [places, setPlaces] = useState([]);
   const { id } = useParams();
   const { roles } = useSelector((state) => state.users); // Use "state.users" here
-  
+  const [searchTimeout, setSearchTimeout] = useState(null);
+  const [activeTab, setActiveTab] = useState(0);
+
   const searchInputRef = useRef(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [sliderIsOpen, setSliderIsOpen] = useState(false);
@@ -130,24 +132,45 @@ const LocationDetail = () => {
     // eslint-disable-next-line
   }, []);
 
-  useEffect(() => {
-    getAccessPointData(paginationModelForAccessPoints,"");
-  }, [paginationModelForAccessPoints]);
+  // useEffect(() => {
+  //   getAccessPointData(paginationModelForAccessPoints,"");
+  // }, [paginationModelForAccessPoints]);
+
+  // useEffect(() => {
+  //   getPlaceData(paginationModelForPlaces,"");
+    
+  // }, [paginationModelForPlaces]);
+
+  // useEffect(() => {
+  //    getSwitchesData(paginationModelForSwitches,"");
+    
+  // }, [paginationModelForSwitches]);
+
+  // useEffect(() => {
+  //   getSubnetData(paginationModelForSubnets,"");
+    
+  // }, [paginationModelForSubnets]);
 
   useEffect(() => {
-    getPlaceData(paginationModelForPlaces,"");
-    
-  }, [paginationModelForPlaces]);
-
-  useEffect(() => {
-     getSwitchesData(paginationModelForSwitches,"");
-    
-  }, [paginationModelForSwitches]);
-
-  useEffect(() => {
-    getSubnetData(paginationModelForSubnets,"");
-    
-  }, [paginationModelForSubnets]);
+    switch (activeTab) {
+      case 0:
+        getPlaceData(paginationModelForPlaces, searchQuery);
+        break;
+      case 1:
+        getSubnetData(paginationModelForSubnets, searchQuery);
+        break;
+      case 2:
+        getAccessPointData(paginationModelForAccessPoints, searchQuery);
+        break;
+      case 3:
+        getSwitchesData(paginationModelForSwitches, searchQuery);
+        break;
+      default:
+        break;
+    }
+    // Include the dependencies for the effect
+  }, [activeTab, paginationModelForPlaces, paginationModelForSubnets, paginationModelForAccessPoints, paginationModelForSwitches]);
+  
 
   const placesColumns = [
     {
@@ -263,18 +286,39 @@ const LocationDetail = () => {
 
   const handleSearch = (e, instance) => {
     const query = e.target.value.toLowerCase();
-    
-
     setSearchQuery(query);
-    if (instance === "place") {
-      getPlaceData(paginationModelForPlaces,query);
-    } else if (instance === "subnet") {
-      getSubnetData(paginationModelForSubnets,query);
-    } else if (instance === "switch") {
-      getSwitchesData(paginationModelForSwitches,query);
-    } else if (instance === "accessPoint") {
-      getAccessPointData(paginationModelForAccessPoints,query);
+
+    // if (instance === "place") {
+    //   getPlaceData(paginationModelForPlaces,query);
+    // } else if (instance === "subnet") {
+    //   getSubnetData(paginationModelForSubnets,query);
+    // } else if (instance === "switch") {
+    //   getSwitchesData(paginationModelForSwitches,query);
+    // } else if (instance === "accessPoint") {
+    //   getAccessPointData(paginationModelForAccessPoints,query);
+    // }
+
+    // Clear the previous timeout if there is one
+    if (searchTimeout) {
+    clearTimeout(searchTimeout);
     }
+    
+    // Set a new timeout
+    const newTimeout = setTimeout(() => {
+    if (instance === "place") {
+    getPlaceData(paginationModelForPlaces, query);
+    } else if (instance === "subnet") {
+    getSubnetData(paginationModelForSubnets, query);
+    } else if (instance === "switch") {
+    getSwitchesData(paginationModelForSwitches, query);
+    } else if (instance === "accessPoint") {
+    getAccessPointData(paginationModelForAccessPoints, query);
+    }
+    }, 1500); // Delay of 1.5 seconds
+    
+    // Store the timeout ID so it can be cleared later
+    setSearchTimeout(newTimeout);
+    
 
 
   };
@@ -612,7 +656,11 @@ const LocationDetail = () => {
         >
           <Tabs
             aria-label="tabs"
-            defaultValue={0}
+            // defaultValue={0}
+            value={activeTab}
+            onChange={(event, newValue) => {
+              setActiveTab(newValue);
+            }}
             sx={{
               bgcolor: "transparent",
               height: "100%",

@@ -28,7 +28,9 @@ const PlaceDetail = () => {
   const searchInputRef = useRef(null);
   const [searchQuery, setSearchQuery] = useState("");
   const { roles } = useSelector((state) => state.users); // Use "state.users" here
-  
+  const [activeTab, setActiveTab] = useState(0);
+  const [searchTimeout, setSearchTimeout] = useState(null);
+
 
   
   const [sliderIsOpen, setSliderIsOpen] = useState(false);
@@ -114,20 +116,38 @@ const PlaceDetail = () => {
     }
   };
 
-  useEffect(() => {
-    getAccessPointData(paginationModelForAccessPoints,"");
-  }, [paginationModelForAccessPoints]);
+  // useEffect(() => {
+  //   getAccessPointData(paginationModelForAccessPoints,"");
+  // }, [paginationModelForAccessPoints]);
 
 
-  useEffect(() => {
-     getSwitchesData(paginationModelForSwitches,"");
+  // useEffect(() => {
+  //    getSwitchesData(paginationModelForSwitches,"");
     
-  }, [paginationModelForSwitches]);
+  // }, [paginationModelForSwitches]);
+
+  // useEffect(() => {
+  //   getSubnetData(paginationModelForSubnets,"");
+    
+  // }, [paginationModelForSubnets]);
 
   useEffect(() => {
-    getSubnetData(paginationModelForSubnets,"");
-    
-  }, [paginationModelForSubnets]);
+    switch (activeTab) {
+      case 0:
+        getSubnetData(paginationModelForSubnets, searchQuery);
+        break;
+      case 1:
+        getAccessPointData(paginationModelForAccessPoints, searchQuery);
+        break;
+      case 2:
+        getSwitchesData(paginationModelForSwitches, searchQuery);
+        break;
+      default:
+        break;
+    }
+    // Include the dependencies for the effect
+  }, [activeTab, paginationModelForSubnets, paginationModelForAccessPoints, paginationModelForSwitches]);
+  
 
   const subnetsColumns = [
     { field: "Subnet", headerName: "Subnet", width: 500 },
@@ -224,16 +244,34 @@ const PlaceDetail = () => {
 
   const handleSearch = (e, instance) => {
     const query = e.target.value.toLowerCase();
-    
-
     setSearchQuery(query);
-    if (instance === "subnet") {
-      getSubnetData(paginationModelForSubnets,query);
-    } else if (instance === "switch") {
-      getSwitchesData(paginationModelForSwitches,query);
-    } else if (instance === "accessPoint") {
-      getAccessPointData(paginationModelForAccessPoints,query);
-    }
+
+    // if (instance === "subnet") {
+    //   getSubnetData(paginationModelForSubnets,query);
+    // } else if (instance === "switch") {
+    //   getSwitchesData(paginationModelForSwitches,query);
+    // } else if (instance === "accessPoint") {
+    //   getAccessPointData(paginationModelForAccessPoints,query);
+    // }
+
+    // Clear the previous timeout if there is one
+      if (searchTimeout) {
+        clearTimeout(searchTimeout);
+      }
+      
+      // Set a new timeout
+      const newTimeout = setTimeout(() => {
+      if (instance === "subnet") {
+      getSubnetData(paginationModelForSubnets, query);
+      } else if (instance === "switch") {
+      getSwitchesData(paginationModelForSwitches, query);
+      } else if (instance === "accessPoint") {
+      getAccessPointData(paginationModelForAccessPoints, query);
+      }
+      }, 1500); // Delay of 1.5 seconds
+      
+      // Store the timeout ID so it can be cleared later
+      setSearchTimeout(newTimeout);
 
 
   };
@@ -557,7 +595,11 @@ console.log(data);
         >
           <Tabs
             aria-label="tabs"
-            defaultValue={0}
+            // defaultValue={0}
+            value={activeTab}
+            onChange={(event, newValue) => {
+              setActiveTab(newValue);
+            }}
             sx={{
               bgcolor: "transparent",
               height: "100%",

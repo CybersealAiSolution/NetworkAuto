@@ -15,8 +15,9 @@ function CallBack(props) {
     const fullURL = window.location.href;
     const urlObj = new URL(fullURL);
     // Change the hostname
-    urlObj.hostname = "localhost";
-    urlObj.port = "5000";
+    urlObj.hostname = process.env.REACT_APP_SERVER_IP_ADDRESS? process.env.REACT_APP_SERVER_IP_ADDRESS:"localhost";
+    urlObj.port = process.env.REACT_APP_SERVER_PORT?process.env.REACT_APP_SERVER_PORT:"5000";
+
 
     const updatedUrl = urlObj.toString();
 

@@ -17,7 +17,12 @@ function CallBack(props) {
     // Change the hostname
     urlObj.hostname = process.env.REACT_APP_SERVER_IP_ADDRESS? process.env.REACT_APP_SERVER_IP_ADDRESS:"localhost";
     urlObj.port = process.env.REACT_APP_SERVER_PORT?process.env.REACT_APP_SERVER_PORT:"5000";
-
+    
+    function insertPathSegment(url, segment) {
+        let parts = url.split('/');
+        parts.splice(-1, 0, segment);
+        return parts.join('/');
+    }
 
     const updatedUrl = urlObj.toString();
 

@@ -24,7 +24,7 @@ function CallBack(props) {
         return parts.join('/');
     }
 
-    const updatedUrl = urlObj.toString();
+    let updatedUrl = urlObj.toString();
 
     if(process.env.REACT_APP_DEBUG_MODE == 'false'){
         updatedUrl = insertPathSegment(updatedUrl, 'backend');
@@ -34,7 +34,7 @@ function CallBack(props) {
         const handleCallback = async () => {
             try {
                 const url = updatedUrl;
-                // console.log('url',url)
+                console.log('url',url)
                 const response = await axios.get(url, {
                     withCredentials: true,
                 });

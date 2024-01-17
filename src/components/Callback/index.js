@@ -21,10 +21,15 @@ function CallBack(props) {
 
     const updatedUrl = urlObj.toString();
 
+    if(process.env.REACT_APP_DEBUG_MODE == 'false'){
+        updatedUrl = insertPathSegment(updatedUrl, 'backend');
+    }
+
     useEffect(() => {
         const handleCallback = async () => {
             try {
                 const url = updatedUrl;
+                console.log('url',url)
                 const response = await axios.get(url, {
                     withCredentials: true,
                 });

@@ -104,7 +104,8 @@ function LocationComponent(props) {
       }
     } catch (err) {
       console.error("Request to fetch emergency addresses failed");
-      toast.error(`${err.response.data.message}`);
+      if(err.response.data.message)
+      {toast.error(`${err.response.data.message}`);}
       if (err.response && err.response.status === 401) {
         if (err.response.data.redirect) {
           navigate('/'); // Adjust this based on your frontend framework.

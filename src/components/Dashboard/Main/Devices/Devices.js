@@ -12,6 +12,7 @@ import {
 } from "@mui/x-data-grid";
 import LinearProgress from "@mui/material/LinearProgress";
 import MuiPagination from "@mui/material/Pagination";
+import CircularProgress from '@mui/joy/CircularProgress';
 import { instance } from "Fetch";
 import "./index.css";
 import { Box } from "@mui/material";
@@ -44,11 +45,14 @@ function AdminComponent(props) {
   const searchInputRef = useRef(null);
   const [isLoading,setIsLoading] = useState(false);
 
+  const [isLoadingForTenant,setIsLoadingForTenant] = useState(false);
+
   
 
   const [randomValue, setrandomValue] = useState(Math.random);
   const [searchQuery, setSearchQuery] = useState("");
   const [userList, setUserList] = useState([]);
+  const [tenantDetails,setTenantDetails] = useState(null);
   const [rowCount, setRowCount] = useState(0); // Total number of rows from the backend
   const [selectedRowData,setSelectedRowData] = useState([]);
   const [paginationModel, setPaginationModel] = React.useState({
@@ -119,6 +123,42 @@ function AdminComponent(props) {
     // Since you're referencing `searchQuery` inside useEffect, it should be included in the dependency array.
   }, [paginationModel, searchQuery, randomValue]);
 
+  const fetchTenantDetail = async () => {
+    setIsLoadingForTenant(true);
+    try {
+      const response = await instance.get(
+        `alerts/tenantDetails`
+      );
+
+      if (response.status === 200) {
+        setTenantDetails(response.data.data);
+      } else {
+        console.error("Request failed with status:", response.status);
+      }
+    } 
+    catch (err) {
+      console.error("Request failed to fetch tenants details", err);
+      toast.error(`${err.response.data.message}`);
+      if (err.response && err.response.status === 401) {
+        if (err.response.data.redirect) {
+          toast.error(err.response.data.message);
+          navigate('/');
+        }
+      } 
+      else {
+        toast.error('Failed to fetch tenant Detail Data');
+      }
+    }
+    finally{
+      setIsLoadingForTenant(false);
+    }
+
+   
+  };
+
+  useEffect(()=> {
+    fetchTenantDetail();
+  },[]);
 
   const handleSearch = (event) => {
     event.preventDefault();
@@ -323,52 +363,77 @@ function AdminComponent(props) {
         }}>
         <Typography level="h1">Devices Inventory</Typography>
         {/* {(roles === "root" || roles === "admin") &&  ( */}
-        {(roles === "root" || roles === "admin") && (
-        <AddButton 
-            reload={() => fetchData(paginationModel, searchQuery)} selectedRowData={selectedRowData}
-        />
+        {((roles === "root" || roles === "admin") && tenantDetails?.serviceNowCredentials) && (
+          <AddButton 
+              reload={() => fetchData(paginationModel, searchQuery)} selectedRowData={selectedRowData}
+          />
         )}
         {/* )} */}
-      </Box>
+        </Box>
 
-      <Box 
-        className="tablediv"
-    //     sx={{
-    //     flexGrow:1,
-    //     // height:"70%",
-    //     height:"700px",
-    //     overflowY:"auto",
-    //     marginBottom:"15px",
-        
-    //   }}
-      >
-        <DataGrid
-          className="userInventory"
-          rows={data}
-          columns={columns}
-          rowCount={rowCount}
-          paginationMode="server"
-          paginationModel={paginationModel}
-          onPaginationModelChange={handleChangePaginationModel}
-          slots={{
-            pagination: CustomPagination,
-            toolbar: CustomGridToolbar,
-            loadingOverlay: LinearProgress,
-          }}
-          loading={isLoading}
-          checkboxSelection
-          onRowSelectionModelChange={(e) => { handleRowSelection(e)}}
-        //   onSelectionModelChange={() => handleRowSelection()}
-          disableRowSelectionOnClick
-          sx={{
+        {isLoadingForTenant ? (
+          <Box sx={{
+            height:"70vh",
+            display:"flex",
+            justifyContent:"center",
+            alignItems:"center",
+          }}>
+            <CircularProgress variant="solid" size="lg"/>
+          </Box>
+        ) : 
+          (tenantDetails?.serviceNowCredentials ? ( 
+            <Box 
+            className="tablediv"
+        //     sx={{
+        //     flexGrow:1,
+        //     // height:"70%",
+        //     height:"700px",
+        //     overflowY:"auto",
+        //     marginBottom:"15px",
             
-            // height:"700px",
-            borderRadius: "20px",
-            overflow: "hidden",
-            background: "white",
-          }}
-        />
-      </Box>
+        //   }}
+          >
+            <DataGrid
+              className="userInventory"
+              rows={data}
+              columns={columns}
+              rowCount={rowCount}
+              paginationMode="server"
+              paginationModel={paginationModel}
+              onPaginationModelChange={handleChangePaginationModel}
+              slots={{
+                pagination: CustomPagination,
+                toolbar: CustomGridToolbar,
+                loadingOverlay: LinearProgress,
+              }}
+              loading={isLoading}
+              checkboxSelection
+              onRowSelectionModelChange={(e) => { handleRowSelection(e)}}
+            //   onSelectionModelChange={() => handleRowSelection()}
+              disableRowSelectionOnClick
+              sx={{
+                
+                // height:"700px",
+                borderRadius: "20px",
+                overflow: "hidden",
+                background: "white",
+              }}
+            />
+            </Box>
+          ) : (
+            <Box sx={{
+              height:"70vh",
+              display:"flex",
+              justifyContent:"center",
+              alignItems:"center",
+            }}>
+              <Typography>
+                Please fill the service Now credentials!!!
+              </Typography>
+            </Box>
+          )
+          )
+        }
       
     </Box>
   );

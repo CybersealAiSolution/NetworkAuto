@@ -48,14 +48,13 @@
     flex-grow: 1;
     /* height:70%; */
     height:650px;
-    min-height:100vh;
+    min-height:75vh;
     overflow-y:auto;
     margin-bottom: 15px;
 }
 
 .MuiDataGrid-columnHeaders{
-    background-color: #F8F9FA
-    ;
+    background-color: #F8F9FA;
 }
 
 

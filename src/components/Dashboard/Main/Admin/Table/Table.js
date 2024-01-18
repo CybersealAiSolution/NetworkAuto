@@ -81,6 +81,7 @@ const TableComponent = ({ randomValueOut }) => {
     // let res;
     // dispatch(getCurrentUser());
     const getAllAdmins = async () => {
+      setLoading(true);
       try {
         const response = await instance.get(
           `/getalladmins?page=${currentPage}&search_query=${searchQuery}`
@@ -97,6 +98,9 @@ const TableComponent = ({ randomValueOut }) => {
       } catch (error) {
         // Handle any errors that may occur during the API call
         console.error("Error sending data:", error);
+      }
+      finally{
+        setLoading(false);
       }
     };
     const getAddresses = async () => {

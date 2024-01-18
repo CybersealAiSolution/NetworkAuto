@@ -59,6 +59,7 @@ const TableComponent = () => {
 
 
   const geteventlogs = async (paginationModel,searchQuery) => {
+    setLoading(true);
     try {
       const response = await instance.get(
         `/eventlogs/getevents?&page=${paginationModel.page + 1
@@ -76,6 +77,9 @@ const TableComponent = () => {
     } catch (error) {
       // Handle any errors that may occur during the API call
       console.error("Error sending data:", error);
+    }
+    finally{
+      setLoading(false);
     }
   };
 

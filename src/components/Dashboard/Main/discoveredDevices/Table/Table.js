@@ -71,6 +71,7 @@ const DeviceTableComponent = () => {
 
 
   const getDevices = async (paginationModel, searchQuery) => {
+    setLoading(true);
     try {
       const response = await instance.get(`/devices/?&page=${paginationModel.page + 1
       }&page_size=${paginationModel.pageSize
@@ -84,6 +85,9 @@ const DeviceTableComponent = () => {
         setTotalPage(response.data.data.total ? response.data.data.total : 1);
     } catch (error) {
       console.error("Error fetching devices:", error);
+    }
+    finally{
+      setLoading(false);
     }
   };
 

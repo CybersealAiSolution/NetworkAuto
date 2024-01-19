@@ -428,7 +428,7 @@ function AdminComponent(props) {
               alignItems:"center",
             }}>
               <Typography>
-                Please fill the service Now credentials!!!
+                Fill the service Now credentials!!!
               </Typography>
             </Box>
           )

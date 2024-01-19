@@ -20,6 +20,7 @@ import Stack from "@mui/joy/Stack";
 import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
 import { Typography as TypographyJoy } from "@mui/joy";
+// import { toast } from "react-toastify";
 import {
   Toolbar,
   Typography,
@@ -51,6 +52,7 @@ const Header = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const [userName, setUserName] = useState("");
   const [serviceNowpassword, setServiceNowPassword] = useState("");
   const [serviceNowModalLoading, setServiceNowModalLoading] = useState(false);
+  const [msTeamsStatus, setMsTeamsStatus] = useState({});
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [modalLoading, setModalLoading] = useState(false);
 
@@ -90,7 +92,35 @@ const Header = ({ isSidebarOpen, setIsSidebarOpen }) => {
     }, 3000); // 5 seconds
   };
 
-  useEffect(() => {}, []);
+  // uncomment when backend correction done!!
+  
+  // const fetchData = async () => {
+  //   try {
+  //     const response = await instance.get('/common/getGlobalStats');
+  //     setMsTeamsStatus(response.data)
+  //   } catch (error) {
+  //     console.error('Error sending tenant info data:', error);
+  //     if (error.response.status === 403) {
+  //       toast.error("missing CSRF Token");
+        
+  //       navigate('/');
+  //     } else {
+  //       toast.error('Failed to fetch tenant sync status');
+        
+  //     }
+  //   };
+  // }
+
+  // useEffect(() => {
+  //   fetchData();
+  //   const intervalID = setInterval(fetchData, 15000);
+
+  //   return () => clearInterval(intervalID);
+
+  // }, []);
+
+
+  
 
   const handleLogout = async () => {
     try {
@@ -312,6 +342,8 @@ const Header = ({ isSidebarOpen, setIsSidebarOpen }) => {
           <b> {data.tenantName ? data.tenantName : "Organization Name"}</b>
         </Typography>
         <Box sx={{ display: "flex", flexGrow: 0 }}>
+
+          {/* comment it when backend correction done */}
           <Button
             loading={isLoading ? true : false}
             loadingPosition="start"
@@ -322,6 +354,24 @@ const Header = ({ isSidebarOpen, setIsSidebarOpen }) => {
           >
             Tenant Sync
           </Button>
+
+          {/* for global stats */}
+          {/* uncomment when backend correction done!! */}
+          {/* <Tooltip
+            sx={{ maxWidth: '20px', minWidth: '15px' }}
+            followCursor
+          >
+            <Button
+              loading={msTeamsStatus.tenantSyncLock ? true : false}
+              loadingPosition="start" color={msTeamsStatus.msTeamsStatus ? "success" : "warning"}
+              variant={msTeamsStatus.tenantSyncLock ? "outlined" : "soft"}
+              sx={{ height: '40px', my: auto }}
+              onClick={handleSyncing}
+            >
+              {msTeamsStatus.tenantSyncLock?'Syncing':'Tenant Sync'}
+              
+            </Button>
+          </Tooltip> */}
 
           <Box>
             <IconButton

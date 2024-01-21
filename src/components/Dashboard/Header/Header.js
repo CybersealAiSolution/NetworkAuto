@@ -91,33 +91,31 @@ const Header = ({ isSidebarOpen, setIsSidebarOpen }) => {
       console.log("syncing....");
     }, 3000); // 5 seconds
   };
-
-  // uncomment when backend correction done!!
   
-  // const fetchData = async () => {
-  //   try {
-  //     const response = await instance.get('/common/getGlobalStats');
-  //     setMsTeamsStatus(response.data)
-  //   } catch (error) {
-  //     console.error('Error sending tenant info data:', error);
-  //     if (error.response.status === 403) {
-  //       toast.error("missing CSRF Token");
+  const fetchData = async () => {
+    try {
+      const response = await instance.get('/common/getGlobalStats');
+      setMsTeamsStatus(response.data)
+    } catch (error) {
+      console.error('Error sending tenant info data:', error);
+      if (error.response.status === 403) {
+        toast.error("missing CSRF Token");
         
-  //       navigate('/');
-  //     } else {
-  //       toast.error('Failed to fetch tenant sync status');
+        navigate('/');
+      } else {
+        toast.error('Failed to fetch tenant sync status');
         
-  //     }
-  //   };
-  // }
+      }
+    };
+  }
 
-  // useEffect(() => {
-  //   fetchData();
-  //   const intervalID = setInterval(fetchData, 15000);
+  useEffect(() => {
+    fetchData();
+    const intervalID = setInterval(fetchData, 15000);
 
-  //   return () => clearInterval(intervalID);
+    return () => clearInterval(intervalID);
 
-  // }, []);
+  }, []);
 
 
   
@@ -344,7 +342,7 @@ const Header = ({ isSidebarOpen, setIsSidebarOpen }) => {
         <Box sx={{ display: "flex", flexGrow: 0 }}>
 
           {/* comment it when backend correction done */}
-          <Button
+          {/* <Button
             loading={isLoading ? true : false}
             loadingPosition="start"
             color={"success"}
@@ -353,16 +351,15 @@ const Header = ({ isSidebarOpen, setIsSidebarOpen }) => {
             onClick={handleSyncing}
           >
             Tenant Sync
-          </Button>
+          </Button> */}
 
           {/* for global stats */}
-          {/* uncomment when backend correction done!! */}
-          {/* <Tooltip
+          <Tooltip
             sx={{ maxWidth: '20px', minWidth: '15px' }}
             followCursor
           >
             <Button
-              loading={msTeamsStatus.tenantSyncLock ? true : false}
+              loading={msTeamsStatus.msTeamsStatus ? false : true}
               loadingPosition="start" color={msTeamsStatus.msTeamsStatus ? "success" : "warning"}
               variant={msTeamsStatus.tenantSyncLock ? "outlined" : "soft"}
               sx={{ height: '40px', my: auto }}
@@ -371,7 +368,7 @@ const Header = ({ isSidebarOpen, setIsSidebarOpen }) => {
               {msTeamsStatus.tenantSyncLock?'Syncing':'Tenant Sync'}
               
             </Button>
-          </Tooltip> */}
+          </Tooltip>
 
           <Box>
             <IconButton
